@@ -75,6 +75,31 @@
             100% { transform: translateY(0px); }
         }
 
+        /* VIP СТИЛИ */
+        .vip-nickname {
+            background: linear-gradient(90deg, #00f2ff, #7000ff, #00f2ff);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: vip-shine 3s linear infinite;
+            font-weight: 900 !important;
+        }
+        @keyframes vip-shine {
+            to { background-position: 200% center; }
+        }
+        .vip-frame {
+            border: 3px solid transparent !important;
+            background: linear-gradient(#050508, #050508) padding-box,
+                        linear-gradient(45deg, #00f2ff, #7000ff) border-box !important;
+            box-shadow: 0 0 20px rgba(112, 0, 255, 0.6) !important;
+        }
+        .vip-badge {
+            display: inline-block;
+            margin-left: 5px;
+            font-size: 14px;
+            filter: drop-shadow(0 0 5px #7000ff);
+        }
+
         /* Летающие фоновые сферы */
         .ambient-orb {
             position: fixed; border-radius: 50%; filter: blur(80px); z-index: -1; opacity: 0.5;
@@ -288,13 +313,11 @@
 </head>
 <body>
 
-<!-- Декоративные сферы для крутого фона -->
 <div class="ambient-orb orb-1"></div>
 <div class="ambient-orb orb-2"></div>
 
 <div id="toast-container"></div>
 
-<!-- АВТОРИЗАЦИЯ -->
 <div id="auth-screen" style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh; padding:20px;">
     <div class="glass-card" style="width:100%; max-width:400px; text-align:center;">
         <h1 class="logo" style="margin-bottom: 5px; font-size:38px; animation: float 4s ease-in-out infinite;">INDIGO</h1>
@@ -316,17 +339,14 @@
     </div>
 </div>
 
-<!-- ОСНОВНОЙ APP -->
 <div id="main-app" style="display:none;" class="app-container">
     
-    <!-- НОВОСТИ -->
     <div id="scr-news" class="screen active">
         <div class="header">
             <div class="logo">ЛЕНТА</div>
             <div style="font-size: 10px; background: rgba(0,242,255,0.1); border: 1px solid var(--primary); padding: 5px 10px; border-radius: 10px; color: var(--primary); font-weight: 800;">LIVE UPDATE</div>
         </div>
         
-        <!-- ПУБЛИКАЦИЯ ИСТОРИЙ ДЛЯ АДМИНА -->
         <div id="admin-news-panel" class="glass-card" style="display:none; border-color:var(--primary); box-shadow: 0 0 20px rgba(0,242,255,0.1);">
             <h3 style="margin-bottom:15px; font-size:14px; color:var(--primary); display:flex; align-items:center; gap:10px;">
                 <span style="font-size: 20px;">⚡</span> СОЗДАТЬ ПОСТ (АДМИН)
@@ -334,18 +354,14 @@
             <input type="text" id="news-title" placeholder="Заголовок пушки..." style="margin-bottom:15px;">
             <textarea id="news-text" placeholder="Заряжай текст истории сюда..." style="height:100px; margin-bottom:15px;"></textarea>
             
-            <!-- НОВЫЕ ПОЛЯ ИЗ ИДЕЙ ПОДПИСЧИКОВ -->
             <input type="text" id="news-link" placeholder="Ссылка на TikTok или Источник (необязательно)..." style="margin-bottom:15px;">
             <input type="text" id="news-tags" placeholder="Теги через запятую (например: #история, #тг)..." style="margin-bottom:15px;">
-            <!-- КОНЕЦ НОВЫХ ПОЛЕЙ -->
-            
             <button class="btn-main" onclick="App.postNews()">ОПУБЛИКОВАТЬ НА ВСЕХ</button>
         </div>
 
         <div id="news-container"></div>
     </div>
 
-    <!-- ТОП -->
     <div id="scr-top" class="screen">
         <div class="header">
             <div class="logo">ЭЛИТА</div>
@@ -354,7 +370,6 @@
         <div id="leaderboard-list"></div>
     </div>
 
-    <!-- ЧАТ -->
     <div id="scr-chat" class="screen">
         <div class="header">
             <div class="logo">СВЯЗЬ</div>
@@ -362,12 +377,10 @@
         </div>
         <div class="glass-card chat-container-wrap">
             
-            <!-- Строка поиска по чату -->
             <input type="text" id="chat-search" class="chat-search-box" placeholder="🔍 Найти сообщение в истории..." onkeyup="App.searchChat()">
 
             <div id="chat-messages" onscroll="App.handleChatScroll()"></div>
             
-            <!-- Кнопки навигации по чату -->
             <button id="scroll-up-btn" class="scroll-nav-btn" onclick="App.scrollToTop()">↑</button>
             <button id="scroll-down-btn" class="scroll-nav-btn" onclick="App.scrollToBottom()">↓</button>
             
@@ -400,12 +413,40 @@
         </div>
     </div>
 
-    <!-- МЕГА-ПРОФИЛЬ -->
+    <div id="scr-store" class="screen">
+        <div class="header">
+            <div class="logo">МАГАЗИН</div>
+            <div style="font-size: 10px; color: var(--warning); border: 1px solid var(--warning); padding: 5px 10px; border-radius: 10px; font-weight: 800;">PREMIUM</div>
+        </div>
+        
+        <div class="glass-card" style="text-align:center;">
+            <div style="font-size: 40px; margin-bottom: 10px; animation: float 3s ease-in-out infinite;">💎</div>
+            <h3 style="color: white; font-family: 'Unbounded'; margin-bottom: 15px; font-size: 22px;">INDIGO VIP <span style="color: var(--primary);">[FOREVER]</span></h3>
+            <p style="font-size: 13px; color: #aaa; margin-bottom: 20px; line-height: 1.5;">Стань легендой Indigo Project! Уникальные фишки навсегда:</p>
+            
+            <div style="text-align: left; background: rgba(0,0,0,0.4); padding: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 20px;">
+                <div style="margin-bottom: 10px; font-size: 13px;">✅ <b class="vip-nickname">Анимированный ник</b> в чате и топе</div>
+                <div style="margin-bottom: 10px; font-size: 13px;">✅ <b>Неоновая рамка</b> вокруг профиля</div>
+                <div style="margin-bottom: 10px; font-size: 13px;">✅ <b>Уникальный значок</b> мецената (💎)</div>
+                <div style="margin-bottom: 10px; font-size: 13px;">✅ <b>Прямая связь</b> и поддержка проекта</div>
+            </div>
+
+            <div style="background: rgba(0,242,255,0.1); border: 1px dashed var(--primary); padding: 15px; border-radius: 15px; margin-bottom: 20px;">
+                <p style="font-size: 11px; color: var(--primary); font-weight: 800; margin-bottom: 8px;">КАК ПОЛУЧИТЬ?</p>
+                <p style="font-size: 12px; color: white;">1. Скопируй свой ID: <b style="background: var(--primary); color: black; padding: 4px 8px; border-radius: 5px; cursor: pointer; display: inline-block; margin-top: 5px;" onclick="App.copyMessageText(App.user.id)">СКОПИРОВАТЬ ID</b></p>
+                <p style="font-size: 12px; color: white; margin-top: 8px;">2. Нажми кнопку ниже и оплати 150₽.</p>
+                <p style="font-size: 12px; color: white; margin-top: 5px;">3. В поле "Сообщение" на Boosty ОБЯЗАТЕЛЬНО вставь свой ID.</p>
+                <p style="font-size: 12px; color: #ffaa00; margin-top: 10px; font-weight: bold;">Админ выдаст VIP вручную после проверки!</p>
+            </div>
+
+            <button class="btn-main" onclick="window.open('https://boosty.to/indigo_help/bundle/1f0e2536-53a6-4581-9edf-c6e9e14237b6?share=bundle_link', '_blank')" style="font-size: 16px; padding: 18px; box-shadow: 0 10px 25px rgba(0, 242, 255, 0.5);">КУПИТЬ VIP ЗА 150₽</button>
+        </div>
+    </div>
+
     <div id="scr-profile" class="screen">
         <div class="header"><div class="logo">ПРОФИЛЬ</div></div>
         
         <div class="glass-card" style="text-align:center; position:relative; overflow:hidden;">
-            <!-- Эффект свечения сзади аватарки -->
             <div style="position:absolute; top:10px; left:50%; transform:translateX(-50%); width:150px; height:150px; background:var(--primary); filter:blur(60px); opacity:0.3; z-index:-1; border-radius: 50%; animation: pulseGlow 4s infinite;"></div>
             
             <img id="my-avatar" src="" class="avatar-small" style="width:130px; height:130px; border:4px solid var(--primary); box-shadow: 0 0 25px rgba(0,242,255,0.5); margin-bottom:15px; transition: 0.5s;" onmouseover="this.style.transform='scale(1.05) rotate(5deg)'" onmouseout="this.style.transform='scale(1) rotate(0deg)'">
@@ -421,7 +462,6 @@
             <button id="daily-bonus-btn" class="btn-main" onclick="App.claimDailyBonus()" style="background: linear-gradient(135deg, #ffaa00, #ff4757); box-shadow: 0 10px 25px rgba(255, 170, 0, 0.4); margin-top: 25px; padding: 20px;">🎁 ЗАБРАТЬ МОЩНЫЙ БОНУС (100 XP)</button>
         </div>
 
-        <!-- ГЛОБАЛЬНЫЕ НАСТРОЙКИ -->
         <div class="glass-card">
             <h3 style="margin-bottom:25px; font-size:18px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:15px; color: var(--text); display:flex; align-items:center; gap: 10px;">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
@@ -482,24 +522,30 @@
             <button class="btn-main" onclick="App.updateProfile()" style="margin-top: 10px; font-size: 16px; padding: 20px;">ПРИМЕНИТЬ И СОХРАНИТЬ ВСЁ</button>
         </div>
 
-        <!-- АДМИНКА (ВСЁ НА МЕСТЕ) -->
         <div id="admin-zone" class="glass-card" style="display:none; border-color: var(--error); box-shadow: 0 0 30px rgba(255, 71, 87, 0.15);">
             <h3 style="color:var(--error); margin-bottom:20px; display:flex; align-items:center; gap:10px;">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--error)" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
                 ПАНЕЛЬ БОГА (СОЗДАТЕЛЬ)
             </h3>
+            
             <button class="btn-main" style="background:rgba(255,71,87,0.1); color:var(--error); border:2px solid var(--error); box-shadow:none;" onclick="App.adminAction('clearChat')" onmouseover="this.style.background='var(--error)'; this.style.color='white'" onmouseout="this.style.background='rgba(255,71,87,0.1)'; this.style.color='var(--error)'">ОЧИСТИТЬ ВЕСЬ ЧАТ К ЧЕРТЯМ</button>
+            
             <div style="margin-top:20px; background:rgba(0,0,0,0.4); padding:15px; border-radius:15px; border: 1px solid rgba(255,71,87,0.3);">
                 <label style="font-size:11px; color:var(--error); display:block; margin-bottom:8px; font-weight:800; letter-spacing:1px;">ID ИГРОКА ДЛЯ УДАЛЕНИЯ</label>
                 <input type="text" id="target-id" placeholder="Например: u170923..." style="margin-bottom:15px; border-color:rgba(255,71,87,0.5); background: rgba(255,71,87,0.05);">
                 <button class="btn-main" style="background:linear-gradient(135deg, #ff4757, #ff0000); padding:15px; box-shadow: 0 10px 20px rgba(255, 71, 87, 0.4);" onclick="App.adminAction('deleteUser')">УДАЛИТЬ ПОЛЬЗОВАТЕЛЯ НАВСЕГДА</button>
+            </div>
+
+            <div style="margin-top:20px; background:rgba(0,0,0,0.4); padding:15px; border-radius:15px; border: 1px solid rgba(112, 0, 255, 0.3);">
+                <label style="font-size:11px; color:#7000ff; display:block; margin-bottom:8px; font-weight:800; letter-spacing:1px;">ВЫДАТЬ VIP ПОЛЬЗОВАТЕЛЮ</label>
+                <input type="text" id="vip-target-id" placeholder="ID игрока (напр. u170923...)" style="margin-bottom:15px; border-color:rgba(112, 0, 255, 0.5); background: rgba(112, 0, 255, 0.05);">
+                <button class="btn-main" style="background:linear-gradient(135deg, #7000ff, #00f2ff); padding:15px; box-shadow: 0 10px 20px rgba(112, 0, 255, 0.4);" onclick="App.adminAction('giveVip')">ВЫДАТЬ СТАТУС VIP 💎</button>
             </div>
         </div>
 
         <button class="btn-main" style="background:rgba(255,255,255,0.05); color:#888; border:1px solid rgba(255,255,255,0.1); margin-top: 20px; box-shadow: none;" onclick="App.logout()">ВЫЙТИ ИЗ СИСТЕМЫ</button>
     </div>
 
-    <!-- МЕНЮ -->
     <nav class="nav-bar">
         <button class="nav-btn active" onclick="App.nav('news')">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin: 0 auto 5px auto; display:block;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
@@ -512,6 +558,10 @@
         <button class="nav-btn" onclick="App.nav('chat')">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin: 0 auto 5px auto; display:block;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
             ЧАТ
+        </button>
+        <button class="nav-btn" onclick="App.nav('store')">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin: 0 auto 5px auto; display:block;"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+            МАГАЗИН
         </button>
         <button class="nav-btn" onclick="App.nav('profile')">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin: 0 auto 5px auto; display:block;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
@@ -658,7 +708,8 @@
                         id: id, name: u, pass: btoa(p), xp: 0,
                         bio: 'Только что ворвался в проект',
                         photo: 'https://api.dicebear.com/7.x/pixel-art/svg?seed=' + u,
-                        lastBonus: 0
+                        lastBonus: 0,
+                        isVip: false // По умолчанию VIP выключен
                     });
                     this.showToast('✅ Аккаунт создан! Теперь выполни вход.');
                     this.toggleAuth(true);
@@ -726,7 +777,7 @@
 
         copyMessageText(text) {
             navigator.clipboard.writeText(text).then(() => {
-                this.showToast('📋 Текст сообщения скопирован в буфер!');
+                this.showToast('📋 Текст/ID скопирован в буфер!');
             }).catch(err => {
                 this.showToast('❌ Ошибка копирования');
             });
@@ -749,13 +800,15 @@
             const isGhost = ghostToggle && ghostToggle.checked;
             const senderName = isGhost ? 'Аноним' : this.user.name;
             const senderIsAdmin = isGhost ? false : this.admins.includes(this.user.name);
+            const senderIsVip = isGhost ? false : (this.user.isVip || false); // Передаем VIP статус
 
             const msgData = {
                 uid: this.user.id, 
                 name: senderName,
                 text: text, 
                 time: Date.now(),
-                isAdmin: senderIsAdmin
+                isAdmin: senderIsAdmin,
+                isVip: senderIsVip // Сохраняем VIP в сообщении
             };
 
             if(this.replyingTo) {
@@ -908,6 +961,11 @@
                     delBtnHtml = `<button class="del-msg-btn" onclick="event.stopPropagation(); App.deleteMessage('${m.key}')">УДАЛИТЬ</button>`;
                 }
 
+                // Логика VIP в чате
+                const isVip = m.isVip;
+                const vipClass = isVip ? 'vip-nickname' : '';
+                const vipBadge = isVip ? '<span class="vip-badge">💎</span>' : '';
+
                 return `
                 <div class="message-item-wrapper" style="position:relative; width:100%;">
                     <div class="message ${m.uid === this.user.id ? 'my-msg' : 'other-msg'} ${m.isAdmin ? 'admin-msg' : ''}" 
@@ -915,7 +973,7 @@
                          ondblclick="App.copyMessageText('${safeText}')">
                         ${delBtnHtml}
                         <div class="msg-info">
-                            <b>${m.name}</b> ${m.isAdmin ? '<div class="verify-badge"></div>' : ''} 
+                            <b class="${vipClass}">${m.name}</b> ${m.isAdmin ? '<div class="verify-badge"></div>' : ''} ${vipBadge}
                             <span class="msg-time">${m.time ? this.formatTime(m.time) : ''}</span>
                         </div>
                         ${replyHtml}
@@ -962,14 +1020,20 @@
                     badgeOrEmoji = "🔥 ";
                 }
 
+                // Логика VIP в ТОПе
+                const isVip = u.isVip;
+                const vipClass = isVip ? 'vip-nickname' : '';
+                const vipBadge = isVip ? '<span class="vip-badge" style="font-size:12px;">💎</span>' : '';
+                const vipFrame = isVip ? 'vip-frame' : '';
+
                 return `
                 <div class="leader-item" style="background: ${itemBg};">
                     <div class="rank" style="${i < 3 ? 'color:' + nameColor + '; text-shadow:' + nameShadow : ''}">#${i+1}</div>
-                    <img src="${u.photo}" class="avatar-small" style="border: ${avatarBorder};">
+                    <img src="${u.photo}" class="avatar-small ${vipFrame}" style="border: ${avatarBorder};">
                     <div class="level-badge">LVL ${lvl}</div>
                     <div style="flex:1; margin-left: 10px;">
-                        <div style="font-weight:800; display:flex; align-items:center; gap:5px; font-size: 15px; color: ${nameColor}; text-shadow: ${nameShadow};">
-                            ${badgeOrEmoji}${u.name} ${this.admins.includes(u.name) ? '<div class="verify-badge"></div>' : ''}
+                        <div style="font-weight:800; display:flex; align-items:center; gap:5px; font-size: 15px; color: ${nameColor}; text-shadow: ${nameShadow};" class="${vipClass}">
+                            ${badgeOrEmoji}${u.name} ${this.admins.includes(u.name) ? '<div class="verify-badge"></div>' : ''} ${vipBadge}
                         </div>
                         <div style="font-size:11px; color:#aaa; margin-top: 4px;">ID: ${u.id} | ${u.bio || 'Новичок'}</div>
                     </div>
@@ -983,9 +1047,22 @@
             const isAdm = this.admins.includes(this.user.name);
             const lvl = this.getLevel(this.user.xp);
             
-            document.getElementById('my-name-display').innerHTML = this.user.name + (isAdm ? ' <div class="verify-badge" style="width:24px; height:24px;"></div>' : '');
+            // Логика VIP для профиля
+            const isVip = this.user.isVip;
+            const vipClass = isVip ? 'vip-nickname' : '';
+            const vipBadge = isVip ? '<span class="vip-badge" style="font-size:18px;">💎</span>' : '';
+
+            document.getElementById('my-name-display').innerHTML = `<span class="${vipClass}">${this.user.name}</span>` + (isAdm ? ' <div class="verify-badge" style="width:24px; height:24px;"></div>' : '') + vipBadge;
             document.getElementById('my-bio-display').innerText = this.user.bio || 'Ворвался в проект';
-            document.getElementById('my-avatar').src = this.user.photo;
+            
+            const avatarElem = document.getElementById('my-avatar');
+            avatarElem.src = this.user.photo;
+            if(isVip) {
+                avatarElem.classList.add('vip-frame');
+            } else {
+                avatarElem.classList.remove('vip-frame');
+            }
+
             document.getElementById('my-xp').innerText = (this.user.xp || 0) + ' XP';
             document.getElementById('my-level').innerText = 'УРОВЕНЬ ' + lvl;
             
@@ -1059,6 +1136,18 @@
                     this.showToast('⚠️ Введи ID пользователя!');
                 }
             }
+            if(type === 'giveVip') {
+                const id = document.getElementById('vip-target-id').value;
+                if(id) {
+                    if(confirm('Точно выдать VIP пользователю ' + id + '?')) {
+                        db.ref('users/' + id).update({ isVip: true });
+                        this.showToast('💎 Пользователю ' + id + ' успешно выдан VIP!');
+                        document.getElementById('vip-target-id').value = '';
+                    }
+                } else {
+                    this.showToast('⚠️ Введи ID пользователя для выдачи VIP!');
+                }
+            }
         },
 
         toggleAuth(l) {
@@ -1096,4 +1185,3 @@
 </script>
 </body>
 </html>
-
