@@ -672,7 +672,8 @@
         chatTempBase64Photo: null,
         replyingTo: null,
         isUserScrolling: false,
-        speechRecognition: null, // Рекогнайзер для голоса
+        mediaRecorder: null, // Заменили рекогнайзер на медиарекордер для аудио
+        audioChunks: [],
         chatLogStore: [], // Хранилище логов чата для экспорта
 
         init() {
@@ -728,42 +729,84 @@
         },
 
         setupVoice() {
-            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-                const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
-                this.speechRecognition = new SpeechRec();
-                this.speechRecognition.lang = 'ru-RU';
-                this.speechRecognition.interimResults = false;
-                
-                this.speechRecognition.onstart = () => {
-                    document.getElementById('voice-mic-btn').classList.add('mic-btn-active');
-                    document.getElementById('chat-input').placeholder = "Слушаю вас...";
-                };
-                
-                this.speechRecognition.onresult = (event) => {
-                    const text = event.results[0][0].transcript;
-                    const input = document.getElementById('chat-input');
-                    input.value += (input.value ? ' ' : '') + text;
-                };
-                
-                this.speechRecognition.onerror = (e) => {
-                    this.showToast('⚠️ Ошибка микрофона: ' + e.error);
-                };
-                
-                this.speechRecognition.onend = () => {
-                    document.getElementById('voice-mic-btn').classList.remove('mic-btn-active');
-                    document.getElementById('chat-input').placeholder = "Набери сообщение...";
-                };
-            }
+            // Оставлено для обратной совместимости вызова в init(),
+            // инициализация микрофона теперь происходит напрямую при клике в startVoiceInput()
         },
 
         startVoiceInput() {
-            if(!this.speechRecognition) return this.showToast('❌ Ваш браузер не поддерживает голосовой ввод');
+            if(!this.user.isVipPlus) return this.showToast('👑 Голосовые сообщения доступны только для VIP++ Боссов!');
+            
             const btn = document.getElementById('voice-mic-btn');
-            if (btn.classList.contains('mic-btn-active')) {
-                this.speechRecognition.stop();
-            } else {
-                this.speechRecognition.start();
+            
+            if (this.mediaRecorder && this.mediaRecorder.state === 'recording') {
+                this.mediaRecorder.stop();
+                return;
             }
+
+            navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+                this.mediaRecorder = new MediaRecorder(stream);
+                this.audioChunks = [];
+
+                this.mediaRecorder.onstart = () => {
+                    btn.classList.add('mic-btn-active');
+                    document.getElementById('chat-input').placeholder = "Запись голосового... Нажми еще раз для отправки";
+                };
+
+                this.mediaRecorder.ondataavailable = e => {
+                    if (e.data.size > 0) this.audioChunks.push(e.data);
+                };
+
+                this.mediaRecorder.onstop = () => {
+                    btn.classList.remove('mic-btn-active');
+                    document.getElementById('chat-input').placeholder = "Набери сообщение...";
+                    
+                    const audioBlob = new Blob(this.audioChunks, { type: 'audio/webm' });
+                    const reader = new FileReader();
+                    reader.readAsDataURL(audioBlob);
+                    reader.onloadend = () => {
+                        const base64Audio = reader.result;
+                        this.sendAudioMessage(base64Audio);
+                    };
+                    
+                    // Отключаем микрофон после записи
+                    stream.getTracks().forEach(track => track.stop());
+                };
+
+                this.mediaRecorder.start();
+            }).catch(err => {
+                this.showToast('⚠️ Ошибка микрофона: ' + err.message);
+            });
+        },
+
+        sendAudioMessage(base64Audio) {
+            const ghostToggle = document.getElementById('ghost-mode-toggle');
+            const isGhost = ghostToggle && ghostToggle.checked;
+            const senderName = isGhost ? 'Аноним' : this.user.name;
+            const senderIsAdmin = isGhost ? false : this.admins.includes(this.user.name);
+            const senderIsVip = isGhost ? false : (this.user.isVip || false);
+            const senderIsVipPlus = isGhost ? false : (this.user.isVipPlus || false);
+
+            const msgData = {
+                uid: this.user.id, 
+                name: senderName,
+                text: '', 
+                audio: base64Audio,
+                time: Date.now(),
+                isAdmin: senderIsAdmin,
+                isVip: senderIsVip,
+                isVipPlus: senderIsVipPlus
+            };
+
+            if(this.replyingTo) {
+                msgData.replyName = this.replyingTo.name;
+                msgData.replyText = this.replyingTo.text;
+            }
+
+            db.ref('chat').push(msgData);
+            db.ref('users/' + this.user.id + '/xp').set((this.user.xp || 0) + 5);
+            
+            this.cancelReply();
+            setTimeout(() => this.scrollToBottom(), 100);
         },
 
         exportChatLogs() {
@@ -772,7 +815,7 @@
             let textOutput = "=== INDIGO VIP++ CHAT LOGS ===\n\n";
             this.chatLogStore.forEach(msg => {
                 const timeStr = msg.time ? new Date(msg.time).toLocaleString() : 'Неизвестно';
-                textOutput += `[${timeStr}] ${msg.name}: ${msg.text || '[Фото]'}\n`;
+                textOutput += `[${timeStr}] ${msg.name}: ${msg.text || '[Фото / Голосовое]'}\n`;
             });
             
             const blob = new Blob([textOutput], { type: 'text/plain' });
@@ -906,7 +949,7 @@
             document.getElementById('reply-preview-ui').style.display = 'flex';
             document.getElementById('reply-preview-ui').style.animation = 'slideInRight 0.3s ease';
             document.getElementById('reply-to-name').innerText = name;
-            document.getElementById('reply-to-text').innerText = text || '[Фотография]';
+            document.getElementById('reply-to-text').innerText = text || '[Фотография / Аудио]';
             document.getElementById('chat-input').focus();
         },
 
@@ -1107,9 +1150,15 @@
                 if(m.replyName) {
                     replyHtml = `<div class="reply-block"><b>${m.replyName}</b>: ${m.replyText}</div>`;
                 }
+                
                 let imgHtml = '';
                 if(m.image) {
                     imgHtml = `<img src="${m.image}" class="chat-image-attachment">`;
+                }
+                
+                let audioHtml = '';
+                if(m.audio) {
+                    audioHtml = `<audio controls src="${m.audio}" style="width:100%; max-width: 250px; height: 35px; margin-top: 8px; border-radius: 18px; outline: none;"></audio>`;
                 }
                 
                 const safeText = m.text ? m.text.replace(/</g, "&lt;").replace(/>/g, "&gt;") : '';
@@ -1129,7 +1178,7 @@
                 return `
                 <div class="message-item-wrapper" style="position:relative; width:100%;">
                     <div class="message ${m.uid === this.user.id ? 'my-msg' : 'other-msg'} ${m.isAdmin ? 'admin-msg' : ''}" 
-                         onclick="App.setReply('${m.name}', '${safeText || 'Фотография'}')"
+                         onclick="App.setReply('${m.name}', '${safeText || (m.audio ? 'Голосовое сообщение' : 'Фотография')}')"
                          ondblclick="App.copyMessageText('${safeText}')">
                         ${delBtnHtml}
                         <div class="msg-info">
@@ -1138,6 +1187,7 @@
                         </div>
                         ${replyHtml}
                         ${safeText}
+                        ${audioHtml}
                         ${imgHtml}
                     </div>
                 </div>
