@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>INDIGO PROJECT | PREMIUM</title>
+    <title>INDIGO PROJECT | PREMIUM VIP++</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
     
@@ -18,6 +18,8 @@
             --error: #ff4757;
             --success: #2ed573;
             --warning: #ffaa00;
+            --vip-plus-1: #ffaa00;
+            --vip-plus-2: #ff0055;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -56,6 +58,11 @@
             0% { box-shadow: 0 0 15px rgba(0,242,255,0.3); }
             50% { box-shadow: 0 0 35px rgba(0,242,255,0.8); transform: scale(1.02); }
             100% { box-shadow: 0 0 15px rgba(0,242,255,0.3); transform: scale(1); }
+        }
+        @keyframes pulseRecord {
+            0% { box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 71, 87, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 71, 87, 0); }
         }
         @keyframes slideInRight {
             from { transform: translateX(50px); opacity: 0; }
@@ -100,6 +107,41 @@
             filter: drop-shadow(0 0 5px #7000ff);
         }
 
+        /* VIP++ СТИЛИ (ЭКСТРА) */
+        .vip-plus-nickname {
+            background: linear-gradient(90deg, var(--vip-plus-1), var(--vip-plus-2), var(--vip-plus-1));
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: vip-shine 2s linear infinite;
+            font-weight: 900 !important;
+            text-shadow: 0 0 10px rgba(255, 0, 85, 0.5);
+        }
+        .vip-plus-frame {
+            border: 3px solid transparent !important;
+            background: linear-gradient(#050508, #050508) padding-box,
+                        linear-gradient(45deg, var(--vip-plus-1), var(--vip-plus-2)) border-box !important;
+            box-shadow: 0 0 25px rgba(255, 0, 85, 0.8) !important;
+        }
+        .vip-plus-badge {
+            display: inline-block;
+            margin-left: 5px;
+            font-size: 16px;
+            filter: drop-shadow(0 0 8px var(--vip-plus-1));
+        }
+
+        /* Обложка профиля VIP++ */
+        .profile-cover {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 140px;
+            object-fit: cover;
+            z-index: 0;
+            opacity: 0.5;
+            mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%);
+            -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%);
+            transition: 0.5s;
+        }
+
         /* Летающие фоновые сферы */
         .ambient-orb {
             position: fixed; border-radius: 50%; filter: blur(80px); z-index: -1; opacity: 0.5;
@@ -125,6 +167,7 @@
             content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
             background: linear-gradient(to right, transparent, rgba(255,255,255,0.05), transparent);
             transform: skewX(-25deg); transition: 0.5s;
+            z-index: 1; pointer-events: none;
         }
         .glass-card:hover::before { left: 150%; }
 
@@ -189,7 +232,7 @@
         .message { 
             max-width: 85%; padding: 14px 18px; border-radius: 22px; font-size: 14px; line-height: 1.5; 
             position: relative; cursor: pointer; transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3); backdrop-filter: blur(10px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3); backdrop-filter: blur(10px); word-wrap: break-word;
         }
         .message:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
         .message:active { transform: scale(0.97); opacity: 0.9; }
@@ -248,13 +291,19 @@
             box-shadow: inset 0 0 15px rgba(0,242,255,0.1);
         }
 
-        .chat-tools { display: flex; gap: 10px; margin-top: 15px; align-items: center; background: rgba(0,0,0,0.3); padding: 8px; border-radius: 22px; border: 1px solid rgba(255,255,255,0.05); }
+        .chat-tools { display: flex; gap: 8px; margin-top: 15px; align-items: center; background: rgba(0,0,0,0.3); padding: 8px; border-radius: 22px; border: 1px solid rgba(255,255,255,0.05); }
         .tool-btn { 
             background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); 
-            color: var(--primary); padding: 14px; border-radius: 18px; cursor: pointer; 
+            color: var(--primary); padding: 12px; border-radius: 18px; cursor: pointer; 
             display: flex; justify-content: center; align-items: center; transition: 0.3s;
         }
         .tool-btn:hover { background: rgba(0, 242, 255, 0.15); border-color: var(--primary); transform: rotate(10deg); box-shadow: 0 0 15px rgba(0,242,255,0.3); }
+        
+        .mic-btn-active {
+            color: var(--error) !important;
+            border-color: var(--error) !important;
+            animation: pulseRecord 1.5s infinite;
+        }
 
         /* Лидеры */
         .leader-item { 
@@ -267,8 +316,8 @@
         .leader-item:hover { transform: scale(1.02) translateX(5px); background: rgba(255,255,255,0.08); border-color: rgba(0,242,255,0.3); }
         .leader-item:hover::before { opacity: 1; }
         .rank { width: 35px; font-family: 'Unbounded'; font-weight: 900; color: var(--primary); font-size: 20px; text-shadow: 0 0 10px rgba(0,242,255,0.5); }
-        .avatar-small { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); padding: 2px; position: relative; box-shadow: 0 0 15px rgba(0,242,255,0.2); }
-        .level-badge { position: absolute; bottom: 12px; left: 60px; background: linear-gradient(90deg, var(--primary), var(--secondary)); color: white; font-size: 9px; font-weight: 900; padding: 3px 8px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+        .avatar-small { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); padding: 2px; position: relative; box-shadow: 0 0 15px rgba(0,242,255,0.2); z-index: 2; background: #000; }
+        .level-badge { position: absolute; bottom: 12px; left: 60px; background: linear-gradient(90deg, var(--primary), var(--secondary)); color: white; font-size: 9px; font-weight: 900; padding: 3px 8px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.5); z-index: 3;}
         
         .verify-badge {
             width: 18px; height: 18px; display: inline-block;
@@ -321,7 +370,7 @@
 <div id="auth-screen" style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh; padding:20px;">
     <div class="glass-card" style="width:100%; max-width:400px; text-align:center;">
         <h1 class="logo" style="margin-bottom: 5px; font-size:38px; animation: float 4s ease-in-out infinite;">INDIGO</h1>
-        <p style="color: var(--primary); font-size: 11px; margin-bottom: 30px; letter-spacing:4px; font-weight: 900; opacity: 0.8;">PREMIUM PORTAL</p>
+        <p style="color: var(--primary); font-size: 11px; margin-bottom: 30px; letter-spacing:4px; font-weight: 900; opacity: 0.8;">PREMIUM VIP++ PORTAL</p>
         
         <div id="login-box">
             <div class="input-group"><label>Никнейм Легенды</label><input type="text" id="log-user" placeholder="Indigo_Stories"></div>
@@ -373,7 +422,10 @@
     <div id="scr-chat" class="screen">
         <div class="header">
             <div class="logo">СВЯЗЬ</div>
-            <div style="font-size: 10px; color: #aaa; background: rgba(255,255,255,0.05); padding: 5px 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1);">Двойной тап: КОПИРОВАТЬ</div>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <button onclick="App.exportChatLogs()" style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); color:white; font-size:10px; padding:6px 12px; border-radius:12px; font-weight:bold; cursor:pointer; font-family:'Manrope',sans-serif;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline; vertical-align:middle; margin-right:4px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> ЭКСПОРТ</button>
+                <div style="font-size: 10px; color: #aaa; background: rgba(255,255,255,0.05); padding: 6px 10px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">Двойной тап: КОПИРОВАТЬ</div>
+            </div>
         </div>
         <div class="glass-card chat-container-wrap">
             
@@ -402,12 +454,15 @@
 
             <div class="chat-tools">
                 <label class="tool-btn" title="Прикрепить фото">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
                     <input type="file" id="chat-file-input" accept="image/*" style="display:none;" onchange="App.handleChatImageUpload(event)">
                 </label>
+                <button id="voice-mic-btn" class="tool-btn" title="Голосовой ввод" onclick="App.startVoiceInput()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+                </button>
                 <input type="text" id="chat-input" placeholder="Набери сообщение..." style="margin:0; flex:1; background: rgba(0,0,0,0.5); border: none; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);" onkeypress="if(event.key === 'Enter') App.sendMessage()">
-                <button class="btn-main" style="width:55px; height:55px; margin:0; padding:0; display:flex; justify-content:center; align-items:center; border-radius: 18px;" onclick="App.sendMessage()">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transform: translateX(-2px);"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                <button class="btn-main" style="width:50px; height:50px; margin:0; padding:0; display:flex; justify-content:center; align-items:center; border-radius: 18px;" onclick="App.sendMessage()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transform: translateX(-2px);"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
                 </button>
             </div>
         </div>
@@ -419,47 +474,54 @@
             <div style="font-size: 10px; color: var(--warning); border: 1px solid var(--warning); padding: 5px 10px; border-radius: 10px; font-weight: 800;">PREMIUM</div>
         </div>
         
+        <div class="glass-card" style="text-align:center; border-color: var(--vip-plus-2); box-shadow: 0 0 30px rgba(255, 0, 85, 0.2);">
+            <div style="font-size: 45px; margin-bottom: 10px; animation: float 2.5s ease-in-out infinite;">👑</div>
+            <h3 style="color: white; font-family: 'Unbounded'; margin-bottom: 15px; font-size: 24px; text-transform: uppercase;">INDIGO <span class="vip-plus-nickname">VIP++</span></h3>
+            <p style="font-size: 13px; color: #aaa; margin-bottom: 20px; line-height: 1.5;">Абсолютный максимум для истинных Боссов проекта:</p>
+            
+            <div style="text-align: left; background: rgba(0,0,0,0.4); padding: 15px; border-radius: 15px; border: 1px solid rgba(255, 0, 85, 0.2); margin-bottom: 20px;">
+                <div style="margin-bottom: 10px; font-size: 13px;">🔥 <b class="vip-plus-nickname">Спец. градиент VIP++</b> для ника</div>
+                <div style="margin-bottom: 10px; font-size: 13px;">🔥 <b>Красно-золотая рамка</b> в профиле</div>
+                <div style="margin-bottom: 10px; font-size: 13px;">🔥 Знак Короны (👑) в топе и чате</div>
+                <div style="margin-bottom: 10px; font-size: 13px;">🔥 <b>Обложка профиля (Фон)</b> + Голосовой чат</div>
+            </div>
+
+            <button class="btn-main" onclick="window.open('https://boosty.to/indigo_help/posts/193b6959-a758-4e52-a048-b8941a9447b6?share=post_link', '_blank')" style="background: linear-gradient(135deg, var(--vip-plus-1), var(--vip-plus-2)); font-size: 16px; padding: 18px; box-shadow: 0 10px 25px rgba(255, 0, 85, 0.5);">СТАТЬ БОССОМ VIP++</button>
+        </div>
+
         <div class="glass-card" style="text-align:center;">
-            <div style="font-size: 40px; margin-bottom: 10px; animation: float 3s ease-in-out infinite;">💎</div>
-            <h3 style="color: white; font-family: 'Unbounded'; margin-bottom: 15px; font-size: 22px;">INDIGO VIP <span style="color: var(--primary);">[FOREVER]</span></h3>
+            <div style="font-size: 35px; margin-bottom: 10px; animation: float 3s ease-in-out infinite;">💎</div>
+            <h3 style="color: white; font-family: 'Unbounded'; margin-bottom: 15px; font-size: 20px;">INDIGO VIP <span style="color: var(--primary);">[FOREVER]</span></h3>
             <p style="font-size: 13px; color: #aaa; margin-bottom: 20px; line-height: 1.5;">Стань легендой Indigo Project! Уникальные фишки навсегда:</p>
             
             <div style="text-align: left; background: rgba(0,0,0,0.4); padding: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 20px;">
                 <div style="margin-bottom: 10px; font-size: 13px;">✅ <b class="vip-nickname">Анимированный ник</b> в чате и топе</div>
                 <div style="margin-bottom: 10px; font-size: 13px;">✅ <b>Неоновая рамка</b> вокруг профиля</div>
                 <div style="margin-bottom: 10px; font-size: 13px;">✅ <b>Уникальный значок</b> мецената (💎)</div>
-                <div style="margin-bottom: 10px; font-size: 13px;">✅ <b>Прямая связь</b> и поддержка проекта</div>
             </div>
 
-            <div style="background: rgba(0,242,255,0.1); border: 1px dashed var(--primary); padding: 15px; border-radius: 15px; margin-bottom: 20px;">
-                <p style="font-size: 11px; color: var(--primary); font-weight: 800; margin-bottom: 8px;">КАК ПОЛУЧИТЬ?</p>
-                <p style="font-size: 12px; color: white;">1. Скопируй свой ID: <b style="background: var(--primary); color: black; padding: 4px 8px; border-radius: 5px; cursor: pointer; display: inline-block; margin-top: 5px;" onclick="App.copyMessageText(App.user.id)">СКОПИРОВАТЬ ID</b></p>
-                <p style="font-size: 12px; color: white; margin-top: 8px;">2. Нажми кнопку ниже и оплати 150₽.</p>
-                <p style="font-size: 12px; color: white; margin-top: 5px;">3. В поле "Сообщение" на Boosty ОБЯЗАТЕЛЬНО вставь свой ID.</p>
-                <p style="font-size: 12px; color: #ffaa00; margin-top: 10px; font-weight: bold;">Админ выдаст VIP вручную после проверки!</p>
-            </div>
-
-            <button class="btn-main" onclick="window.open('https://boosty.to/indigo_help/bundle/1f0e2536-53a6-4581-9edf-c6e9e14237b6?share=bundle_link', '_blank')" style="font-size: 16px; padding: 18px; box-shadow: 0 10px 25px rgba(0, 242, 255, 0.5);">КУПИТЬ VIP ЗА 150₽</button>
+            <button class="btn-main" onclick="window.open('https://boosty.to/indigo_help/bundle/1f0e2536-53a6-4581-9edf-c6e9e14237b6?share=bundle_link', '_blank')" style="font-size: 14px; padding: 16px; box-shadow: 0 10px 25px rgba(0, 242, 255, 0.5);">КУПИТЬ VIP ЗА 150₽</button>
         </div>
     </div>
 
     <div id="scr-profile" class="screen">
         <div class="header"><div class="logo">ПРОФИЛЬ</div></div>
         
-        <div class="glass-card" style="text-align:center; position:relative; overflow:hidden;">
-            <div style="position:absolute; top:10px; left:50%; transform:translateX(-50%); width:150px; height:150px; background:var(--primary); filter:blur(60px); opacity:0.3; z-index:-1; border-radius: 50%; animation: pulseGlow 4s infinite;"></div>
+        <div class="glass-card" style="text-align:center; position:relative; overflow:hidden; padding-top: 50px;">
+            <img id="my-cover-display" src="" class="profile-cover" style="display:none;">
+            <div style="position:absolute; top:10px; left:50%; transform:translateX(-50%); width:150px; height:150px; background:var(--primary); filter:blur(60px); opacity:0.3; z-index:0; border-radius: 50%; animation: pulseGlow 4s infinite;"></div>
             
-            <img id="my-avatar" src="" class="avatar-small" style="width:130px; height:130px; border:4px solid var(--primary); box-shadow: 0 0 25px rgba(0,242,255,0.5); margin-bottom:15px; transition: 0.5s;" onmouseover="this.style.transform='scale(1.05) rotate(5deg)'" onmouseout="this.style.transform='scale(1) rotate(0deg)'">
+            <img id="my-avatar" src="" class="avatar-small" style="width:130px; height:130px; border:4px solid var(--primary); box-shadow: 0 0 25px rgba(0,242,255,0.5); margin-bottom:15px; transition: 0.5s; position:relative; z-index:2;" onmouseover="this.style.transform='scale(1.05) rotate(5deg)'" onmouseout="this.style.transform='scale(1) rotate(0deg)'">
             
-            <h2 id="my-name-display" style="display:flex; justify-content:center; align-items:center; gap:10px; font-size: 22px; text-shadow: 0 0 10px rgba(255,255,255,0.3);">Загрузка...</h2>
-            <p style="font-size:13px; color:#aaa; margin-bottom:20px; font-weight: 600; padding: 0 20px;" id="my-bio-display">Ворвался в проект</p>
+            <h2 id="my-name-display" style="display:flex; justify-content:center; align-items:center; gap:10px; font-size: 22px; text-shadow: 0 0 10px rgba(255,255,255,0.3); position:relative; z-index:2;">Загрузка...</h2>
+            <p style="font-size:13px; color:#aaa; margin-bottom:20px; font-weight: 600; padding: 0 20px; position:relative; z-index:2;" id="my-bio-display">Ворвался в проект</p>
             
-            <div style="background:linear-gradient(135deg, rgba(255,255,255,0.05), rgba(0,0,0,0.5)); padding:15px 30px; border-radius:20px; display:inline-block; border: 1px solid rgba(255,255,255,0.1); box-shadow: inset 0 0 20px rgba(0,0,0,0.5);">
+            <div style="background:linear-gradient(135deg, rgba(255,255,255,0.05), rgba(0,0,0,0.5)); padding:15px 30px; border-radius:20px; display:inline-block; border: 1px solid rgba(255,255,255,0.1); box-shadow: inset 0 0 20px rgba(0,0,0,0.5); position:relative; z-index:2;">
                 <span id="my-xp" style="color:var(--primary); font-family: 'Unbounded'; font-weight:900; font-size:28px; text-shadow: 0 0 15px rgba(0,242,255,0.4);">0 XP</span>
                 <span id="my-level" style="font-size:11px; color:var(--warning); display:block; font-weight:900; margin-top:8px; letter-spacing: 2px; text-transform: uppercase;">УРОВЕНЬ 1</span>
             </div>
 
-            <button id="daily-bonus-btn" class="btn-main" onclick="App.claimDailyBonus()" style="background: linear-gradient(135deg, #ffaa00, #ff4757); box-shadow: 0 10px 25px rgba(255, 170, 0, 0.4); margin-top: 25px; padding: 20px;">🎁 ЗАБРАТЬ МОЩНЫЙ БОНУС (100 XP)</button>
+            <button id="daily-bonus-btn" class="btn-main" onclick="App.claimDailyBonus()" style="background: linear-gradient(135deg, #ffaa00, #ff4757); box-shadow: 0 10px 25px rgba(255, 170, 0, 0.4); margin-top: 25px; padding: 20px; position:relative; z-index:2;">🎁 ЗАБРАТЬ МОЩНЫЙ БОНУС (100 XP)</button>
         </div>
 
         <div class="glass-card">
@@ -486,11 +548,23 @@
                     <div class="file-upload-wrapper">
                         <div class="fake-btn">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-bottom: 5px; display:block; margin: 0 auto 5px auto;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-                            ВЫБРАТЬ ФОТО СО СМАРТФОНА
+                            ВЫБРАТЬ АВАТАР СО СМАРТФОНА
                         </div>
                         <input type="file" id="file-upload" accept="image/*">
                     </div>
-                    <small id="upload-status" style="color:var(--success); font-size:11px; display:none; font-weight:800; background: rgba(46, 213, 115, 0.1); padding: 8px; border-radius: 8px; border: 1px solid var(--success); text-align:center;">✓ Фотография успешно загружена в буфер. Нажми "Сохранить".</small>
+                    <small id="upload-status" style="color:var(--success); font-size:11px; display:none; font-weight:800; background: rgba(46, 213, 115, 0.1); padding: 8px; border-radius: 8px; border: 1px solid var(--success); text-align:center;">✓ Аватар успешно загружен в буфер.</small>
+                </div>
+
+                <div class="input-group">
+                    <label>Фон профиля (Обложка VIP++)</label>
+                    <div class="file-upload-wrapper">
+                        <div class="fake-btn" style="border-color: var(--vip-plus-2); color: var(--vip-plus-1);">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-bottom: 5px; display:block; margin: 0 auto 5px auto;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                            ЗАГРУЗИТЬ ФОНОВУЮ КАРТИНКУ
+                        </div>
+                        <input type="file" id="cover-upload" accept="image/*">
+                    </div>
+                    <small id="cover-status" style="color:var(--vip-plus-1); font-size:11px; display:none; font-weight:800; background: rgba(255, 0, 85, 0.1); padding: 8px; border-radius: 8px; border: 1px solid var(--vip-plus-2); text-align:center;">✓ Фон профиля подготовлен.</small>
                 </div>
 
                 <div class="input-group">
@@ -537,9 +611,12 @@
             </div>
 
             <div style="margin-top:20px; background:rgba(0,0,0,0.4); padding:15px; border-radius:15px; border: 1px solid rgba(112, 0, 255, 0.3);">
-                <label style="font-size:11px; color:#7000ff; display:block; margin-bottom:8px; font-weight:800; letter-spacing:1px;">ВЫДАТЬ VIP ПОЛЬЗОВАТЕЛЮ</label>
+                <label style="font-size:11px; color:#7000ff; display:block; margin-bottom:8px; font-weight:800; letter-spacing:1px;">ВЫДАТЬ VIP / VIP++</label>
                 <input type="text" id="vip-target-id" placeholder="ID игрока (напр. u170923...)" style="margin-bottom:15px; border-color:rgba(112, 0, 255, 0.5); background: rgba(112, 0, 255, 0.05);">
-                <button class="btn-main" style="background:linear-gradient(135deg, #7000ff, #00f2ff); padding:15px; box-shadow: 0 10px 20px rgba(112, 0, 255, 0.4);" onclick="App.adminAction('giveVip')">ВЫДАТЬ СТАТУС VIP 💎</button>
+                <div style="display:flex; gap:10px;">
+                    <button class="btn-main" style="flex:1; background:linear-gradient(135deg, #7000ff, #00f2ff); padding:15px; box-shadow: 0 5px 15px rgba(112, 0, 255, 0.4);" onclick="App.adminAction('giveVip')">ВЫДАТЬ VIP 💎</button>
+                    <button class="btn-main" style="flex:1; background:linear-gradient(135deg, #ffaa00, #ff0055); padding:15px; box-shadow: 0 5px 15px rgba(255, 0, 85, 0.4);" onclick="App.adminAction('giveVipPlus')">ВЫДАТЬ VIP++ 👑</button>
+                </div>
             </div>
         </div>
 
@@ -591,9 +668,12 @@
         user: null,
         admins: ['Indigo Stories', 'Fan Indigo'],
         tempBase64Photo: null,
+        tempCoverPhoto: null, // Добавлено для фона
         chatTempBase64Photo: null,
         replyingTo: null,
         isUserScrolling: false,
+        speechRecognition: null, // Рекогнайзер для голоса
+        chatLogStore: [], // Хранилище логов чата для экспорта
 
         init() {
             const saved = localStorage.getItem('indigo_user');
@@ -602,7 +682,8 @@
                 this.showApp();
             }
             this.sync();
-            this.setupFileReader();
+            this.setupFileReaders();
+            this.setupVoice();
         },
 
         showToast(text) {
@@ -618,7 +699,8 @@
             }, 3000);
         },
 
-        setupFileReader() {
+        setupFileReaders() {
+            // Аватарка
             document.getElementById('file-upload').addEventListener('change', (e) => {
                 const file = e.target.files[0];
                 if(!file) return;
@@ -626,10 +708,81 @@
                 reader.onload = (event) => {
                     this.tempBase64Photo = event.target.result;
                     document.getElementById('upload-status').style.display = 'block';
-                    this.showToast('Фотография загружена. Примени настройки!');
+                    this.showToast('Аватар загружен. Примени настройки!');
                 };
                 reader.readAsDataURL(file);
             });
+
+            // Обложка профиля (VIP++)
+            document.getElementById('cover-upload').addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if(!file) return;
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    this.tempCoverPhoto = event.target.result;
+                    document.getElementById('cover-status').style.display = 'block';
+                    this.showToast('Фон профиля загружен. Примени настройки!');
+                };
+                reader.readAsDataURL(file);
+            });
+        },
+
+        setupVoice() {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+                this.speechRecognition = new SpeechRec();
+                this.speechRecognition.lang = 'ru-RU';
+                this.speechRecognition.interimResults = false;
+                
+                this.speechRecognition.onstart = () => {
+                    document.getElementById('voice-mic-btn').classList.add('mic-btn-active');
+                    document.getElementById('chat-input').placeholder = "Слушаю вас...";
+                };
+                
+                this.speechRecognition.onresult = (event) => {
+                    const text = event.results[0][0].transcript;
+                    const input = document.getElementById('chat-input');
+                    input.value += (input.value ? ' ' : '') + text;
+                };
+                
+                this.speechRecognition.onerror = (e) => {
+                    this.showToast('⚠️ Ошибка микрофона: ' + e.error);
+                };
+                
+                this.speechRecognition.onend = () => {
+                    document.getElementById('voice-mic-btn').classList.remove('mic-btn-active');
+                    document.getElementById('chat-input').placeholder = "Набери сообщение...";
+                };
+            }
+        },
+
+        startVoiceInput() {
+            if(!this.speechRecognition) return this.showToast('❌ Ваш браузер не поддерживает голосовой ввод');
+            const btn = document.getElementById('voice-mic-btn');
+            if (btn.classList.contains('mic-btn-active')) {
+                this.speechRecognition.stop();
+            } else {
+                this.speechRecognition.start();
+            }
+        },
+
+        exportChatLogs() {
+            if (this.chatLogStore.length === 0) return this.showToast('В чате пока нет логов');
+            
+            let textOutput = "=== INDIGO VIP++ CHAT LOGS ===\n\n";
+            this.chatLogStore.forEach(msg => {
+                const timeStr = msg.time ? new Date(msg.time).toLocaleString() : 'Неизвестно';
+                textOutput += `[${timeStr}] ${msg.name}: ${msg.text || '[Фото]'}\n`;
+            });
+            
+            const blob = new Blob([textOutput], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `indigo_chat_${new Date().getTime()}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+            this.showToast('💾 Экспорт логов чата запущен!');
         },
 
         handleChatImageUpload(e) {
@@ -652,14 +805,11 @@
 
         changeTheme(color) {
             document.documentElement.style.setProperty('--primary', color);
-            // Делаем вторичный цвет немного темнее для красивого градиента
             const secondaryColor = this.adjustColor(color, -40); 
             document.documentElement.style.setProperty('--secondary', secondaryColor);
-            
             this.showToast('Тема интерфейса обновлена!');
         },
 
-        // Утилита для затемнения цвета (для вторичного цвета темы)
         adjustColor(color, amount) {
             return '#' + color.replace(/^#/, '').replace(/../g, color => ('0'+Math.min(255, Math.max(0, parseInt(color, 16) + amount)).toString(16)).substr(-2));
         },
@@ -685,7 +835,9 @@
             });
             db.ref('chat').on('value', snap => {
                 const data = snap.val();
-                this.renderChat(data ? Object.keys(data).map(key => ({...data[key], key})) : []);
+                const msgsArray = data ? Object.keys(data).map(key => ({...data[key], key})) : [];
+                this.chatLogStore = msgsArray; // Сохраняем для экспорта
+                this.renderChat(msgsArray);
             });
             db.ref('stories').on('value', snap => {
                 this.renderNews(snap.val() ? Object.values(snap.val()) : []);
@@ -709,7 +861,8 @@
                         bio: 'Только что ворвался в проект',
                         photo: 'https://api.dicebear.com/7.x/pixel-art/svg?seed=' + u,
                         lastBonus: 0,
-                        isVip: false // По умолчанию VIP выключен
+                        isVip: false,
+                        isVipPlus: false
                     });
                     this.showToast('✅ Аккаунт создан! Теперь выполни вход.');
                     this.toggleAuth(true);
@@ -777,7 +930,7 @@
 
         copyMessageText(text) {
             navigator.clipboard.writeText(text).then(() => {
-                this.showToast('📋 Текст/ID скопирован в буфер!');
+                this.showToast('📋 Текст скопирован в буфер!');
             }).catch(err => {
                 this.showToast('❌ Ошибка копирования');
             });
@@ -800,7 +953,8 @@
             const isGhost = ghostToggle && ghostToggle.checked;
             const senderName = isGhost ? 'Аноним' : this.user.name;
             const senderIsAdmin = isGhost ? false : this.admins.includes(this.user.name);
-            const senderIsVip = isGhost ? false : (this.user.isVip || false); // Передаем VIP статус
+            const senderIsVip = isGhost ? false : (this.user.isVip || false);
+            const senderIsVipPlus = isGhost ? false : (this.user.isVipPlus || false);
 
             const msgData = {
                 uid: this.user.id, 
@@ -808,7 +962,8 @@
                 text: text, 
                 time: Date.now(),
                 isAdmin: senderIsAdmin,
-                isVip: senderIsVip // Сохраняем VIP в сообщении
+                isVip: senderIsVip,
+                isVipPlus: senderIsVipPlus
             };
 
             if(this.replyingTo) {
@@ -833,8 +988,6 @@
         postNews() {
             const t = document.getElementById('news-title').value;
             const text = document.getElementById('news-text').value;
-            
-            // Получаем новые значения для ссылок и тегов
             const link = document.getElementById('news-link').value.trim();
             const tags = document.getElementById('news-tags').value.trim();
 
@@ -843,8 +996,8 @@
             db.ref('stories').push({ 
                 title: t, 
                 text: text, 
-                link: link || '', // Сохраняем ссылку в базу
-                tags: tags || '', // Сохраняем теги в базу
+                link: link || '', 
+                tags: tags || '', 
                 author: this.user.name, 
                 date: Date.now() 
             });
@@ -893,11 +1046,16 @@
                     up.photo = this.tempBase64Photo;
                     document.getElementById('upload-status').style.display = 'none';
                 }
+                if(this.tempCoverPhoto) {
+                    up.coverImage = this.tempCoverPhoto;
+                    document.getElementById('cover-status').style.display = 'none';
+                }
 
                 if(Object.keys(up).length > 0) {
                     db.ref('users/' + this.user.id).update(up);
                     this.showToast('✅ Профиль успешно и мощно обновлен!');
                     this.tempBase64Photo = null;
+                    this.tempCoverPhoto = null;
                 } else {
                     this.showToast('ℹ️ Настройки сохранены без изменений.');
                 }
@@ -961,10 +1119,12 @@
                     delBtnHtml = `<button class="del-msg-btn" onclick="event.stopPropagation(); App.deleteMessage('${m.key}')">УДАЛИТЬ</button>`;
                 }
 
-                // Логика VIP в чате
-                const isVip = m.isVip;
-                const vipClass = isVip ? 'vip-nickname' : '';
-                const vipBadge = isVip ? '<span class="vip-badge">💎</span>' : '';
+                // Логика VIP / VIP++ в чате
+                const isVipPlus = m.isVipPlus;
+                const isVip = m.isVip && !isVipPlus;
+                
+                const vipClass = isVipPlus ? 'vip-plus-nickname' : (isVip ? 'vip-nickname' : '');
+                const vipBadge = isVipPlus ? '<span class="vip-plus-badge">👑</span>' : (isVip ? '<span class="vip-badge">💎</span>' : '');
 
                 return `
                 <div class="message-item-wrapper" style="position:relative; width:100%;">
@@ -993,38 +1153,39 @@
             document.getElementById('leaderboard-list').innerHTML = list.map((u, i) => {
                 const lvl = this.getLevel(u.xp);
                 
-                // РЕАЛИЗАЦИЯ ИДЕИ ПОДПИСЧИКОВ: Награды для топ-10
                 let nameColor = "white";
                 let nameShadow = "none";
                 let avatarBorder = "2px solid var(--primary)";
                 let badgeOrEmoji = "";
                 let itemBg = "linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01))";
 
-                if (i === 0) { // Топ 1
-                    nameColor = "#ffaa00"; // Золотой
+                if (i === 0) { 
+                    nameColor = "#ffaa00";
                     nameShadow = "0 0 10px rgba(255, 170, 0, 0.5)";
                     avatarBorder = "3px solid #ffaa00";
                     badgeOrEmoji = "👑 ";
                     itemBg = "linear-gradient(135deg, rgba(255, 170, 0, 0.1), rgba(255,255,255,0.01))";
-                } else if (i === 1) { // Топ 2
-                    nameColor = "#c0c0c0"; // Серебряный
+                } else if (i === 1) { 
+                    nameColor = "#c0c0c0";
                     nameShadow = "0 0 10px rgba(192, 192, 192, 0.5)";
                     avatarBorder = "3px solid #c0c0c0";
                     badgeOrEmoji = "🥈 ";
-                } else if (i === 2) { // Топ 3
-                    nameColor = "#cd7f32"; // Бронзовый
+                } else if (i === 2) { 
+                    nameColor = "#cd7f32";
                     avatarBorder = "3px solid #cd7f32";
                     badgeOrEmoji = "🥉 ";
-                } else if (i < 10) { // Топ 4-10
-                    nameColor = "var(--primary)"; // Цвет интерфейса
+                } else if (i < 10) { 
+                    nameColor = "var(--primary)";
                     badgeOrEmoji = "🔥 ";
                 }
 
-                // Логика VIP в ТОПе
-                const isVip = u.isVip;
-                const vipClass = isVip ? 'vip-nickname' : '';
-                const vipBadge = isVip ? '<span class="vip-badge" style="font-size:12px;">💎</span>' : '';
-                const vipFrame = isVip ? 'vip-frame' : '';
+                // Логика VIP / VIP++ в ТОПе
+                const isVipPlus = u.isVipPlus;
+                const isVip = u.isVip && !isVipPlus;
+                
+                const vipClass = isVipPlus ? 'vip-plus-nickname' : (isVip ? 'vip-nickname' : '');
+                const vipBadge = isVipPlus ? '<span class="vip-plus-badge" style="font-size:14px;">👑</span>' : (isVip ? '<span class="vip-badge" style="font-size:12px;">💎</span>' : '');
+                const vipFrame = isVipPlus ? 'vip-plus-frame' : (isVip ? 'vip-frame' : '');
 
                 return `
                 <div class="leader-item" style="background: ${itemBg};">
@@ -1047,20 +1208,30 @@
             const isAdm = this.admins.includes(this.user.name);
             const lvl = this.getLevel(this.user.xp);
             
-            // Логика VIP для профиля
-            const isVip = this.user.isVip;
-            const vipClass = isVip ? 'vip-nickname' : '';
-            const vipBadge = isVip ? '<span class="vip-badge" style="font-size:18px;">💎</span>' : '';
+            // Логика VIP / VIP++ для профиля
+            const isVipPlus = this.user.isVipPlus;
+            const isVip = this.user.isVip && !isVipPlus;
+            
+            const vipClass = isVipPlus ? 'vip-plus-nickname' : (isVip ? 'vip-nickname' : '');
+            const vipBadge = isVipPlus ? '<span class="vip-plus-badge" style="font-size:20px;">👑</span>' : (isVip ? '<span class="vip-badge" style="font-size:18px;">💎</span>' : '');
 
             document.getElementById('my-name-display').innerHTML = `<span class="${vipClass}">${this.user.name}</span>` + (isAdm ? ' <div class="verify-badge" style="width:24px; height:24px;"></div>' : '') + vipBadge;
             document.getElementById('my-bio-display').innerText = this.user.bio || 'Ворвался в проект';
             
             const avatarElem = document.getElementById('my-avatar');
             avatarElem.src = this.user.photo;
-            if(isVip) {
-                avatarElem.classList.add('vip-frame');
+            
+            avatarElem.classList.remove('vip-frame', 'vip-plus-frame');
+            if(isVipPlus) avatarElem.classList.add('vip-plus-frame');
+            else if(isVip) avatarElem.classList.add('vip-frame');
+
+            // Обложка профиля
+            const coverElem = document.getElementById('my-cover-display');
+            if (this.user.coverImage) {
+                coverElem.src = this.user.coverImage;
+                coverElem.style.display = 'block';
             } else {
-                avatarElem.classList.remove('vip-frame');
+                coverElem.style.display = 'none';
             }
 
             document.getElementById('my-xp').innerText = (this.user.xp || 0) + ' XP';
@@ -1088,8 +1259,6 @@
 
         renderNews(news) {
             document.getElementById('news-container').innerHTML = news.reverse().map(n => {
-                
-                // РЕНДЕР ТЕГОВ
                 let tagsHtml = '';
                 if(n.tags) {
                     const tagArray = n.tags.split(',').map(tag => tag.trim()).filter(tag => tag);
@@ -1098,7 +1267,6 @@
                     </div>`;
                 }
 
-                // РЕНДЕР ССЫЛКИ
                 let linkHtml = '';
                 if(n.link) {
                     linkHtml = `<a href="${n.link}" target="_blank" style="display: inline-block; margin-top: 15px; background: rgba(255,255,255,0.1); padding: 10px 18px; border-radius: 14px; color: white; text-decoration: none; font-size: 12px; font-weight: 800; border: 1px solid rgba(255,255,255,0.2); transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.3);" onmouseover="this.style.background='var(--primary)'; this.style.color='#000'; this.style.transform='translateY(-2px)';" onmouseout="this.style.background='rgba(255,255,255,0.1)'; this.style.color='white'; this.style.transform='translateY(0)';">▶️ Смотреть материал / TikTok</a>`;
@@ -1139,13 +1307,25 @@
             if(type === 'giveVip') {
                 const id = document.getElementById('vip-target-id').value;
                 if(id) {
-                    if(confirm('Точно выдать VIP пользователю ' + id + '?')) {
-                        db.ref('users/' + id).update({ isVip: true });
+                    if(confirm('Точно выдать стандартный VIP пользователю ' + id + '?')) {
+                        db.ref('users/' + id).update({ isVip: true, isVipPlus: false });
                         this.showToast('💎 Пользователю ' + id + ' успешно выдан VIP!');
                         document.getElementById('vip-target-id').value = '';
                     }
                 } else {
-                    this.showToast('⚠️ Введи ID пользователя для выдачи VIP!');
+                    this.showToast('⚠️ Введи ID пользователя для выдачи!');
+                }
+            }
+            if(type === 'giveVipPlus') {
+                const id = document.getElementById('vip-target-id').value;
+                if(id) {
+                    if(confirm('Короновать пользователя ' + id + ' статусом VIP++?')) {
+                        db.ref('users/' + id).update({ isVip: true, isVipPlus: true });
+                        this.showToast('👑 Пользователю ' + id + ' выдан АБСОЛЮТНЫЙ VIP++!');
+                        document.getElementById('vip-target-id').value = '';
+                    }
+                } else {
+                    this.showToast('⚠️ Введи ID пользователя для выдачи VIP++!');
                 }
             }
         },
