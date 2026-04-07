@@ -598,7 +598,7 @@
 
         <div id="admin-zone" class="glass-card" style="display:none; border-color: var(--error); box-shadow: 0 0 30px rgba(255, 71, 87, 0.15);">
             <h3 style="color:var(--error); margin-bottom:20px; display:flex; align-items:center; gap:10px;">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--error)" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l10 6.5v7L12 22 2 15.5v-7L12 2z"></path></svg>
                 ПАНЕЛЬ БОГА (СОЗДАТЕЛЬ)
             </h3>
             
@@ -699,14 +699,16 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
 <script>
+    // Обновленная конфигурация Firebase
     const firebaseConfig = {
-        apiKey: "AIzaSyAasXthBsh9Q4H5YUYUg6jTrwZEHtQ-r1g",
+        apiKey: "AIzaSyAaSxthBsh9Q4H5YuYUg6jTrwzEHTq-r1g",
         authDomain: "mmmm-96f4f.firebaseapp.com",
         databaseURL: "https://mmmm-96f4f-default-rtdb.firebaseio.com",
         projectId: "mmmm-96f4f",
-        storageBucket: "mmmm-96f4f.appspot.com",
+        storageBucket: "mmmm-96f4f.firebasestorage.app",
         messagingSenderId: "1085619145317",
-        appId: "1:1085619145317:web:1e0780c334ea835630d48c"
+        appId: "1:1085619145317:web:bcc2a828ceb980fb30d48c",
+        measurementId: "G-JH6PKP0F3Z"
     };
 
     firebase.initializeApp(firebaseConfig);
@@ -716,13 +718,13 @@
         user: null,
         admins: ['Indigo Stories', 'Fan Indigo'],
         tempBase64Photo: null,
-        tempCoverPhoto: null, // Добавлено для фона
+        tempCoverPhoto: null, 
         chatTempBase64Photo: null,
         replyingTo: null,
         isUserScrolling: false,
-        mediaRecorder: null, // Заменили рекогнайзер на медиарекордер для аудио
+        mediaRecorder: null, 
         audioChunks: [],
-        chatLogStore: [], // Хранилище логов чата для экспорта
+        chatLogStore: [], 
 
         init() {
             const saved = localStorage.getItem('indigo_user');
@@ -764,6 +766,12 @@
 
             // Обложка профиля (VIP++)
             document.getElementById('cover-upload').addEventListener('change', (e) => {
+                // ИСПРАВЛЕНИЕ: Блокировка загрузки обложки для обычных пользователей
+                if (!this.user || !this.user.isVipPlus) {
+                    e.target.value = '';
+                    return this.showToast('👑 Фон профиля доступен только для VIP++ Боссов!');
+                }
+
                 const file = e.target.files[0];
                 if(!file) return;
                 const reader = new FileReader();
@@ -777,8 +785,6 @@
         },
 
         setupVoice() {
-            // Оставлено для обратной совместимости вызова в init(),
-            // инициализация микрофона теперь происходит напрямую при клике в startVoiceInput()
         },
 
         startVoiceInput() {
@@ -816,7 +822,6 @@
                         this.sendAudioMessage(base64Audio);
                     };
                     
-                    // Отключаем микрофон после записи
                     stream.getTracks().forEach(track => track.stop());
                 };
 
@@ -942,7 +947,7 @@
             db.ref('chat').on('value', snap => {
                 const data = snap.val();
                 const msgsArray = data ? Object.keys(data).map(key => ({...data[key], key})) : [];
-                this.chatLogStore = msgsArray; // Сохраняем для экспорта
+                this.chatLogStore = msgsArray; 
                 this.renderChat(msgsArray);
             });
             db.ref('stories').on('value', snap => {
@@ -955,17 +960,24 @@
             const p = document.getElementById(mode === 'login' ? 'log-pass' : 'reg-pass').value;
             if(!u || !p) return this.showToast('⚠️ Заполни все поля для входа!');
 
+            let safePass;
+            try {
+                safePass = btoa(p);
+            } catch(e) {
+                safePass = btoa(unescape(encodeURIComponent(p)));
+            }
+
             if(mode === 'reg') {
                 db.ref('users').once('value', snap => {
                     const allUsers = snap.val() || {};
-                    const exists = Object.values(allUsers).some(x => x.name.toLowerCase() === u.toLowerCase());
+                    const exists = Object.values(allUsers).some(x => x && x.name && String(x.name).toLowerCase() === String(u).toLowerCase());
                     if(exists) return this.showToast('❌ Этот никнейм уже занят!');
 
                     const id = 'u' + Date.now();
                     db.ref('users/' + id).set({
-                        id: id, name: u, pass: btoa(p), xp: 0,
+                        id: id, name: u, pass: safePass, xp: 0,
                         bio: 'Только что ворвался в проект',
-                        photo: 'https://api.dicebear.com/7.x/pixel-art/svg?seed=' + u,
+                        photo: 'https://api.dicebear.com/7.x/pixel-art/svg?seed=' + encodeURIComponent(u),
                         lastBonus: 0,
                         isVip: false,
                         isVipPlus: false,
@@ -976,7 +988,7 @@
                 });
             } else {
                 db.ref('users').once('value', snap => {
-                    const found = Object.values(snap.val() || {}).find(x => x.name === u && x.pass === btoa(p));
+                    const found = Object.values(snap.val() || {}).find(x => x && x.name === u && x.pass === safePass);
                     if(found) {
                         this.user = found;
                         localStorage.setItem('indigo_user', JSON.stringify(found));
@@ -1044,6 +1056,10 @@
         },
 
         deleteMessage(msgKey) {
+            // ИСПРАВЛЕНИЕ: Проверка прав админа на удаление сообщения
+            if (!this.admins.includes(this.user.name)) {
+                return this.showToast('⛔ Ошибка доступа! У вас нет прав для удаления.');
+            }
             if(confirm('Удалить это сообщение из базы данных навсегда?')) {
                 db.ref('chat/' + msgKey).remove();
                 this.showToast('🗑️ Сообщение уничтожено');
@@ -1093,6 +1109,11 @@
         },
 
         postNews() {
+            // ИСПРАВЛЕНИЕ: Проверка прав админа на публикацию новостей
+            if (!this.admins.includes(this.user.name)) {
+                return this.showToast('⛔ Только администраторы могут публиковать новости!');
+            }
+
             const t = document.getElementById('news-title').value;
             const text = document.getElementById('news-text').value;
             const link = document.getElementById('news-link').value.trim();
@@ -1153,9 +1174,16 @@
                     up.photo = this.tempBase64Photo;
                     document.getElementById('upload-status').style.display = 'none';
                 }
+                
+                // ИСПРАВЛЕНИЕ: Двойная проверка на сервере при сохранении обложки
                 if(this.tempCoverPhoto) {
-                    up.coverImage = this.tempCoverPhoto;
-                    document.getElementById('cover-status').style.display = 'none';
+                    if (this.user.isVipPlus) {
+                        up.coverImage = this.tempCoverPhoto;
+                        document.getElementById('cover-status').style.display = 'none';
+                    } else {
+                        this.tempCoverPhoto = null;
+                        this.showToast('👑 Сохранение фона профиля доступно только для VIP++!');
+                    }
                 }
 
                 if(Object.keys(up).length > 0) {
@@ -1243,7 +1271,6 @@
                     adminActions.style.display = 'none';
                 }
                 
-                // Сохраняем ID для бана через профиль
                 adminActions.dataset.uid = u.id;
 
                 document.getElementById('user-profile-modal').style.display = 'flex';
@@ -1290,7 +1317,6 @@
                     delBtnHtml = `<button class="del-msg-btn" onclick="event.stopPropagation(); App.deleteMessage('${m.key}')">УДАЛИТЬ</button>`;
                 }
 
-                // Логика VIP / VIP++ в чате
                 const isVipPlus = m.isVipPlus;
                 const isVip = m.isVip && !isVipPlus;
                 
@@ -1351,7 +1377,6 @@
                     badgeOrEmoji = "🔥 ";
                 }
 
-                // Логика VIP / VIP++ в ТОПе
                 const isVipPlus = u.isVipPlus;
                 const isVip = u.isVip && !isVipPlus;
                 
@@ -1380,7 +1405,6 @@
             const isAdm = this.admins.includes(this.user.name);
             const lvl = this.getLevel(this.user.xp);
             
-            // Логика VIP / VIP++ для профиля
             const isVipPlus = this.user.isVipPlus;
             const isVip = this.user.isVip && !isVipPlus;
             
@@ -1397,7 +1421,6 @@
             if(isVipPlus) avatarElem.classList.add('vip-plus-frame');
             else if(isVip) avatarElem.classList.add('vip-frame');
 
-            // Обложка профиля
             const coverElem = document.getElementById('my-cover-display');
             if (this.user.coverImage) {
                 coverElem.src = this.user.coverImage;
@@ -1460,6 +1483,11 @@
         },
 
         adminAction(type) {
+            // ИСПРАВЛЕНИЕ: Тотальная проверка на админа для любых действий внутри консоли
+            if (!this.admins.includes(this.user.name)) {
+                return this.showToast('⛔ Ошибка доступа! У вас нет прав администратора.');
+            }
+
             if(type === 'clearChat' && confirm('ВНИМАНИЕ! Снести весь чат? Это действие невозможно отменить!')) {
                 db.ref('chat').remove();
                 this.showToast('💥 Чат аннигилирован');
