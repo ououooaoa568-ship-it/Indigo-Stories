@@ -618,6 +618,20 @@
                     <button class="btn-main" style="flex:1; background:linear-gradient(135deg, #ffaa00, #ff0055); padding:15px; box-shadow: 0 5px 15px rgba(255, 0, 85, 0.4);" onclick="App.adminAction('giveVipPlus')">ВЫДАТЬ VIP++ 👑</button>
                 </div>
             </div>
+
+            <div style="margin-top:20px; background:rgba(0,0,0,0.4); padding:15px; border-radius:15px; border: 1px solid rgba(255, 170, 0, 0.3);">
+                <label style="font-size:11px; color:var(--warning); display:block; margin-bottom:8px; font-weight:800; letter-spacing:1px;">БАН / РАЗБАН ИГРОКА</label>
+                <input type="text" id="ban-target-id" placeholder="ID игрока (напр. u170923...)" style="margin-bottom:15px; border-color:rgba(255, 170, 0, 0.5); background: rgba(255, 170, 0, 0.05);">
+                <div style="display:flex; gap:10px;">
+                    <button class="btn-main" style="flex:1; background:linear-gradient(135deg, #ff4757, #ff0000); padding:15px; box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4);" onclick="App.adminAction('banUser')">ЗАБАНИТЬ 🚫</button>
+                    <button class="btn-main" style="flex:1; background:linear-gradient(135deg, #2ed573, #00b894); padding:15px; box-shadow: 0 5px 15px rgba(46, 213, 115, 0.4);" onclick="App.adminAction('unbanUser')">РАЗБАНИТЬ ✅</button>
+                </div>
+            </div>
+
+            <div style="margin-top:20px; background:rgba(0,0,0,0.4); padding:15px; border-radius:15px; border: 1px solid rgba(0, 242, 255, 0.3);">
+                <label style="font-size:11px; color:var(--primary); display:block; margin-bottom:8px; font-weight:800; letter-spacing:1px;">ТЕХНИЧЕСКИЕ НАСТРОЙКИ</label>
+                <button class="btn-main" id="btn-maintenance" style="background:linear-gradient(135deg, #021a24, #00f2ff); padding:15px; box-shadow: 0 5px 15px rgba(0, 242, 255, 0.4);" onclick="App.adminAction('toggleMaintenance')">ВКЛ/ВЫКЛ ТЕХ. ПЕРЕРЫВ 🛠️</button>
+            </div>
         </div>
 
         <button class="btn-main" style="background:rgba(255,255,255,0.05); color:#888; border:1px solid rgba(255,255,255,0.1); margin-top: 20px; box-shadow: none;" onclick="App.logout()">ВЫЙТИ ИЗ СИСТЕМЫ</button>
@@ -645,6 +659,40 @@
             ПРОФИЛЬ
         </button>
     </nav>
+</div>
+
+<div id="user-profile-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); backdrop-filter:blur(15px); -webkit-backdrop-filter:blur(15px); z-index:10000; justify-content:center; align-items:center; padding:20px;">
+    <div class="glass-card" style="width:100%; max-width:400px; text-align:center; position:relative; overflow:hidden;">
+        <button onclick="App.closeUserProfile()" style="position:absolute; top:15px; right:15px; background:none; border:none; color:white; font-size:28px; cursor:pointer; z-index:10;">&times;</button>
+        <img id="modal-cover" src="" style="position:absolute; top:0; left:0; width:100%; height:120px; object-fit:cover; z-index:0; opacity:0.5; border-radius:25px 25px 0 0; display:none;">
+        
+        <img id="modal-avatar" src="" class="avatar-small" style="width:110px; height:110px; border:3px solid var(--primary); margin-top:40px; margin-bottom:15px; position:relative; z-index:2; box-shadow: 0 0 20px rgba(0,242,255,0.4);">
+        <h2 id="modal-name" style="font-size: 22px; position:relative; z-index:2; text-shadow: 0 0 10px rgba(255,255,255,0.3);">Имя</h2>
+        <div id="modal-id" style="font-size:10px; color:#aaa; margin-bottom:15px; position:relative; z-index:2; letter-spacing: 1px;">ID: </div>
+        <p id="modal-bio" style="font-size:13px; color:#ccc; margin-bottom:25px; position:relative; z-index:2; font-weight: 600;">Био</p>
+        
+        <div style="background:rgba(0,0,0,0.5); padding:15px; border-radius:15px; border: 1px solid rgba(255,255,255,0.1); margin-bottom:15px; position:relative; z-index:2;">
+            <span id="modal-xp" style="color:var(--primary); font-family: 'Unbounded'; font-weight:900; font-size:24px; text-shadow: 0 0 10px rgba(0,242,255,0.4);">0 XP</span>
+            <span id="modal-lvl" style="font-size:11px; color:var(--warning); display:block; font-weight:900; margin-top:8px; text-transform: uppercase; letter-spacing: 1px;">УРОВЕНЬ 1</span>
+        </div>
+        
+        <div id="modal-admin-actions" style="display:none; position:relative; z-index:2; margin-top: 15px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 15px;">
+            <button class="btn-main" style="padding: 12px; font-size: 11px; background: rgba(255, 71, 87, 0.1); border: 1px solid var(--error); color: var(--error); box-shadow:none;" onclick="App.banFromModal()">ЗАБЛОКИРОВАТЬ АККАУНТ</button>
+        </div>
+    </div>
+</div>
+
+<div id="ban-screen" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#050508; z-index:100000; flex-direction:column; justify-content:center; align-items:center; padding:20px; text-align:center;">
+    <div style="font-size: 80px; margin-bottom: 20px;">🚫</div>
+    <h1 style="color: var(--error); font-family: 'Unbounded'; font-size: 28px; margin-bottom: 10px; text-shadow: 0 0 20px rgba(255,71,87,0.5);">ДОСТУП ЗАКРЫТ</h1>
+    <p style="color: #aaa; font-size: 14px; margin-bottom: 30px; font-weight: 600;">Твой аккаунт был навсегда заблокирован администрацией проекта.</p>
+    <button class="btn-main" style="max-width: 200px; padding: 15px; font-size: 12px; background: rgba(255,255,255,0.05); color: #888; border: 1px solid rgba(255,255,255,0.1); box-shadow: none;" onclick="App.logout()">ВЫЙТИ ИЗ АККАУНТА</button>
+</div>
+
+<div id="maintenance-screen" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(5,5,8,0.95); backdrop-filter: blur(20px); z-index:99999; flex-direction:column; justify-content:center; align-items:center; padding:20px; text-align:center;">
+    <div style="font-size: 80px; margin-bottom: 20px; animation: float 3s ease-in-out infinite;">🛠️</div>
+    <h1 style="color: var(--primary); font-family: 'Unbounded'; font-size: 24px; margin-bottom: 15px; text-shadow: 0 0 20px rgba(0,242,255,0.5);">ТЕХНИЧЕСКИЙ ПЕРЕРЫВ</h1>
+    <p style="color: #aaa; font-size: 14px; max-width: 320px; font-weight: 600; line-height: 1.6;">Легенды, мы устанавливаем мощное обновление! Скоро проект снова будет в строю. Пожалуйста, подождите.</p>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -862,6 +910,15 @@
         },
 
         sync() {
+            db.ref('system/maintenance').on('value', snap => {
+                const isMaintenance = snap.val();
+                if (isMaintenance && this.user && !this.admins.includes(this.user.name)) {
+                    document.getElementById('maintenance-screen').style.display = 'flex';
+                } else {
+                    document.getElementById('maintenance-screen').style.display = 'none';
+                }
+            });
+
             db.ref('users').on('value', snap => {
                 const data = snap.val();
                 if(!data) return;
@@ -872,7 +929,13 @@
                     if(fresh) { 
                         this.user = fresh; 
                         localStorage.setItem('indigo_user', JSON.stringify(fresh));
-                        this.renderProfile(); 
+                        
+                        if (this.user.isBanned) {
+                            document.getElementById('ban-screen').style.display = 'flex';
+                        } else {
+                            document.getElementById('ban-screen').style.display = 'none';
+                            this.renderProfile(); 
+                        }
                     }
                 }
             });
@@ -905,7 +968,8 @@
                         photo: 'https://api.dicebear.com/7.x/pixel-art/svg?seed=' + u,
                         lastBonus: 0,
                         isVip: false,
-                        isVipPlus: false
+                        isVipPlus: false,
+                        isBanned: false
                     });
                     this.showToast('✅ Аккаунт создан! Теперь выполни вход.');
                     this.toggleAuth(true);
@@ -1141,6 +1205,64 @@
             b.scrollTo({ top: 0, behavior: 'smooth' });
         },
 
+        showUserProfile(uid) {
+            db.ref('users/' + uid).once('value', snap => {
+                const u = snap.val();
+                if(!u) return this.showToast('Пользователь не найден!');
+                
+                const isVipPlus = u.isVipPlus;
+                const isVip = u.isVip && !isVipPlus;
+                
+                const vipClass = isVipPlus ? 'vip-plus-nickname' : (isVip ? 'vip-nickname' : '');
+                const vipBadge = isVipPlus ? '<span class="vip-plus-badge">👑</span>' : (isVip ? '<span class="vip-badge">💎</span>' : '');
+                const vipFrame = isVipPlus ? 'vip-plus-frame' : (isVip ? 'vip-frame' : '');
+
+                document.getElementById('modal-name').innerHTML = `<span class="${vipClass}">${u.name}</span> ${this.admins.includes(u.name) ? '<div class="verify-badge"></div>' : ''} ${vipBadge}`;
+                document.getElementById('modal-id').innerText = 'ID: ' + u.id;
+                document.getElementById('modal-bio').innerText = u.bio || 'Нет информации';
+                
+                const avatar = document.getElementById('modal-avatar');
+                avatar.src = u.photo;
+                avatar.className = `avatar-small ${vipFrame}`;
+                
+                const cover = document.getElementById('modal-cover');
+                if(u.coverImage) {
+                    cover.src = u.coverImage;
+                    cover.style.display = 'block';
+                } else {
+                    cover.style.display = 'none';
+                }
+
+                document.getElementById('modal-xp').innerText = (u.xp || 0) + ' XP';
+                document.getElementById('modal-lvl').innerText = 'УРОВЕНЬ ' + this.getLevel(u.xp);
+
+                const adminActions = document.getElementById('modal-admin-actions');
+                if(this.admins.includes(this.user.name) && u.name !== this.user.name) {
+                    adminActions.style.display = 'block';
+                } else {
+                    adminActions.style.display = 'none';
+                }
+                
+                // Сохраняем ID для бана через профиль
+                adminActions.dataset.uid = u.id;
+
+                document.getElementById('user-profile-modal').style.display = 'flex';
+            });
+        },
+
+        closeUserProfile() {
+            document.getElementById('user-profile-modal').style.display = 'none';
+        },
+
+        banFromModal() {
+            const uid = document.getElementById('modal-admin-actions').dataset.uid;
+            if(uid) {
+                document.getElementById('ban-target-id').value = uid;
+                this.adminAction('banUser');
+                this.closeUserProfile();
+            }
+        },
+
         renderChat(msgs) {
             const b = document.getElementById('chat-messages');
             const isAdminView = this.admins.includes(this.user.name);
@@ -1182,7 +1304,7 @@
                          ondblclick="App.copyMessageText('${safeText}')">
                         ${delBtnHtml}
                         <div class="msg-info">
-                            <b class="${vipClass}">${m.name}</b> ${m.isAdmin ? '<div class="verify-badge"></div>' : ''} ${vipBadge}
+                            <b class="${vipClass}" onclick="event.stopPropagation(); App.showUserProfile('${m.uid}')" style="cursor:pointer;">${m.name}</b> ${m.isAdmin ? '<div class="verify-badge"></div>' : ''} ${vipBadge}
                             <span class="msg-time">${m.time ? this.formatTime(m.time) : ''}</span>
                         </div>
                         ${replyHtml}
@@ -1240,10 +1362,10 @@
                 return `
                 <div class="leader-item" style="background: ${itemBg};">
                     <div class="rank" style="${i < 3 ? 'color:' + nameColor + '; text-shadow:' + nameShadow : ''}">#${i+1}</div>
-                    <img src="${u.photo}" class="avatar-small ${vipFrame}" style="border: ${avatarBorder};">
+                    <img src="${u.photo}" class="avatar-small ${vipFrame}" style="border: ${avatarBorder}; cursor: pointer;" onclick="App.showUserProfile('${u.id}')">
                     <div class="level-badge">LVL ${lvl}</div>
-                    <div style="flex:1; margin-left: 10px;">
-                        <div style="font-weight:800; display:flex; align-items:center; gap:5px; font-size: 15px; color: ${nameColor}; text-shadow: ${nameShadow};" class="${vipClass}">
+                    <div style="flex:1; margin-left: 10px;" onclick="App.showUserProfile('${u.id}')" style="cursor: pointer;">
+                        <div style="font-weight:800; display:flex; align-items:center; gap:5px; font-size: 15px; color: ${nameColor}; text-shadow: ${nameShadow}; cursor: pointer;" class="${vipClass}">
                             ${badgeOrEmoji}${u.name} ${this.admins.includes(u.name) ? '<div class="verify-badge"></div>' : ''} ${vipBadge}
                         </div>
                         <div style="font-size:11px; color:#aaa; margin-top: 4px;">ID: ${u.id} | ${u.bio || 'Новичок'}</div>
@@ -1377,6 +1499,37 @@
                 } else {
                     this.showToast('⚠️ Введи ID пользователя для выдачи VIP++!');
                 }
+            }
+            if(type === 'banUser') {
+                const id = document.getElementById('ban-target-id').value;
+                if(id) {
+                    if(confirm('Заблокировать пользователя ' + id + ' навсегда?')) {
+                        db.ref('users/' + id).update({ isBanned: true });
+                        this.showToast('🚫 Пользователь ' + id + ' заблокирован!');
+                        document.getElementById('ban-target-id').value = '';
+                    }
+                } else {
+                    this.showToast('⚠️ Введи ID пользователя для бана!');
+                }
+            }
+            if(type === 'unbanUser') {
+                const id = document.getElementById('ban-target-id').value;
+                if(id) {
+                    if(confirm('Разблокировать пользователя ' + id + '?')) {
+                        db.ref('users/' + id).update({ isBanned: false });
+                        this.showToast('✅ Пользователь ' + id + ' успешно разбанен!');
+                        document.getElementById('ban-target-id').value = '';
+                    }
+                } else {
+                    this.showToast('⚠️ Введи ID пользователя для разбана!');
+                }
+            }
+            if(type === 'toggleMaintenance') {
+                db.ref('system/maintenance').once('value', snap => {
+                    const isMaint = snap.val();
+                    db.ref('system/maintenance').set(!isMaint);
+                    this.showToast(!isMaint ? '🛠️ Тех. перерыв ВКЛЮЧЕН для всех' : '▶️ Тех. перерыв ВЫКЛЮЧЕН');
+                });
             }
         },
 
