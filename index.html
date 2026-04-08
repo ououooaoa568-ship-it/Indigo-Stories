@@ -207,8 +207,8 @@
         .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); box-shadow: none; }
         .btn-outline:hover { background: rgba(0,242,255,0.1); box-shadow: 0 0 20px rgba(0,242,255,0.3); }
 
-        /* Экраны */
-        .app-container { max-width: 600px; margin: 0 auto; padding: 20px 20px 120px 20px; }
+        /* Экраны - исправлен паддинг для мобильных устройств */
+        .app-container { max-width: 600px; margin: 0 auto; padding: 20px 20px max(150px, calc(env(safe-area-inset-bottom, 0px) + 120px)) 20px; }
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 35px; padding-top: 15px; position: relative; }
         .header::after { content: ''; position: absolute; bottom: -10px; left: 0; width: 50px; height: 3px; background: var(--primary); border-radius: 5px; box-shadow: 0 0 10px var(--primary); }
         .logo { font-size: 28px; font-weight: 900; color: var(--text); text-shadow: 0 0 15px var(--primary), 0 0 30px var(--secondary); letter-spacing: 1px; }
@@ -325,9 +325,11 @@
             background-size: contain; filter: drop-shadow(0 0 8px var(--primary)); margin-left: 5px;
         }
 
-        /* Навигация */
+        /* Навигация - исправлено под мобильные экраны */
         .nav-bar {
-            position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
+            position: fixed; 
+            bottom: max(25px, env(safe-area-inset-bottom, 25px)); 
+            left: 50%; transform: translateX(-50%);
             width: 90%; max-width: 450px; background: rgba(10, 10, 15, 0.85); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
             border-radius: 30px; display: flex; justify-content: space-around; padding: 12px;
             border: 1px solid rgba(255,255,255,0.1); border-top: 1px solid rgba(255,255,255,0.2); z-index: 1000; 
@@ -423,6 +425,7 @@
         <div class="header">
             <div class="logo">СВЯЗЬ</div>
             <div style="display: flex; gap: 10px; align-items: center;">
+                <button onclick="App.showPmList()" style="background:rgba(0,242,255,0.1); border:1px solid var(--primary); color:var(--primary); font-size:10px; padding:6px 12px; border-radius:12px; font-weight:bold; cursor:pointer; font-family:'Manrope',sans-serif;">📥 ЛС</button>
                 <button onclick="App.exportChatLogs()" style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); color:white; font-size:10px; padding:6px 12px; border-radius:12px; font-weight:bold; cursor:pointer; font-family:'Manrope',sans-serif;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline; vertical-align:middle; margin-right:4px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> ЭКСПОРТ</button>
                 <div style="font-size: 10px; color: #aaa; background: rgba(255,255,255,0.05); padding: 6px 10px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">Двойной тап: КОПИРОВАТЬ</div>
             </div>
@@ -638,23 +641,23 @@
     </div>
 
     <nav class="nav-bar">
-        <button class="nav-btn active" onclick="App.nav('news')">
+        <button class="nav-btn active" onclick="App.nav('news', this)">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin: 0 auto 5px auto; display:block;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
             ЛЕНТА
         </button>
-        <button class="nav-btn" onclick="App.nav('top')">
+        <button class="nav-btn" onclick="App.nav('top', this)">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin: 0 auto 5px auto; display:block;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
             ТОП
         </button>
-        <button class="nav-btn" onclick="App.nav('chat')">
+        <button class="nav-btn" onclick="App.nav('chat', this)">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin: 0 auto 5px auto; display:block;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
             ЧАТ
         </button>
-        <button class="nav-btn" onclick="App.nav('store')">
+        <button class="nav-btn" onclick="App.nav('store', this)">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin: 0 auto 5px auto; display:block;"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
             МАГАЗИН
         </button>
-        <button class="nav-btn" onclick="App.nav('profile')">
+        <button class="nav-btn" onclick="App.nav('profile', this)">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin: 0 auto 5px auto; display:block;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
             ПРОФИЛЬ
         </button>
@@ -676,6 +679,10 @@
             <span id="modal-lvl" style="font-size:11px; color:var(--warning); display:block; font-weight:900; margin-top:8px; text-transform: uppercase; letter-spacing: 1px;">УРОВЕНЬ 1</span>
         </div>
         
+        <div id="modal-pm-action" style="display:none; position:relative; z-index:2; margin-top: 15px;">
+            <button class="btn-main" style="padding: 15px; font-size: 12px; background: linear-gradient(135deg, var(--primary), var(--secondary)); box-shadow: 0 5px 15px rgba(0,242,255,0.4);" onclick="App.startPM()">НАПИСАТЬ В ЛС</button>
+        </div>
+
         <div id="modal-admin-actions" style="display:none; position:relative; z-index:2; margin-top: 15px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 15px;">
             <button class="btn-main" style="padding: 12px; font-size: 11px; background: rgba(255, 71, 87, 0.1); border: 1px solid var(--error); color: var(--error); box-shadow:none;" onclick="App.banFromModal()">ЗАБЛОКИРОВАТЬ АККАУНТ</button>
         </div>
@@ -693,6 +700,30 @@
     <div style="font-size: 80px; margin-bottom: 20px; animation: float 3s ease-in-out infinite;">🛠️</div>
     <h1 style="color: var(--primary); font-family: 'Unbounded'; font-size: 24px; margin-bottom: 15px; text-shadow: 0 0 20px rgba(0,242,255,0.5);">ТЕХНИЧЕСКИЙ ПЕРЕРЫВ</h1>
     <p style="color: #aaa; font-size: 14px; max-width: 320px; font-weight: 600; line-height: 1.6;">Легенды, мы устанавливаем мощное обновление! Скоро проект снова будет в строю. Пожалуйста, подождите.</p>
+</div>
+
+<div id="pm-list-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(5,5,8,0.95); backdrop-filter:blur(15px); z-index:10005; flex-direction:column; padding:20px;">
+    <div class="header">
+        <div class="logo" style="font-size: 20px;">📥 МОИ ДИАЛОГИ</div>
+        <button onclick="App.closePmList()" style="background:none; border:none; color:white; font-size:28px; cursor:pointer;">&times;</button>
+    </div>
+    <div id="pm-list-container" style="overflow-y:auto; flex:1; margin-top:20px;"></div>
+</div>
+
+<div id="pm-chat-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:var(--bg); z-index:10010; flex-direction:column; padding:20px;">
+    <div class="header" style="margin-bottom:15px;">
+        <div class="logo" id="pm-chat-title" style="font-size: 16px;">Диалог</div>
+        <button onclick="App.closePM()" style="background:none; border:none; color:white; font-size:28px; cursor:pointer;">&times;</button>
+    </div>
+    <div class="glass-card chat-container-wrap" style="flex:1; display:flex; flex-direction:column; margin-bottom:0;">
+        <div id="pm-chat-messages" style="flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:15px; padding-right:10px; scroll-behavior:smooth;"></div>
+        <div class="chat-tools" style="margin-top:15px;">
+            <input type="text" id="pm-chat-input" placeholder="Набери сообщение..." style="margin:0; flex:1; background: rgba(0,0,0,0.5); border: none; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);" onkeypress="if(event.key === 'Enter') App.sendPmMessage()">
+            <button class="btn-main" style="width:50px; height:50px; margin:0; padding:0; display:flex; justify-content:center; align-items:center; border-radius: 18px;" onclick="App.sendPmMessage()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transform: translateX(-2px);"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+            </button>
+        </div>
+    </div>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -725,6 +756,8 @@
         mediaRecorder: null, 
         audioChunks: [],
         chatLogStore: [], 
+        currentPmUserId: null,
+        currentPmUserName: null,
 
         init() {
             const saved = localStorage.getItem('indigo_user');
@@ -751,7 +784,6 @@
         },
 
         setupFileReaders() {
-            // Аватарка
             document.getElementById('file-upload').addEventListener('change', (e) => {
                 const file = e.target.files[0];
                 if(!file) return;
@@ -764,9 +796,7 @@
                 reader.readAsDataURL(file);
             });
 
-            // Обложка профиля (VIP++)
             document.getElementById('cover-upload').addEventListener('change', (e) => {
-                // ИСПРАВЛЕНИЕ: Блокировка загрузки обложки для обычных пользователей
                 if (!this.user || !this.user.isVipPlus) {
                     e.target.value = '';
                     return this.showToast('👑 Фон профиля доступен только для VIP++ Боссов!');
@@ -855,8 +885,10 @@
                 msgData.replyText = this.replyingTo.text;
             }
 
-            db.ref('chat').push(msgData);
-            db.ref('users/' + this.user.id + '/xp').set((this.user.xp || 0) + 5);
+            db.ref('chat').push(msgData).catch(e => this.showToast('Ошибка сети: ' + e.message));
+            
+            const xpGain = this.user.isVipPlus ? 20 : (this.user.isVip ? 10 : 5);
+            db.ref('users/' + this.user.id + '/xp').set((this.user.xp || 0) + xpGain).catch(e => console.error(e));
             
             this.cancelReply();
             setTimeout(() => this.scrollToBottom(), 100);
@@ -922,13 +954,14 @@
                 } else {
                     document.getElementById('maintenance-screen').style.display = 'none';
                 }
-            });
+            }, err => console.error(err));
 
             db.ref('users').on('value', snap => {
                 const data = snap.val();
                 if(!data) return;
                 const list = Object.values(data).sort((a,b) => b.xp - a.xp);
                 this.renderTop(list);
+                
                 if(this.user) {
                     const fresh = data[this.user.id];
                     if(fresh) { 
@@ -941,20 +974,25 @@
                             document.getElementById('ban-screen').style.display = 'none';
                             this.renderProfile(); 
                         }
+                    } else {
+                        this.logout();
                     }
                 }
-            });
+            }, err => console.error("Sync error: ", err));
+
             db.ref('chat').on('value', snap => {
                 const data = snap.val();
                 const msgsArray = data ? Object.keys(data).map(key => ({...data[key], key})) : [];
                 this.chatLogStore = msgsArray; 
                 this.renderChat(msgsArray);
-            });
+            }, err => console.error(err));
+
             db.ref('stories').on('value', snap => {
                 this.renderNews(snap.val() ? Object.values(snap.val()) : []);
-            });
+            }, err => console.error(err));
         },
 
+        // ИСПРАВЛЕНИЕ: Безопасный вход и проверка ошибок БД через Promises
         auth(mode) {
             const u = document.getElementById(mode === 'login' ? 'log-user' : 'reg-user').value.trim();
             const p = document.getElementById(mode === 'login' ? 'log-pass' : 'reg-pass').value;
@@ -968,7 +1006,7 @@
             }
 
             if(mode === 'reg') {
-                db.ref('users').once('value', snap => {
+                db.ref('users').once('value').then(snap => {
                     const allUsers = snap.val() || {};
                     const exists = Object.values(allUsers).some(x => x && x.name && String(x.name).toLowerCase() === String(u).toLowerCase());
                     if(exists) return this.showToast('❌ Этот никнейм уже занят!');
@@ -982,24 +1020,38 @@
                         isVip: false,
                         isVipPlus: false,
                         isBanned: false
+                    }).then(() => {
+                        this.showToast('✅ Аккаунт создан! Теперь выполни вход.');
+                        this.toggleAuth(true);
+                    }).catch(err => {
+                        this.showToast('⚠️ Ошибка создания аккаунта: ' + err.message);
                     });
-                    this.showToast('✅ Аккаунт создан! Теперь выполни вход.');
-                    this.toggleAuth(true);
+                }).catch(err => {
+                    this.showToast('⚠️ Ошибка БД. Проверь правила Firebase или интернет!');
+                    console.error("Auth Error:", err);
                 });
             } else {
-                db.ref('users').once('value', snap => {
-                    const found = Object.values(snap.val() || {}).find(x => x && x.name === u && x.pass === safePass);
+                db.ref('users').once('value').then(snap => {
+                    const allUsers = snap.val() || {};
+                    // ИСПРАВЛЕНИЕ: Логин теперь не зависит от регистра букв пользователя (case-insensitive search)
+                    const found = Object.values(allUsers).find(x => x && x.name && String(x.name).toLowerCase() === String(u).toLowerCase() && x.pass === safePass);
                     if(found) {
                         this.user = found;
                         localStorage.setItem('indigo_user', JSON.stringify(found));
                         this.showApp();
-                        this.showToast('Добро пожаловать обратно, ' + u + ' 🔥');
-                    } else this.showToast('❌ Ошибка! Неверный ник или пароль.');
+                        this.showToast('Добро пожаловать обратно, ' + found.name + ' 🔥');
+                    } else {
+                        this.showToast('❌ Ошибка! Неверный ник или пароль.');
+                    }
+                }).catch(err => {
+                    this.showToast('⚠️ Ошибка БД. Проверь правила Firebase или интернет!');
+                    console.error("Auth Error:", err);
                 });
             }
         },
 
-        nav(id) {
+        // ИСПРАВЛЕНИЕ: Добавлен аргумент btnElement для точной привязки контекста навигации
+        nav(id, btnElement) {
             document.querySelectorAll('.screen').forEach(s => {
                 s.style.opacity = '0';
                 setTimeout(() => {
@@ -1013,7 +1065,12 @@
             }, 200);
 
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            event.currentTarget.classList.add('active');
+            
+            if (btnElement) {
+                btnElement.classList.add('active');
+            } else if (window.event && window.event.currentTarget) {
+                window.event.currentTarget.classList.add('active');
+            }
             
             if(id === 'chat') {
                 setTimeout(() => this.scrollToBottom(), 300);
@@ -1056,12 +1113,11 @@
         },
 
         deleteMessage(msgKey) {
-            // ИСПРАВЛЕНИЕ: Проверка прав админа на удаление сообщения
             if (!this.admins.includes(this.user.name)) {
                 return this.showToast('⛔ Ошибка доступа! У вас нет прав для удаления.');
             }
             if(confirm('Удалить это сообщение из базы данных навсегда?')) {
-                db.ref('chat/' + msgKey).remove();
+                db.ref('chat/' + msgKey).remove().catch(e => this.showToast(e.message));
                 this.showToast('🗑️ Сообщение уничтожено');
             }
         },
@@ -1098,8 +1154,10 @@
                 msgData.image = this.chatTempBase64Photo;
             }
 
-            db.ref('chat').push(msgData);
-            db.ref('users/' + this.user.id + '/xp').set((this.user.xp || 0) + 5);
+            db.ref('chat').push(msgData).catch(e => this.showToast('Ошибка сети: ' + e.message));
+            
+            const xpGain = this.user.isVipPlus ? 20 : (this.user.isVip ? 10 : 5);
+            db.ref('users/' + this.user.id + '/xp').set((this.user.xp || 0) + xpGain).catch(e => console.error(e));
             
             i.value = '';
             this.cancelReply();
@@ -1109,7 +1167,6 @@
         },
 
         postNews() {
-            // ИСПРАВЛЕНИЕ: Проверка прав админа на публикацию новостей
             if (!this.admins.includes(this.user.name)) {
                 return this.showToast('⛔ Только администраторы могут публиковать новости!');
             }
@@ -1128,7 +1185,7 @@
                 tags: tags || '', 
                 author: this.user.name, 
                 date: Date.now() 
-            });
+            }).catch(e => this.showToast(e.message));
             
             document.getElementById('news-title').value = '';
             document.getElementById('news-text').value = '';
@@ -1147,8 +1204,9 @@
                 db.ref('users/' + this.user.id).update({
                     xp: (this.user.xp || 0) + 100,
                     lastBonus: now
-                });
-                this.showToast('🎁 Успех! +100 XP зачислено на твой баланс.');
+                }).then(() => {
+                    this.showToast('🎁 Успех! +100 XP зачислено на твой баланс.');
+                }).catch(e => this.showToast(e.message));
             } else {
                 const hoursLeft = Math.ceil((day - (now - last)) / (1000 * 60 * 60));
                 this.showToast(`⏳ Бонус уже собран! Возвращайся через ${hoursLeft} ч.`);
@@ -1159,7 +1217,7 @@
             const nName = document.getElementById('edit-name').value.trim();
             const nBio = document.getElementById('edit-bio').value.trim();
             
-            db.ref('users').once('value', snap => {
+            db.ref('users').once('value').then(snap => {
                 const allUsers = snap.val() || {};
                 
                 if(nName) {
@@ -1175,7 +1233,6 @@
                     document.getElementById('upload-status').style.display = 'none';
                 }
                 
-                // ИСПРАВЛЕНИЕ: Двойная проверка на сервере при сохранении обложки
                 if(this.tempCoverPhoto) {
                     if (this.user.isVipPlus) {
                         up.coverImage = this.tempCoverPhoto;
@@ -1187,14 +1244,15 @@
                 }
 
                 if(Object.keys(up).length > 0) {
-                    db.ref('users/' + this.user.id).update(up);
-                    this.showToast('✅ Профиль успешно и мощно обновлен!');
-                    this.tempBase64Photo = null;
-                    this.tempCoverPhoto = null;
+                    db.ref('users/' + this.user.id).update(up).then(() => {
+                        this.showToast('✅ Профиль успешно и мощно обновлен!');
+                        this.tempBase64Photo = null;
+                        this.tempCoverPhoto = null;
+                    }).catch(e => this.showToast('⚠️ Ошибка БД: ' + e.message));
                 } else {
                     this.showToast('ℹ️ Настройки сохранены без изменений.');
                 }
-            });
+            }).catch(e => this.showToast('⚠️ Ошибка соединения с БД!'));
         },
 
         formatTime(ts) {
@@ -1234,7 +1292,7 @@
         },
 
         showUserProfile(uid) {
-            db.ref('users/' + uid).once('value', snap => {
+            db.ref('users/' + uid).once('value').then(snap => {
                 const u = snap.val();
                 if(!u) return this.showToast('Пользователь не найден!');
                 
@@ -1264,6 +1322,15 @@
                 document.getElementById('modal-xp').innerText = (u.xp || 0) + ' XP';
                 document.getElementById('modal-lvl').innerText = 'УРОВЕНЬ ' + this.getLevel(u.xp);
 
+                const pmAction = document.getElementById('modal-pm-action');
+                if (u.id !== this.user.id) {
+                    pmAction.style.display = 'block';
+                    pmAction.dataset.uid = u.id;
+                    pmAction.dataset.name = u.name;
+                } else {
+                    pmAction.style.display = 'none';
+                }
+
                 const adminActions = document.getElementById('modal-admin-actions');
                 if(this.admins.includes(this.user.name) && u.name !== this.user.name) {
                     adminActions.style.display = 'block';
@@ -1274,7 +1341,7 @@
                 adminActions.dataset.uid = u.id;
 
                 document.getElementById('user-profile-modal').style.display = 'flex';
-            });
+            }).catch(e => this.showToast(e.message));
         },
 
         closeUserProfile() {
@@ -1289,6 +1356,125 @@
                 this.closeUserProfile();
             }
         },
+
+        // --- БЛОК ФУНКЦИЙ ДЛЯ ЛИЧНЫХ СООБЩЕНИЙ ---
+        startPM() {
+            const pmAction = document.getElementById('modal-pm-action');
+            const uid = pmAction.dataset.uid;
+            const name = pmAction.dataset.name;
+            if(uid === this.user.id) return;
+            this.closeUserProfile();
+            this.openPM(uid, name);
+        },
+
+        openPM(otherUid, otherName) {
+            this.currentPmUserId = otherUid;
+            this.currentPmUserName = otherName;
+            const chatId = this.getChatId(this.user.id, otherUid);
+
+            document.getElementById('pm-chat-title').innerText = 'Диалог с ' + otherName;
+            document.getElementById('pm-chat-modal').style.display = 'flex';
+
+            db.ref('pms/' + chatId + '/messages').off();
+            db.ref('pms/' + chatId + '/messages').on('value', snap => {
+                const data = snap.val();
+                const msgsArray = data ? Object.keys(data).map(key => ({...data[key], key})) : [];
+                this.renderPmChat(msgsArray);
+            }, err => console.error(err));
+        },
+
+        closePM() {
+            if (this.currentPmUserId) {
+                const chatId = this.getChatId(this.user.id, this.currentPmUserId);
+                db.ref('pms/' + chatId + '/messages').off();
+            }
+            this.currentPmUserId = null;
+            document.getElementById('pm-chat-modal').style.display = 'none';
+        },
+
+        getChatId(uid1, uid2) {
+            return uid1 < uid2 ? uid1 + '_' + uid2 : uid2 + '_' + uid1;
+        },
+
+        sendPmMessage() {
+            const i = document.getElementById('pm-chat-input');
+            const text = i.value.trim();
+            if(!text) return;
+
+            const chatId = this.getChatId(this.user.id, this.currentPmUserId);
+
+            const msgData = {
+                uid: this.user.id,
+                name: this.user.name,
+                text: text,
+                time: Date.now()
+            };
+
+            db.ref('pms/' + chatId + '/messages').push(msgData).catch(e => this.showToast(e.message));
+
+            const ts = Date.now();
+            db.ref('users/' + this.user.id + '/pm_list/' + this.currentPmUserId).set({ name: this.currentPmUserName, lastActive: ts }).catch(e => console.error(e));
+            db.ref('users/' + this.currentPmUserId + '/pm_list/' + this.user.id).set({ name: this.user.name, lastActive: ts }).catch(e => console.error(e));
+
+            i.value = '';
+            setTimeout(() => this.scrollPmToBottom(), 100);
+        },
+
+        renderPmChat(msgs) {
+            const b = document.getElementById('pm-chat-messages');
+            b.innerHTML = msgs.map(m => {
+                const safeText = m.text ? m.text.replace(/</g, "&lt;").replace(/>/g, "&gt;") : '';
+                return `
+                <div class="message-item-wrapper" style="position:relative; width:100%;">
+                    <div class="message ${m.uid === this.user.id ? 'my-msg' : 'other-msg'}" style="margin-bottom: 5px;">
+                        <div class="msg-info">
+                            <b>${m.name}</b>
+                            <span class="msg-time">${m.time ? this.formatTime(m.time) : ''}</span>
+                        </div>
+                        ${safeText}
+                    </div>
+                </div>
+                `;
+            }).join('');
+            this.scrollPmToBottom();
+        },
+
+        scrollPmToBottom() {
+            const b = document.getElementById('pm-chat-messages');
+            if(b) b.scrollTop = b.scrollHeight;
+        },
+
+        showPmList() {
+            document.getElementById('pm-list-modal').style.display = 'flex';
+            db.ref('users/' + this.user.id + '/pm_list').on('value', snap => {
+                const data = snap.val();
+                const list = data ? Object.keys(data).map(k => ({uid: k, ...data[k]})).sort((a,b) => b.lastActive - a.lastActive) : [];
+                this.renderPmList(list);
+            }, err => console.error(err));
+        },
+
+        closePmList() {
+            db.ref('users/' + this.user.id + '/pm_list').off();
+            document.getElementById('pm-list-modal').style.display = 'none';
+        },
+
+        renderPmList(list) {
+            const container = document.getElementById('pm-list-container');
+            if (list.length === 0) {
+                container.innerHTML = '<div style="text-align:center; color:#888; padding:20px; font-weight: bold;">Нет активных диалогов</div>';
+                return;
+            }
+            container.innerHTML = list.map(item => `
+                <div class="leader-item" onclick="App.openPM('${item.uid}', '${item.name}'); App.closePmList();" style="cursor:pointer; padding: 15px; margin-bottom: 10px; border-radius: 15px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.05);">
+                    <div style="flex:1;">
+                        <div style="font-weight:800; color:var(--primary); font-size: 14px;">${item.name}</div>
+                        <div style="font-size:10px; color:#aaa; margin-top: 4px;">ID: ${item.uid}</div>
+                    </div>
+                    <button class="btn-main" style="width:auto; padding:10px 15px; font-size:10px; border-radius: 12px;">ОТКРЫТЬ</button>
+                </div>
+            `).join('');
+        },
+        // --- КОНЕЦ БЛОКА ЛИЧНЫХ СООБЩЕНИЙ ---
 
         renderChat(msgs) {
             const b = document.getElementById('chat-messages');
@@ -1402,6 +1588,7 @@
         },
 
         renderProfile() {
+            if(!this.user) return;
             const isAdm = this.admins.includes(this.user.name);
             const lvl = this.getLevel(this.user.xp);
             
@@ -1483,20 +1670,19 @@
         },
 
         adminAction(type) {
-            // ИСПРАВЛЕНИЕ: Тотальная проверка на админа для любых действий внутри консоли
             if (!this.admins.includes(this.user.name)) {
                 return this.showToast('⛔ Ошибка доступа! У вас нет прав администратора.');
             }
 
             if(type === 'clearChat' && confirm('ВНИМАНИЕ! Снести весь чат? Это действие невозможно отменить!')) {
-                db.ref('chat').remove();
+                db.ref('chat').remove().catch(e => this.showToast(e.message));
                 this.showToast('💥 Чат аннигилирован');
             }
             if(type === 'deleteUser') {
                 const id = document.getElementById('target-id').value;
                 if(id) { 
                     if(confirm('Точно удалить пользователя ' + id + '?')) {
-                        db.ref('users/' + id).remove(); 
+                        db.ref('users/' + id).remove().catch(e => this.showToast(e.message)); 
                         this.showToast('💀 Юзер ' + id + ' стерт из базы данных!'); 
                         document.getElementById('target-id').value = '';
                     }
@@ -1508,7 +1694,7 @@
                 const id = document.getElementById('vip-target-id').value;
                 if(id) {
                     if(confirm('Точно выдать стандартный VIP пользователю ' + id + '?')) {
-                        db.ref('users/' + id).update({ isVip: true, isVipPlus: false });
+                        db.ref('users/' + id).update({ isVip: true, isVipPlus: false }).catch(e => this.showToast(e.message));
                         this.showToast('💎 Пользователю ' + id + ' успешно выдан VIP!');
                         document.getElementById('vip-target-id').value = '';
                     }
@@ -1520,7 +1706,7 @@
                 const id = document.getElementById('vip-target-id').value;
                 if(id) {
                     if(confirm('Короновать пользователя ' + id + ' статусом VIP++?')) {
-                        db.ref('users/' + id).update({ isVip: true, isVipPlus: true });
+                        db.ref('users/' + id).update({ isVip: true, isVipPlus: true }).catch(e => this.showToast(e.message));
                         this.showToast('👑 Пользователю ' + id + ' выдан АБСОЛЮТНЫЙ VIP++!');
                         document.getElementById('vip-target-id').value = '';
                     }
@@ -1532,7 +1718,7 @@
                 const id = document.getElementById('ban-target-id').value;
                 if(id) {
                     if(confirm('Заблокировать пользователя ' + id + ' навсегда?')) {
-                        db.ref('users/' + id).update({ isBanned: true });
+                        db.ref('users/' + id).update({ isBanned: true }).catch(e => this.showToast(e.message));
                         this.showToast('🚫 Пользователь ' + id + ' заблокирован!');
                         document.getElementById('ban-target-id').value = '';
                     }
@@ -1544,7 +1730,7 @@
                 const id = document.getElementById('ban-target-id').value;
                 if(id) {
                     if(confirm('Разблокировать пользователя ' + id + '?')) {
-                        db.ref('users/' + id).update({ isBanned: false });
+                        db.ref('users/' + id).update({ isBanned: false }).catch(e => this.showToast(e.message));
                         this.showToast('✅ Пользователь ' + id + ' успешно разбанен!');
                         document.getElementById('ban-target-id').value = '';
                     }
@@ -1553,11 +1739,11 @@
                 }
             }
             if(type === 'toggleMaintenance') {
-                db.ref('system/maintenance').once('value', snap => {
+                db.ref('system/maintenance').once('value').then(snap => {
                     const isMaint = snap.val();
                     db.ref('system/maintenance').set(!isMaint);
                     this.showToast(!isMaint ? '🛠️ Тех. перерыв ВКЛЮЧЕН для всех' : '▶️ Тех. перерыв ВЫКЛЮЧЕН');
-                });
+                }).catch(e => this.showToast(e.message));
             }
         },
 
