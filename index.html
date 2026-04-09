@@ -42,7 +42,7 @@
             transition: background 0.5s ease;
         }
 
-        /* Кастомный скроллбар для всей страницы */
+        /* Кастомный скроллбар */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg); }
         ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; box-shadow: 0 0 10px var(--primary); }
@@ -81,6 +81,11 @@
             50% { transform: translateY(-10px); }
             100% { transform: translateY(0px); }
         }
+        @keyframes floatSticker {
+            0% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-5px) scale(1.1); }
+            100% { transform: translateY(0px) scale(1); }
+        }
 
         /* VIP СТИЛИ */
         .vip-nickname {
@@ -107,7 +112,7 @@
             filter: drop-shadow(0 0 5px #7000ff);
         }
 
-        /* VIP++ СТИЛИ (ЭКСТРА) */
+        /* VIP++ СТИЛИ */
         .vip-plus-nickname {
             background: linear-gradient(90deg, var(--vip-plus-1), var(--vip-plus-2), var(--vip-plus-1));
             background-size: 200% auto;
@@ -128,6 +133,14 @@
             margin-left: 5px;
             font-size: 16px;
             filter: drop-shadow(0 0 8px var(--vip-plus-1));
+        }
+        
+        .custom-vip-tag {
+            font-size: 9px; font-weight: 900; padding: 3px 6px; border-radius: 6px; margin-left: 5px;
+            text-transform: uppercase; letter-spacing: 1px; display: inline-block; vertical-align: middle;
+            border: 1px solid currentColor; background: rgba(0,0,0,0.5); 
+            box-shadow: 0 0 10px currentColor inset, 0 0 5px currentColor;
+            text-shadow: none; -webkit-text-fill-color: initial;
         }
 
         /* Обложка профиля VIP++ */
@@ -150,7 +163,7 @@
         .orb-1 { top: -10%; left: -10%; width: 300px; height: 300px; background: var(--primary); }
         .orb-2 { bottom: -10%; right: -10%; width: 400px; height: 400px; background: var(--secondary); animation-delay: -4s; }
 
-        /* Улучшенный Glassmorphism */
+        /* Glassmorphism */
         .glass-card {
             background: var(--card); 
             backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
@@ -163,13 +176,6 @@
             animation: fadeInScale 0.7s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative; overflow: hidden;
         }
-        .glass-card::before {
-            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-            background: linear-gradient(to right, transparent, rgba(255,255,255,0.05), transparent);
-            transform: skewX(-25deg); transition: 0.5s;
-            z-index: 1; pointer-events: none;
-        }
-        .glass-card:hover::before { left: 150%; }
 
         .input-group { margin-bottom: 18px; text-align: left; position: relative; }
         .input-group label { display: block; font-size: 11px; color: var(--primary); margin-bottom: 8px; margin-left: 12px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800; }
@@ -195,19 +201,12 @@
             position: relative; overflow: hidden;
             box-shadow: 0 10px 25px rgba(112, 0, 255, 0.4);
         }
-        .btn-main::after {
-            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: 0.5s;
-        }
-        .btn-main:hover::after { left: 100%; }
         .btn-main:hover { box-shadow: 0 15px 35px rgba(0, 242, 255, 0.6); transform: translateY(-3px); }
         .btn-main:active { transform: scale(0.95) translateY(2px); box-shadow: 0 5px 15px rgba(0, 242, 255, 0.4); }
         
         .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); box-shadow: none; }
-        .btn-outline:hover { background: rgba(0,242,255,0.1); box-shadow: 0 0 20px rgba(0,242,255,0.3); }
 
-        /* Экраны - исправлен паддинг для мобильных устройств */
+        /* Экраны */
         .app-container { max-width: 600px; margin: 0 auto; padding: 20px 20px max(150px, calc(env(safe-area-inset-bottom, 0px) + 120px)) 20px; }
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 35px; padding-top: 15px; position: relative; }
         .header::after { content: ''; position: absolute; bottom: -10px; left: 0; width: 50px; height: 3px; background: var(--primary); border-radius: 5px; box-shadow: 0 0 10px var(--primary); }
@@ -237,18 +236,16 @@
         .message:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
         .message:active { transform: scale(0.97); opacity: 0.9; }
         
-        .msg-info { font-size: 11px; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; opacity: 0.9; text-transform: uppercase; font-weight: 800; }
+        .msg-info { font-size: 11px; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; opacity: 0.9; text-transform: uppercase; font-weight: 800; flex-wrap: wrap; }
         .msg-time { margin-left: auto; font-size: 9px; opacity: 0.5; font-weight: 600; letter-spacing: 1px; }
         
         .my-msg { 
-            align-self: flex-end; 
             background: linear-gradient(135deg, rgba(112,0,255,0.8), rgba(75,0,173,0.9)); 
             border-bottom-right-radius: 5px; 
             border: 1px solid rgba(112,0,255,0.5);
             animation: slideInRight 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         .other-msg { 
-            align-self: flex-start; 
             background: rgba(255,255,255,0.08); 
             border-bottom-left-radius: 5px; 
             border: 1px solid rgba(255,255,255,0.1);
@@ -262,7 +259,15 @@
         .reply-block { background: rgba(0,0,0,0.4); border-left: 3px solid var(--primary); padding: 8px 12px; border-radius: 8px; font-size: 12px; margin-bottom: 8px; opacity: 0.9; }
         .chat-image-attachment { max-width: 100%; border-radius: 12px; margin-top: 10px; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
 
-        /* Кнопки навигации чата */
+        .chat-avatar-mini {
+            width: 32px; height: 32px; border-radius: 50%; object-fit: cover;
+            border: 2px solid var(--primary); box-shadow: 0 0 10px rgba(0,242,255,0.3);
+            cursor: pointer; flex-shrink: 0;
+            transition: 0.3s;
+        }
+        .chat-avatar-mini:hover { transform: scale(1.1); box-shadow: 0 0 15px rgba(0,242,255,0.6); }
+
+        /* Навигация чата */
         .scroll-nav-btn {
             position: absolute; right: 15px; width: 45px; height: 45px;
             background: rgba(0, 242, 255, 0.9); color: var(--bg); border: none; border-radius: 50%;
@@ -270,19 +275,16 @@
             box-shadow: 0 5px 20px rgba(0,242,255,0.5); z-index: 10; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             backdrop-filter: blur(5px);
         }
-        .scroll-nav-btn:hover { transform: scale(1.1); box-shadow: 0 8px 25px rgba(0,242,255,0.8); }
-        .scroll-nav-btn:active { transform: scale(0.9); }
         #scroll-down-btn { bottom: 85px; }
         #scroll-up-btn { bottom: 140px; background: rgba(112, 0, 255, 0.9); color: white; box-shadow: 0 5px 20px rgba(112,0,255,0.5); }
 
-        /* Кнопка удаления сообщения для админа */
+        /* Кнопка удаления сообщения */
         .del-msg-btn {
             position: absolute; right: 10px; top: -12px; background: rgba(255, 71, 87, 0.95);
             border: 1px solid var(--error); color: white; border-radius: 8px; cursor: pointer;
             font-size: 9px; font-weight: 900; padding: 5px 10px; display: none; z-index: 5;
             box-shadow: 0 5px 15px rgba(255, 71, 87, 0.5); letter-spacing: 1px; transition: 0.2s;
         }
-        .del-msg-btn:hover { transform: scale(1.1); background: var(--error); }
         .message:hover .del-msg-btn { display: block; animation: fadeInScale 0.2s ease; }
 
         #reply-preview-ui {
@@ -299,10 +301,25 @@
         }
         .tool-btn:hover { background: rgba(0, 242, 255, 0.15); border-color: var(--primary); transform: rotate(10deg); box-shadow: 0 0 15px rgba(0,242,255,0.3); }
         
-        .mic-btn-active {
-            color: var(--error) !important;
-            border-color: var(--error) !important;
-            animation: pulseRecord 1.5s infinite;
+        .mic-btn-active { color: var(--error) !important; border-color: var(--error) !important; animation: pulseRecord 1.5s infinite; }
+
+        /* СТИКЕРЫ ПАНЕЛЬ */
+        #sticker-panel-ui {
+            display: none; background: rgba(0,0,0,0.7); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            padding: 15px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); margin-top: 10px; margin-bottom: 10px;
+            gap: 15px; flex-wrap: wrap; justify-content: center; box-shadow: inset 0 0 20px rgba(0,242,255,0.1);
+            animation: fadeInScale 0.3s ease;
+        }
+        .sticker-item {
+            font-size: 35px; cursor: pointer; transition: 0.2s; user-select: none;
+            display: flex; justify-content: center; align-items: center; width: 45px; height: 45px;
+        }
+        .sticker-item:hover { transform: scale(1.2) translateY(-5px); }
+        .sticker-vip {
+            filter: drop-shadow(0 0 10px var(--primary)); position: relative;
+        }
+        .sticker-vip::after {
+            content: 'VIP++'; position: absolute; bottom: -8px; font-size: 8px; color: var(--vip-plus-1); font-weight: 900; letter-spacing: 1px; text-shadow: 0 0 5px var(--vip-plus-2);
         }
 
         /* Лидеры */
@@ -325,7 +342,7 @@
             background-size: contain; filter: drop-shadow(0 0 8px var(--primary)); margin-left: 5px;
         }
 
-        /* Навигация - исправлено под мобильные экраны */
+        /* Навигация */
         .nav-bar {
             position: fixed; 
             bottom: max(25px, env(safe-area-inset-bottom, 25px)); 
@@ -455,7 +472,22 @@
                 <button onclick="App.cancelChatImage()" style="background:none; border:none; color:var(--error); font-size:20px; cursor:pointer; font-weight:bold;">×</button>
             </div>
 
+            <div id="sticker-panel-ui">
+                <span class="sticker-item" onclick="App.sendSticker('😎')">😎</span>
+                <span class="sticker-item" onclick="App.sendSticker('🔥')">🔥</span>
+                <span class="sticker-item" onclick="App.sendSticker('💀')">💀</span>
+                <span class="sticker-item" onclick="App.sendSticker('❤️')">❤️</span>
+                <span class="sticker-item" onclick="App.sendSticker('🤡')">🤡</span>
+                <span class="sticker-item" onclick="App.sendSticker('👍')">👍</span>
+                <span class="sticker-item sticker-vip" onclick="App.sendSticker('👑', true)">👑</span>
+                <span class="sticker-item sticker-vip" onclick="App.sendSticker('💎', true)" style="filter: drop-shadow(0 0 10px #00f2ff);">💎</span>
+                <span class="sticker-item sticker-vip" onclick="App.sendSticker('🚀', true)" style="filter: drop-shadow(0 0 10px #ff0055);">🚀</span>
+            </div>
+
             <div class="chat-tools">
+                <button class="tool-btn" title="Стикеры" onclick="App.toggleStickersPanel('global')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
+                </button>
                 <label class="tool-btn" title="Прикрепить фото">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
                     <input type="file" id="chat-file-input" accept="image/*" style="display:none;" onchange="App.handleChatImageUpload(event)">
@@ -483,9 +515,11 @@
             <p style="font-size: 13px; color: #aaa; margin-bottom: 20px; line-height: 1.5;">Абсолютный максимум для истинных Боссов проекта:</p>
             
             <div style="text-align: left; background: rgba(0,0,0,0.4); padding: 15px; border-radius: 15px; border: 1px solid rgba(255, 0, 85, 0.2); margin-bottom: 20px;">
-                <div style="margin-bottom: 10px; font-size: 13px;">🔥 <b class="vip-plus-nickname">Спец. градиент VIP++</b> (Теперь настраиваемый!)</div>
-                <div style="margin-bottom: 10px; font-size: 13px;">🔥 <b>Красно-золотая рамка</b> (Кастомные цвета обводки)</div>
-                <div style="margin-bottom: 10px; font-size: 13px;">🔥 Знак Короны (👑) в топе и чате</div>
+                <div style="margin-bottom: 10px; font-size: 13px;">🔥 <b class="vip-plus-nickname">Спец. градиент VIP++</b> (Настраиваемый)</div>
+                <div style="margin-bottom: 10px; font-size: 13px;">🔥 <b>Кастомный цвет сообщения (Пузыря в чате)</b></div>
+                <div style="margin-bottom: 10px; font-size: 13px;">🔥 <b>Эксклюзивные Неоновые VIP-Стикеры</b></div>
+                <div style="margin-bottom: 10px; font-size: 13px;">🔥 <b>Кастомный ТЕГ (Роль)</b> рядом с ником</div>
+                <div style="margin-bottom: 10px; font-size: 13px;">🔥 Красно-золотая рамка аватара</div>
                 <div style="margin-bottom: 10px; font-size: 13px;">🔥 <b>Обложка профиля (Фон)</b> + Голосовой чат</div>
             </div>
 
@@ -539,9 +573,21 @@
                     <label>Градиент Ника и Рамки (Цвет 1)</label>
                     <input type="color" id="vip-color-1" value="#ffaa00" style="padding: 5px; height: 50px; cursor: pointer; border-radius: 12px;">
                 </div>
-                <div class="input-group" style="margin-bottom: 0;">
+                <div class="input-group">
                     <label>Градиент Ника и Рамки (Цвет 2)</label>
                     <input type="color" id="vip-color-2" value="#ff0055" style="padding: 5px; height: 50px; cursor: pointer; border-radius: 12px;">
+                </div>
+                <div class="input-group">
+                    <label>Кастомный цвет сообщения (Пузыря)</label>
+                    <input type="color" id="vip-bubble-color" value="#7000ff" style="padding: 5px; height: 50px; cursor: pointer; border-radius: 12px;">
+                </div>
+                <div class="input-group">
+                    <label>Кастомный Тег (Роль в чате)</label>
+                    <input type="text" id="vip-tag-text" placeholder="Например: ВЛАДЕЛЕЦ, БОСС..." maxlength="12">
+                </div>
+                <div class="input-group" style="margin-bottom: 0;">
+                    <label>Цвет Кастомного Тега</label>
+                    <input type="color" id="vip-tag-color" value="#00f2ff" style="padding: 5px; height: 50px; cursor: pointer; border-radius: 12px;">
                 </div>
             </div>
             
@@ -694,7 +740,7 @@
         <img id="modal-cover" src="" style="position:absolute; top:0; left:0; width:100%; height:120px; object-fit:cover; z-index:0; opacity:0.5; border-radius:25px 25px 0 0; display:none;">
         
         <img id="modal-avatar" src="" class="avatar-small" style="width:110px; height:110px; border:3px solid var(--primary); margin-top:40px; margin-bottom:15px; position:relative; z-index:2; box-shadow: 0 0 20px rgba(0,242,255,0.4);">
-        <h2 id="modal-name" style="font-size: 22px; position:relative; z-index:2; text-shadow: 0 0 10px rgba(255,255,255,0.3);">Имя</h2>
+        <h2 id="modal-name" style="font-size: 22px; position:relative; z-index:2; text-shadow: 0 0 10px rgba(255,255,255,0.3); display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 5px;">Имя</h2>
         <div id="modal-id" style="font-size:10px; color:#aaa; margin-bottom:15px; position:relative; z-index:2; letter-spacing: 1px;">ID: </div>
         <p id="modal-bio" style="font-size:13px; color:#ccc; margin-bottom:25px; position:relative; z-index:2; font-weight: 600;">Био</p>
         
@@ -745,7 +791,23 @@
     </div>
     <div class="glass-card chat-container-wrap" style="flex:1; display:flex; flex-direction:column; margin-bottom:0;">
         <div id="pm-chat-messages" style="flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:15px; padding-right:10px; scroll-behavior:smooth;"></div>
+        
+        <div id="pm-sticker-panel-ui" style="display: none; background: rgba(0,0,0,0.7); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); padding: 15px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); margin-top: 10px; margin-bottom: 10px; gap: 15px; flex-wrap: wrap; justify-content: center; box-shadow: inset 0 0 20px rgba(0,242,255,0.1); animation: fadeInScale 0.3s ease;">
+            <span class="sticker-item" onclick="App.sendPmSticker('😎')">😎</span>
+            <span class="sticker-item" onclick="App.sendPmSticker('🔥')">🔥</span>
+            <span class="sticker-item" onclick="App.sendPmSticker('💀')">💀</span>
+            <span class="sticker-item" onclick="App.sendPmSticker('❤️')">❤️</span>
+            <span class="sticker-item" onclick="App.sendPmSticker('🤡')">🤡</span>
+            <span class="sticker-item" onclick="App.sendPmSticker('👍')">👍</span>
+            <span class="sticker-item sticker-vip" onclick="App.sendPmSticker('👑', true)">👑</span>
+            <span class="sticker-item sticker-vip" onclick="App.sendPmSticker('💎', true)" style="filter: drop-shadow(0 0 10px #00f2ff);">💎</span>
+            <span class="sticker-item sticker-vip" onclick="App.sendPmSticker('🚀', true)" style="filter: drop-shadow(0 0 10px #ff0055);">🚀</span>
+        </div>
+
         <div class="chat-tools" style="margin-top:15px;">
+            <button class="tool-btn" title="Стикеры" onclick="App.toggleStickersPanel('pm')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
+            </button>
             <input type="text" id="pm-chat-input" placeholder="Набери сообщение..." style="margin:0; flex:1; background: rgba(0,0,0,0.5); border: none; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);" onkeypress="if(event.key === 'Enter') App.sendPmMessage()">
             <button class="btn-main" style="width:50px; height:50px; margin:0; padding:0; display:flex; justify-content:center; align-items:center; border-radius: 18px;" onclick="App.sendPmMessage()">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transform: translateX(-2px);"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
@@ -758,7 +820,6 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
 <script>
-    // Обновленная конфигурация Firebase
     const firebaseConfig = {
         apiKey: "AIzaSyAaSxthBsh9Q4H5YuYUg6jTrwzEHTq-r1g",
         authDomain: "mmmm-96f4f.firebaseapp.com",
@@ -830,7 +891,6 @@
                     e.target.value = '';
                     return this.showToast('👑 Фон профиля доступен только для VIP++ Боссов!');
                 }
-
                 const file = e.target.files[0];
                 if(!file) return;
                 const reader = new FileReader();
@@ -843,8 +903,7 @@
             });
         },
 
-        setupVoice() {
-        },
+        setupVoice() {},
 
         getVipInlineStyles(u) {
             if (!u || !u.isVipPlus) return { nick: '', frame: '' };
@@ -858,7 +917,6 @@
 
         startVoiceInput() {
             if(!this.user.isVipPlus) return this.showToast('👑 Голосовые сообщения доступны только для VIP++ Боссов!');
-            
             const btn = document.getElementById('voice-mic-btn');
             
             if (this.mediaRecorder && this.mediaRecorder.state === 'recording') {
@@ -887,13 +945,10 @@
                     const reader = new FileReader();
                     reader.readAsDataURL(audioBlob);
                     reader.onloadend = () => {
-                        const base64Audio = reader.result;
-                        this.sendAudioMessage(base64Audio);
+                        this.sendAudioMessage(reader.result);
                     };
-                    
                     stream.getTracks().forEach(track => track.stop());
                 };
-
                 this.mediaRecorder.start();
             }).catch(err => {
                 this.showToast('⚠️ Ошибка микрофона: ' + err.message);
@@ -911,6 +966,7 @@
             const msgData = {
                 uid: this.user.id, 
                 name: senderName,
+                photo: isGhost ? 'https://api.dicebear.com/7.x/pixel-art/svg?seed=Anon' : this.user.photo,
                 text: '', 
                 audio: base64Audio,
                 time: Date.now(),
@@ -918,7 +974,10 @@
                 isVip: senderIsVip,
                 isVipPlus: senderIsVipPlus,
                 vipColor1: this.user.vipColor1 || '#ffaa00',
-                vipColor2: this.user.vipColor2 || '#ff0055'
+                vipColor2: this.user.vipColor2 || '#ff0055',
+                vipTagText: this.user.vipTagText || '',
+                vipTagColor: this.user.vipTagColor || '#00f2ff',
+                vipBubbleColor: this.user.vipBubbleColor || ''
             };
 
             if(this.replyingTo) {
@@ -937,11 +996,10 @@
 
         exportChatLogs() {
             if (this.chatLogStore.length === 0) return this.showToast('В чате пока нет логов');
-            
             let textOutput = "=== INDIGO VIP++ CHAT LOGS ===\n\n";
             this.chatLogStore.forEach(msg => {
                 const timeStr = msg.time ? new Date(msg.time).toLocaleString() : 'Неизвестно';
-                textOutput += `[${timeStr}] ${msg.name}: ${msg.text || '[Фото / Голосовое]'}\n`;
+                textOutput += `[${timeStr}] ${msg.name}: ${msg.text || '[Фото / Голосовое / Стикер]'}\n`;
             });
             
             const blob = new Blob([textOutput], { type: 'text/plain' });
@@ -1059,7 +1117,9 @@
                         lastBonus: 0,
                         isVip: false,
                         isVipPlus: false,
-                        isBanned: false
+                        isBanned: false,
+                        vipTagText: '',
+                        vipTagColor: '#00f2ff'
                     }).then(() => {
                         this.showToast('✅ Аккаунт создан! Теперь выполни вход.');
                         this.toggleAuth(true);
@@ -1068,7 +1128,6 @@
                     });
                 }).catch(err => {
                     this.showToast('⚠️ Ошибка БД. Проверь правила Firebase или интернет!');
-                    console.error("Auth Error:", err);
                 });
             } else {
                 db.ref('users').once('value').then(snap => {
@@ -1084,7 +1143,6 @@
                     }
                 }).catch(err => {
                     this.showToast('⚠️ Ошибка БД. Проверь правила Firebase или интернет!');
-                    console.error("Auth Error:", err);
                 });
             }
         },
@@ -1092,27 +1150,18 @@
         nav(id, btnElement) {
             document.querySelectorAll('.screen').forEach(s => {
                 s.style.opacity = '0';
-                setTimeout(() => {
-                    s.classList.remove('active');
-                }, 200);
+                setTimeout(() => { s.classList.remove('active'); }, 200);
             });
-            
             setTimeout(() => {
                 document.getElementById('scr-' + id).classList.add('active');
                 setTimeout(() => { document.getElementById('scr-' + id).style.opacity = '1'; }, 50);
             }, 200);
 
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            if (btnElement) btnElement.classList.add('active');
+            else if (window.event && window.event.currentTarget) window.event.currentTarget.classList.add('active');
             
-            if (btnElement) {
-                btnElement.classList.add('active');
-            } else if (window.event && window.event.currentTarget) {
-                window.event.currentTarget.classList.add('active');
-            }
-            
-            if(id === 'chat') {
-                setTimeout(() => this.scrollToBottom(), 300);
-            }
+            if(id === 'chat') setTimeout(() => this.scrollToBottom(), 300);
         },
 
         setReply(name, text) {
@@ -1120,7 +1169,7 @@
             document.getElementById('reply-preview-ui').style.display = 'flex';
             document.getElementById('reply-preview-ui').style.animation = 'slideInRight 0.3s ease';
             document.getElementById('reply-to-name').innerText = name;
-            document.getElementById('reply-to-text').innerText = text || '[Фотография / Аудио]';
+            document.getElementById('reply-to-text').innerText = text || '[Фотография / Аудио / Стикер]';
             document.getElementById('chat-input').focus();
         },
 
@@ -1143,6 +1192,7 @@
         },
 
         copyMessageText(text) {
+            if(!text) return;
             navigator.clipboard.writeText(text).then(() => {
                 this.showToast('📋 Текст скопирован в буфер!');
             }).catch(err => {
@@ -1158,6 +1208,66 @@
                 db.ref('chat/' + msgKey).remove().catch(e => this.showToast(e.message));
                 this.showToast('🗑️ Сообщение уничтожено');
             }
+        },
+
+        toggleStickersPanel(type) {
+            const p = document.getElementById(type === 'pm' ? 'pm-sticker-panel-ui' : 'sticker-panel-ui');
+            p.style.display = p.style.display === 'none' ? 'flex' : 'none';
+        },
+
+        sendSticker(emoji, isVipSticker = false) {
+            if (isVipSticker && !this.user.isVipPlus) return this.showToast('👑 Этот стикер доступен только Боссам VIP++!');
+            
+            const ghostToggle = document.getElementById('ghost-mode-toggle');
+            const isGhost = ghostToggle && ghostToggle.checked;
+            const senderName = isGhost ? 'Аноним' : this.user.name;
+
+            const msgData = {
+                uid: this.user.id,
+                name: senderName,
+                photo: isGhost ? 'https://api.dicebear.com/7.x/pixel-art/svg?seed=Anon' : this.user.photo,
+                text: '',
+                sticker: emoji,
+                isVipSticker: isVipSticker,
+                time: Date.now(),
+                isAdmin: isGhost ? false : this.admins.includes(this.user.name),
+                isVip: isGhost ? false : (this.user.isVip || false),
+                isVipPlus: isGhost ? false : (this.user.isVipPlus || false),
+                vipColor1: this.user.vipColor1 || '#ffaa00',
+                vipColor2: this.user.vipColor2 || '#ff0055',
+                vipTagText: this.user.vipTagText || '',
+                vipTagColor: this.user.vipTagColor || '#00f2ff'
+            };
+
+            db.ref('chat').push(msgData);
+            document.getElementById('sticker-panel-ui').style.display = 'none';
+            setTimeout(() => this.scrollToBottom(), 100);
+        },
+
+        sendPmSticker(emoji, isVipSticker = false) {
+            if (isVipSticker && !this.user.isVipPlus) return this.showToast('👑 Этот стикер доступен только Боссам VIP++!');
+            const chatId = this.getChatId(this.user.id, this.currentPmUserId);
+            
+            const msgData = {
+                uid: this.user.id,
+                name: this.user.name,
+                photo: this.user.photo,
+                text: '',
+                sticker: emoji,
+                isVipSticker: isVipSticker,
+                time: Date.now(),
+                isVipPlus: this.user.isVipPlus,
+                vipColor1: this.user.vipColor1 || '#ffaa00'
+            };
+
+            db.ref('pms/' + chatId + '/messages').push(msgData);
+            
+            const ts = Date.now();
+            db.ref('users/' + this.user.id + '/pm_list/' + this.currentPmUserId).set({ name: this.currentPmUserName, lastActive: ts });
+            db.ref('users/' + this.currentPmUserId + '/pm_list/' + this.user.id).set({ name: this.user.name, lastActive: ts });
+            
+            document.getElementById('pm-sticker-panel-ui').style.display = 'none';
+            setTimeout(() => this.scrollPmToBottom(), 100);
         },
 
         sendMessage() {
@@ -1176,13 +1286,17 @@
             const msgData = {
                 uid: this.user.id, 
                 name: senderName,
+                photo: isGhost ? 'https://api.dicebear.com/7.x/pixel-art/svg?seed=Anon' : this.user.photo,
                 text: text, 
                 time: Date.now(),
                 isAdmin: senderIsAdmin,
                 isVip: senderIsVip,
                 isVipPlus: senderIsVipPlus,
                 vipColor1: this.user.vipColor1 || '#ffaa00',
-                vipColor2: this.user.vipColor2 || '#ff0055'
+                vipColor2: this.user.vipColor2 || '#ff0055',
+                vipTagText: this.user.vipTagText || '',
+                vipTagColor: this.user.vipTagColor || '#00f2ff',
+                vipBubbleColor: this.user.vipBubbleColor || ''
             };
 
             if(this.replyingTo) {
@@ -1210,7 +1324,6 @@
             if (!this.admins.includes(this.user.name)) {
                 return this.showToast('⛔ Только администраторы могут публиковать новости!');
             }
-
             const t = document.getElementById('news-title').value;
             const text = document.getElementById('news-text').value;
             const link = document.getElementById('news-link').value.trim();
@@ -1272,6 +1385,9 @@
                 if(this.user.isVipPlus) {
                     up.vipColor1 = document.getElementById('vip-color-1').value;
                     up.vipColor2 = document.getElementById('vip-color-2').value;
+                    up.vipTagText = document.getElementById('vip-tag-text').value.trim().substring(0, 12);
+                    up.vipTagColor = document.getElementById('vip-tag-color').value;
+                    up.vipBubbleColor = document.getElementById('vip-bubble-color').value;
                 }
 
                 up.pmFriendsOnly = document.getElementById('pm-friends-only').checked;
@@ -1372,13 +1488,18 @@
                 const vipBadge = isVipPlus ? '<span class="vip-plus-badge">👑</span>' : (isVip ? '<span class="vip-badge">💎</span>' : '');
                 const vipFrame = isVipPlus ? 'vip-plus-frame' : (isVip ? 'vip-frame' : '');
                 const vStyles = this.getVipInlineStyles(u);
+                
+                let customTagHtml = '';
+                if (isVipPlus && u.vipTagText) {
+                    customTagHtml = `<span class="custom-vip-tag" style="color: ${u.vipTagColor}; border-color: ${u.vipTagColor};">${u.vipTagText}</span>`;
+                }
 
-                document.getElementById('modal-name').innerHTML = `<span class="${vipClass}" ${isVipPlus ? `style="${vStyles.nick}"` : ''}>${u.name}</span> ${this.admins.includes(u.name) ? '<div class="verify-badge"></div>' : ''} ${vipBadge}`;
+                document.getElementById('modal-name').innerHTML = `<span class="${vipClass}" ${isVipPlus ? `style="${vStyles.nick}"` : ''}>${u.name}</span> ${this.admins.includes(u.name) ? '<div class="verify-badge"></div>' : ''} ${vipBadge} ${customTagHtml}`;
                 document.getElementById('modal-id').innerText = 'ID: ' + u.id;
                 document.getElementById('modal-bio').innerText = u.bio || 'Нет информации';
                 
                 const avatar = document.getElementById('modal-avatar');
-                avatar.src = u.photo;
+                avatar.src = u.photo || 'https://api.dicebear.com/7.x/pixel-art/svg?seed=Anon';
                 avatar.className = `avatar-small ${vipFrame}`;
                 if (isVipPlus) avatar.style.cssText = `width:110px; height:110px; margin-top:40px; margin-bottom:15px; position:relative; z-index:2; ${vStyles.frame}`;
                 else avatar.style.cssText = `width:110px; height:110px; border:3px solid var(--primary); margin-top:40px; margin-bottom:15px; position:relative; z-index:2; box-shadow: 0 0 20px rgba(0,242,255,0.4);`;
@@ -1447,7 +1568,7 @@
             }
         },
 
-        // --- БЛОК ФУНКЦИЙ ДЛЯ ЛИЧНЫХ СООБЩЕНИЙ ---
+        // --- ЛИЧНЫЕ СООБЩЕНИЯ ---
         startPM() {
             const pmAction = document.getElementById('modal-pm-action');
             const uid = pmAction.dataset.uid;
@@ -1502,6 +1623,7 @@
             const msgData = {
                 uid: this.user.id,
                 name: this.user.name,
+                photo: this.user.photo,
                 text: text,
                 time: Date.now()
             };
@@ -1519,23 +1641,38 @@
         renderPmChat(msgs) {
             const b = document.getElementById('pm-chat-messages');
             
+            // Оптимизация ЛС
             const validMsgs = msgs.filter(m => {
                 if (this.currentPmAutoDelete) {
-                    return (Date.now() - m.time) < (24 * 60 * 60 * 1000); // 24 часа жизни
+                    return (Date.now() - m.time) < (24 * 60 * 60 * 1000); 
                 }
                 return true;
-            });
+            }).slice(-50); // Рендерим только последние 50
 
             b.innerHTML = validMsgs.map(m => {
                 const safeText = m.text ? m.text.replace(/</g, "&lt;").replace(/>/g, "&gt;") : '';
+                
+                let stickerHtml = '';
+                if(m.sticker) {
+                    const glow = m.isVipSticker ? `filter: drop-shadow(0 0 15px ${m.vipColor1 || '#ffaa00'}); animation: floatSticker 3s infinite;` : '';
+                    stickerHtml = `<div style="font-size: 55px; margin: 10px 0; ${glow}">${m.sticker}</div>`;
+                }
+
                 return `
                 <div class="message-item-wrapper" style="position:relative; width:100%;">
-                    <div class="message ${m.uid === this.user.id ? 'my-msg' : 'other-msg'}" style="margin-bottom: 5px;">
-                        <div class="msg-info">
-                            <b>${m.name}</b>
-                            <span class="msg-time">${m.time ? this.formatTime(m.time) : ''}</span>
+                    <div style="display: flex; gap: 8px; align-items: flex-end; justify-content: ${m.uid === this.user.id ? 'flex-end' : 'flex-start'}; width: 100%; margin-bottom: 5px;">
+                        ${m.uid !== this.user.id ? `<img src="${m.photo || 'https://api.dicebear.com/7.x/pixel-art/svg?seed=Anon'}" class="chat-avatar-mini" onclick="App.showUserProfile('${m.uid}')">` : ''}
+                        
+                        <div class="message ${m.uid === this.user.id ? 'my-msg' : 'other-msg'}" style="margin:0;">
+                            <div class="msg-info">
+                                <b>${m.name}</b>
+                                <span class="msg-time">${m.time ? this.formatTime(m.time) : ''}</span>
+                            </div>
+                            ${safeText}
+                            ${stickerHtml}
                         </div>
-                        ${safeText}
+
+                        ${m.uid === this.user.id ? `<img src="${m.photo || 'https://api.dicebear.com/7.x/pixel-art/svg?seed=Anon'}" class="chat-avatar-mini" onclick="App.showUserProfile('${m.uid}')">` : ''}
                     </div>
                 </div>
                 `;
@@ -1578,13 +1715,15 @@
                 </div>
             `).join('');
         },
-        // --- КОНЕЦ БЛОКА ЛИЧНЫХ СООБЩЕНИЙ ---
 
         renderChat(msgs) {
             const b = document.getElementById('chat-messages');
             const isAdminView = this.admins.includes(this.user.name);
             
-            b.innerHTML = msgs.map(m => {
+            // Оптимизация от лагов на слабых устройствах (рендерим только 50 последних сообщений)
+            const optMsgs = msgs.slice(-50);
+            
+            b.innerHTML = optMsgs.map(m => {
                 let replyHtml = '';
                 if(m.replyName) {
                     replyHtml = `<div class="reply-block"><b>${m.replyName}</b>: ${m.replyText}</div>`;
@@ -1598,6 +1737,12 @@
                 let audioHtml = '';
                 if(m.audio) {
                     audioHtml = `<audio controls src="${m.audio}" style="width:100%; max-width: 250px; height: 35px; margin-top: 8px; border-radius: 18px; outline: none;"></audio>`;
+                }
+
+                let stickerHtml = '';
+                if(m.sticker) {
+                    const glow = m.isVipSticker ? `filter: drop-shadow(0 0 25px ${m.vipColor1 || '#ffaa00'}); animation: floatSticker 3s infinite;` : '';
+                    stickerHtml = `<div style="font-size: 65px; text-align: center; margin: 10px 0; ${glow}">${m.sticker}</div>`;
                 }
                 
                 const safeText = m.text ? m.text.replace(/</g, "&lt;").replace(/>/g, "&gt;") : '';
@@ -1613,21 +1758,42 @@
                 const vipClass = isVipPlus ? 'vip-plus-nickname' : (isVip ? 'vip-nickname' : '');
                 const vipBadge = isVipPlus ? '<span class="vip-plus-badge">👑</span>' : (isVip ? '<span class="vip-badge">💎</span>' : '');
                 const vStyles = this.getVipInlineStyles(m);
+                
+                let customTagHtml = '';
+                if (isVipPlus && m.vipTagText) {
+                    customTagHtml = `<span class="custom-vip-tag" style="color: ${m.vipTagColor}; border-color: ${m.vipTagColor};">${m.vipTagText}</span>`;
+                }
+
+                // Кастомный цвет пузыря для VIP++
+                let customBubble = '';
+                if (isVipPlus && m.vipBubbleColor) {
+                    customBubble = `background: linear-gradient(135deg, ${m.vipBubbleColor}cc, ${m.vipBubbleColor}80); border: 1px solid ${m.vipBubbleColor}; box-shadow: 0 5px 15px ${m.vipBubbleColor}40;`;
+                }
 
                 return `
                 <div class="message-item-wrapper" style="position:relative; width:100%;">
-                    <div class="message ${m.uid === this.user.id ? 'my-msg' : 'other-msg'} ${m.isAdmin ? 'admin-msg' : ''}" 
-                         onclick="App.setReply('${m.name}', '${safeText || (m.audio ? 'Голосовое сообщение' : 'Фотография')}')"
-                         ondblclick="App.copyMessageText('${safeText}')">
-                        ${delBtnHtml}
-                        <div class="msg-info">
-                            <b class="${vipClass}" onclick="event.stopPropagation(); App.showUserProfile('${m.uid}')" style="cursor:pointer; ${isVipPlus ? vStyles.nick : ''}">${m.name}</b> ${m.isAdmin ? '<div class="verify-badge"></div>' : ''} ${vipBadge}
-                            <span class="msg-time">${m.time ? this.formatTime(m.time) : ''}</span>
+                    <div style="display: flex; gap: 8px; align-items: flex-end; justify-content: ${m.uid === this.user.id ? 'flex-end' : 'flex-start'}; width: 100%; margin-bottom: 5px;">
+                        
+                        ${m.uid !== this.user.id ? `<img src="${m.photo || 'https://api.dicebear.com/7.x/pixel-art/svg?seed=Anon'}" class="chat-avatar-mini" style="border-color: ${isVipPlus ? (m.vipColor1 || 'var(--primary)') : 'var(--primary)'};" onclick="App.showUserProfile('${m.uid}')">` : ''}
+
+                        <div class="message ${m.uid === this.user.id ? 'my-msg' : 'other-msg'} ${m.isAdmin ? 'admin-msg' : ''}" 
+                             style="${customBubble} margin:0;"
+                             onclick="App.setReply('${m.name}', '${safeText || (m.audio ? 'Голосовое сообщение' : (m.sticker ? 'Стикер' : 'Фотография'))}')"
+                             ondblclick="App.copyMessageText('${safeText}')">
+                            ${delBtnHtml}
+                            <div class="msg-info">
+                                <b class="${vipClass}" onclick="event.stopPropagation(); App.showUserProfile('${m.uid}')" style="cursor:pointer; ${isVipPlus ? vStyles.nick : ''}">${m.name}</b> ${m.isAdmin ? '<div class="verify-badge"></div>' : ''} ${vipBadge} ${customTagHtml}
+                                <span class="msg-time">${m.time ? this.formatTime(m.time) : ''}</span>
+                            </div>
+                            ${replyHtml}
+                            ${safeText}
+                            ${stickerHtml}
+                            ${audioHtml}
+                            ${imgHtml}
                         </div>
-                        ${replyHtml}
-                        ${safeText}
-                        ${audioHtml}
-                        ${imgHtml}
+
+                        ${m.uid === this.user.id ? `<img src="${m.photo || 'https://api.dicebear.com/7.x/pixel-art/svg?seed=Anon'}" class="chat-avatar-mini" style="border-color: ${isVipPlus ? (m.vipColor1 || 'var(--primary)') : 'var(--primary)'};" onclick="App.showUserProfile('${m.uid}')">` : ''}
+
                     </div>
                 </div>
                 `;
@@ -1675,15 +1841,20 @@
                 const vipBadge = isVipPlus ? '<span class="vip-plus-badge" style="font-size:14px;">👑</span>' : (isVip ? '<span class="vip-badge" style="font-size:12px;">💎</span>' : '');
                 const vipFrame = isVipPlus ? 'vip-plus-frame' : (isVip ? 'vip-frame' : '');
                 const vStyles = this.getVipInlineStyles(u);
+                
+                let customTagHtml = '';
+                if (isVipPlus && u.vipTagText) {
+                    customTagHtml = `<span class="custom-vip-tag" style="color: ${u.vipTagColor}; border-color: ${u.vipTagColor};">${u.vipTagText}</span>`;
+                }
 
                 return `
                 <div class="leader-item" style="background: ${itemBg};">
                     <div class="rank" style="${i < 3 ? 'color:' + nameColor + '; text-shadow:' + nameShadow : ''}">#${i+1}</div>
-                    <img src="${u.photo}" class="avatar-small ${vipFrame}" style="${isVipPlus ? vStyles.frame : `border: ${avatarBorder}`}; cursor: pointer;" onclick="App.showUserProfile('${u.id}')">
+                    <img src="${u.photo || 'https://api.dicebear.com/7.x/pixel-art/svg?seed=Anon'}" class="avatar-small ${vipFrame}" style="${isVipPlus ? vStyles.frame : `border: ${avatarBorder}`}; cursor: pointer;" onclick="App.showUserProfile('${u.id}')">
                     <div class="level-badge">LVL ${lvl}</div>
                     <div style="flex:1; margin-left: 10px;" onclick="App.showUserProfile('${u.id}')" style="cursor: pointer;">
-                        <div style="font-weight:800; display:flex; align-items:center; gap:5px; font-size: 15px; color: ${nameColor}; text-shadow: ${nameShadow}; cursor: pointer;" class="${vipClass}">
-                            <span ${isVipPlus ? `style="${vStyles.nick}"` : ''}>${badgeOrEmoji}${u.name}</span> ${this.admins.includes(u.name) ? '<div class="verify-badge"></div>' : ''} ${vipBadge}
+                        <div style="font-weight:800; display:flex; align-items:center; gap:5px; font-size: 15px; color: ${nameColor}; text-shadow: ${nameShadow}; cursor: pointer; flex-wrap:wrap;" class="${vipClass}">
+                            <span ${isVipPlus ? `style="${vStyles.nick}"` : ''}>${badgeOrEmoji}${u.name}</span> ${this.admins.includes(u.name) ? '<div class="verify-badge"></div>' : ''} ${vipBadge} ${customTagHtml}
                         </div>
                         <div style="font-size:11px; color:#aaa; margin-top: 4px;">ID: ${u.id} | ${u.bio || 'Новичок'}</div>
                     </div>
@@ -1704,12 +1875,17 @@
             const vipClass = isVipPlus ? 'vip-plus-nickname' : (isVip ? 'vip-nickname' : '');
             const vipBadge = isVipPlus ? '<span class="vip-plus-badge" style="font-size:20px;">👑</span>' : (isVip ? '<span class="vip-badge" style="font-size:18px;">💎</span>' : '');
             const vStyles = this.getVipInlineStyles(this.user);
+            
+            let customTagHtml = '';
+            if (isVipPlus && this.user.vipTagText) {
+                customTagHtml = `<span class="custom-vip-tag" style="color: ${this.user.vipTagColor}; border-color: ${this.user.vipTagColor}; margin-left: 10px; font-size: 11px; padding: 4px 8px;">${this.user.vipTagText}</span>`;
+            }
 
-            document.getElementById('my-name-display').innerHTML = `<span class="${vipClass}" ${isVipPlus ? `style="${vStyles.nick}"` : ''}>${this.user.name}</span>` + (isAdm ? ' <div class="verify-badge" style="width:24px; height:24px;"></div>' : '') + vipBadge;
+            document.getElementById('my-name-display').innerHTML = `<span class="${vipClass}" ${isVipPlus ? `style="${vStyles.nick}"` : ''}>${this.user.name}</span>` + (isAdm ? ' <div class="verify-badge" style="width:24px; height:24px;"></div>' : '') + vipBadge + customTagHtml;
             document.getElementById('my-bio-display').innerText = this.user.bio || 'Ворвался в проект';
             
             const avatarElem = document.getElementById('my-avatar');
-            avatarElem.src = this.user.photo;
+            avatarElem.src = this.user.photo || 'https://api.dicebear.com/7.x/pixel-art/svg?seed=Anon';
             
             avatarElem.className = `avatar-small`;
             if (isVipPlus) {
@@ -1718,6 +1894,9 @@
                 document.getElementById('vip-plus-settings').style.display = 'block';
                 document.getElementById('vip-color-1').value = this.user.vipColor1 || '#ffaa00';
                 document.getElementById('vip-color-2').value = this.user.vipColor2 || '#ff0055';
+                document.getElementById('vip-bubble-color').value = this.user.vipBubbleColor || '#7000ff';
+                document.getElementById('vip-tag-text').value = this.user.vipTagText || '';
+                document.getElementById('vip-tag-color').value = this.user.vipTagColor || '#00f2ff';
             } else {
                 if(isVip) avatarElem.classList.add('vip-frame');
                 avatarElem.setAttribute('style', `width:130px; height:130px; border:4px solid var(--primary); box-shadow: 0 0 25px rgba(0,242,255,0.5); margin-bottom:15px; transition: 0.5s; position:relative; z-index:2;`);
@@ -1789,9 +1968,7 @@
         },
 
         adminAction(type) {
-            if (!this.admins.includes(this.user.name)) {
-                return this.showToast('⛔ Ошибка доступа! У вас нет прав администратора.');
-            }
+            if (!this.admins.includes(this.user.name)) return this.showToast('⛔ Ошибка доступа!');
 
             if(type === 'clearChat' && confirm('ВНИМАНИЕ! Снести весь чат? Это действие невозможно отменить!')) {
                 db.ref('chat').remove().catch(e => this.showToast(e.message));
@@ -1805,9 +1982,7 @@
                         this.showToast('💀 Юзер ' + id + ' стерт из базы данных!'); 
                         document.getElementById('target-id').value = '';
                     }
-                } else {
-                    this.showToast('⚠️ Введи ID пользователя!');
-                }
+                } else this.showToast('⚠️ Введи ID пользователя!');
             }
             if(type === 'giveVip') {
                 const id = document.getElementById('vip-target-id').value;
@@ -1817,9 +1992,7 @@
                         this.showToast('💎 Пользователю ' + id + ' успешно выдан VIP!');
                         document.getElementById('vip-target-id').value = '';
                     }
-                } else {
-                    this.showToast('⚠️ Введи ID пользователя для выдачи!');
-                }
+                } else this.showToast('⚠️ Введи ID пользователя для выдачи!');
             }
             if(type === 'giveVipPlus') {
                 const id = document.getElementById('vip-target-id').value;
@@ -1829,9 +2002,7 @@
                         this.showToast('👑 Пользователю ' + id + ' выдан АБСОЛЮТНЫЙ VIP++!');
                         document.getElementById('vip-target-id').value = '';
                     }
-                } else {
-                    this.showToast('⚠️ Введи ID пользователя для выдачи VIP++!');
-                }
+                } else this.showToast('⚠️ Введи ID пользователя для выдачи VIP++!');
             }
             if(type === 'banUser') {
                 const id = document.getElementById('ban-target-id').value;
@@ -1841,9 +2012,7 @@
                         this.showToast('🚫 Пользователь ' + id + ' заблокирован!');
                         document.getElementById('ban-target-id').value = '';
                     }
-                } else {
-                    this.showToast('⚠️ Введи ID пользователя для бана!');
-                }
+                } else this.showToast('⚠️ Введи ID пользователя для бана!');
             }
             if(type === 'unbanUser') {
                 const id = document.getElementById('ban-target-id').value;
@@ -1853,9 +2022,7 @@
                         this.showToast('✅ Пользователь ' + id + ' успешно разбанен!');
                         document.getElementById('ban-target-id').value = '';
                     }
-                } else {
-                    this.showToast('⚠️ Введи ID пользователя для разбана!');
-                }
+                } else this.showToast('⚠️ Введи ID пользователя для разбана!');
             }
             if(type === 'toggleMaintenance') {
                 db.ref('system/maintenance').once('value').then(snap => {
@@ -1869,7 +2036,6 @@
         toggleAuth(l) {
             const login = document.getElementById('login-box');
             const reg = document.getElementById('reg-box');
-            
             if(l) {
                 reg.style.display = 'none';
                 login.style.display = 'block';
