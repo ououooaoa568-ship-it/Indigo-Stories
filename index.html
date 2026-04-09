@@ -483,8 +483,8 @@
             <p style="font-size: 13px; color: #aaa; margin-bottom: 20px; line-height: 1.5;">Абсолютный максимум для истинных Боссов проекта:</p>
             
             <div style="text-align: left; background: rgba(0,0,0,0.4); padding: 15px; border-radius: 15px; border: 1px solid rgba(255, 0, 85, 0.2); margin-bottom: 20px;">
-                <div style="margin-bottom: 10px; font-size: 13px;">🔥 <b class="vip-plus-nickname">Спец. градиент VIP++</b> для ника</div>
-                <div style="margin-bottom: 10px; font-size: 13px;">🔥 <b>Красно-золотая рамка</b> в профиле</div>
+                <div style="margin-bottom: 10px; font-size: 13px;">🔥 <b class="vip-plus-nickname">Спец. градиент VIP++</b> (Теперь настраиваемый!)</div>
+                <div style="margin-bottom: 10px; font-size: 13px;">🔥 <b>Красно-золотая рамка</b> (Кастомные цвета обводки)</div>
                 <div style="margin-bottom: 10px; font-size: 13px;">🔥 Знак Короны (👑) в топе и чате</div>
                 <div style="margin-bottom: 10px; font-size: 13px;">🔥 <b>Обложка профиля (Фон)</b> + Голосовой чат</div>
             </div>
@@ -532,6 +532,18 @@
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
                 СИСТЕМНЫЕ НАСТРОЙКИ
             </h3>
+
+            <div class="settings-block" id="vip-plus-settings" style="display:none; border-color: var(--vip-plus-2); box-shadow: inset 0 0 20px rgba(255, 0, 85, 0.1);">
+                <h4 style="font-size:11px; color:var(--vip-plus-1); margin-bottom:15px; text-transform:uppercase; letter-spacing:2px; font-weight:900;">👑 НАСТРОЙКИ VIP++</h4>
+                <div class="input-group">
+                    <label>Градиент Ника и Рамки (Цвет 1)</label>
+                    <input type="color" id="vip-color-1" value="#ffaa00" style="padding: 5px; height: 50px; cursor: pointer; border-radius: 12px;">
+                </div>
+                <div class="input-group" style="margin-bottom: 0;">
+                    <label>Градиент Ника и Рамки (Цвет 2)</label>
+                    <input type="color" id="vip-color-2" value="#ff0055" style="padding: 5px; height: 50px; cursor: pointer; border-radius: 12px;">
+                </div>
+            </div>
             
             <div class="settings-block">
                 <h4 style="font-size:11px; color:var(--primary); margin-bottom:15px; text-transform:uppercase; letter-spacing:2px; font-weight:900;">Внешний вид и данные</h4>
@@ -580,6 +592,18 @@
                         <option value="#a29bfe">Indigo Special</option>
                         <option value="#ff00ff">Miami Pink</option>
                     </select>
+                </div>
+            </div>
+
+            <div class="settings-block">
+                <h4 style="font-size:11px; color:var(--primary); margin-bottom:15px; text-transform:uppercase; letter-spacing:2px; font-weight:900;">СЕКРЕТНОСТЬ И ДРУЗЬЯ</h4>
+                <div class="toggle-row">
+                    <span style="font-size:14px; font-weight:600;">ЛС только от друзей <br><small style="font-size: 9px; color: #888; font-weight: 400;">Никто кроме друзей не сможет написать</small></span>
+                    <label class="switch"><input type="checkbox" id="pm-friends-only"><span class="slider"></span></label>
+                </div>
+                <div class="toggle-row">
+                    <span style="font-size:14px; font-weight:600;">Секретные чаты (ЛС) <br><small style="font-size: 9px; color: #888; font-weight: 400;">Сообщения испарятся через 24 часа</small></span>
+                    <label class="switch"><input type="checkbox" id="pm-auto-delete"><span class="slider"></span></label>
                 </div>
             </div>
 
@@ -679,7 +703,11 @@
             <span id="modal-lvl" style="font-size:11px; color:var(--warning); display:block; font-weight:900; margin-top:8px; text-transform: uppercase; letter-spacing: 1px;">УРОВЕНЬ 1</span>
         </div>
         
-        <div id="modal-pm-action" style="display:none; position:relative; z-index:2; margin-top: 15px;">
+        <div id="modal-friend-action" style="display:none; position:relative; z-index:2; margin-top: 15px;">
+            <button id="friend-btn" class="btn-main" style="padding: 15px; font-size: 12px; background: rgba(255,255,255,0.1); border: 1px solid var(--primary); box-shadow: none;" onclick="App.toggleFriend()">ДОБАВИТЬ В ДРУЗЬЯ</button>
+        </div>
+
+        <div id="modal-pm-action" style="display:none; position:relative; z-index:2; margin-top: 10px;">
             <button class="btn-main" style="padding: 15px; font-size: 12px; background: linear-gradient(135deg, var(--primary), var(--secondary)); box-shadow: 0 5px 15px rgba(0,242,255,0.4);" onclick="App.startPM()">НАПИСАТЬ В ЛС</button>
         </div>
 
@@ -758,6 +786,7 @@
         chatLogStore: [], 
         currentPmUserId: null,
         currentPmUserName: null,
+        currentPmAutoDelete: false,
 
         init() {
             const saved = localStorage.getItem('indigo_user');
@@ -815,6 +844,16 @@
         },
 
         setupVoice() {
+        },
+
+        getVipInlineStyles(u) {
+            if (!u || !u.isVipPlus) return { nick: '', frame: '' };
+            const c1 = u.vipColor1 || '#ffaa00';
+            const c2 = u.vipColor2 || '#ff0055';
+            return {
+                nick: `background: linear-gradient(90deg, ${c1}, ${c2}, ${c1}); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 0 10px ${c2}80;`,
+                frame: `border: 3px solid transparent !important; background: linear-gradient(#050508, #050508) padding-box, linear-gradient(45deg, ${c1}, ${c2}) border-box !important; box-shadow: 0 0 25px ${c2}80 !important;`
+            };
         },
 
         startVoiceInput() {
@@ -877,7 +916,9 @@
                 time: Date.now(),
                 isAdmin: senderIsAdmin,
                 isVip: senderIsVip,
-                isVipPlus: senderIsVipPlus
+                isVipPlus: senderIsVipPlus,
+                vipColor1: this.user.vipColor1 || '#ffaa00',
+                vipColor2: this.user.vipColor2 || '#ff0055'
             };
 
             if(this.replyingTo) {
@@ -992,7 +1033,6 @@
             }, err => console.error(err));
         },
 
-        // ИСПРАВЛЕНИЕ: Безопасный вход и проверка ошибок БД через Promises
         auth(mode) {
             const u = document.getElementById(mode === 'login' ? 'log-user' : 'reg-user').value.trim();
             const p = document.getElementById(mode === 'login' ? 'log-pass' : 'reg-pass').value;
@@ -1033,7 +1073,6 @@
             } else {
                 db.ref('users').once('value').then(snap => {
                     const allUsers = snap.val() || {};
-                    // ИСПРАВЛЕНИЕ: Логин теперь не зависит от регистра букв пользователя (case-insensitive search)
                     const found = Object.values(allUsers).find(x => x && x.name && String(x.name).toLowerCase() === String(u).toLowerCase() && x.pass === safePass);
                     if(found) {
                         this.user = found;
@@ -1050,7 +1089,6 @@
             }
         },
 
-        // ИСПРАВЛЕНИЕ: Добавлен аргумент btnElement для точной привязки контекста навигации
         nav(id, btnElement) {
             document.querySelectorAll('.screen').forEach(s => {
                 s.style.opacity = '0';
@@ -1142,7 +1180,9 @@
                 time: Date.now(),
                 isAdmin: senderIsAdmin,
                 isVip: senderIsVip,
-                isVipPlus: senderIsVipPlus
+                isVipPlus: senderIsVipPlus,
+                vipColor1: this.user.vipColor1 || '#ffaa00',
+                vipColor2: this.user.vipColor2 || '#ff0055'
             };
 
             if(this.replyingTo) {
@@ -1228,6 +1268,15 @@
                 let up = {};
                 if(nName) up.name = nName;
                 if(nBio) up.bio = nBio;
+                
+                if(this.user.isVipPlus) {
+                    up.vipColor1 = document.getElementById('vip-color-1').value;
+                    up.vipColor2 = document.getElementById('vip-color-2').value;
+                }
+
+                up.pmFriendsOnly = document.getElementById('pm-friends-only').checked;
+                up.pmAutoDelete = document.getElementById('pm-auto-delete').checked;
+
                 if(this.tempBase64Photo) {
                     up.photo = this.tempBase64Photo;
                     document.getElementById('upload-status').style.display = 'none';
@@ -1291,6 +1340,26 @@
             b.scrollTo({ top: 0, behavior: 'smooth' });
         },
 
+        toggleFriend() {
+            const pmAction = document.getElementById('modal-pm-action');
+            const targetUid = pmAction.dataset.uid;
+            if(!targetUid) return;
+
+            const isFriend = this.user.friends && this.user.friends[targetUid];
+
+            if (isFriend) {
+                db.ref(`users/${this.user.id}/friends/${targetUid}`).remove().then(() => {
+                    this.showToast('💔 Удален из друзей');
+                    document.getElementById('friend-btn').innerText = 'ДОБАВИТЬ В ДРУЗЬЯ';
+                });
+            } else {
+                db.ref(`users/${this.user.id}/friends/${targetUid}`).set(true).then(() => {
+                    this.showToast('🤝 Добавлен в друзья');
+                    document.getElementById('friend-btn').innerText = 'УДАЛИТЬ ИЗ ДРУЗЕЙ';
+                });
+            }
+        },
+
         showUserProfile(uid) {
             db.ref('users/' + uid).once('value').then(snap => {
                 const u = snap.val();
@@ -1302,14 +1371,17 @@
                 const vipClass = isVipPlus ? 'vip-plus-nickname' : (isVip ? 'vip-nickname' : '');
                 const vipBadge = isVipPlus ? '<span class="vip-plus-badge">👑</span>' : (isVip ? '<span class="vip-badge">💎</span>' : '');
                 const vipFrame = isVipPlus ? 'vip-plus-frame' : (isVip ? 'vip-frame' : '');
+                const vStyles = this.getVipInlineStyles(u);
 
-                document.getElementById('modal-name').innerHTML = `<span class="${vipClass}">${u.name}</span> ${this.admins.includes(u.name) ? '<div class="verify-badge"></div>' : ''} ${vipBadge}`;
+                document.getElementById('modal-name').innerHTML = `<span class="${vipClass}" ${isVipPlus ? `style="${vStyles.nick}"` : ''}>${u.name}</span> ${this.admins.includes(u.name) ? '<div class="verify-badge"></div>' : ''} ${vipBadge}`;
                 document.getElementById('modal-id').innerText = 'ID: ' + u.id;
                 document.getElementById('modal-bio').innerText = u.bio || 'Нет информации';
                 
                 const avatar = document.getElementById('modal-avatar');
                 avatar.src = u.photo;
                 avatar.className = `avatar-small ${vipFrame}`;
+                if (isVipPlus) avatar.style.cssText = `width:110px; height:110px; margin-top:40px; margin-bottom:15px; position:relative; z-index:2; ${vStyles.frame}`;
+                else avatar.style.cssText = `width:110px; height:110px; border:3px solid var(--primary); margin-top:40px; margin-bottom:15px; position:relative; z-index:2; box-shadow: 0 0 20px rgba(0,242,255,0.4);`;
                 
                 const cover = document.getElementById('modal-cover');
                 if(u.coverImage) {
@@ -1323,12 +1395,30 @@
                 document.getElementById('modal-lvl').innerText = 'УРОВЕНЬ ' + this.getLevel(u.xp);
 
                 const pmAction = document.getElementById('modal-pm-action');
+                const friendAction = document.getElementById('modal-friend-action');
+                const friendBtn = document.getElementById('friend-btn');
+                
+                const existingRestrictedMsg = document.getElementById('pm-restricted-msg');
+                if(existingRestrictedMsg) existingRestrictedMsg.remove();
+
                 if (u.id !== this.user.id) {
-                    pmAction.style.display = 'block';
+                    friendAction.style.display = 'block';
+                    const amIFriend = this.user.friends && this.user.friends[u.id];
+                    friendBtn.innerText = amIFriend ? 'УДАЛИТЬ ИЗ ДРУЗЕЙ' : 'ДОБАВИТЬ В ДРУЗЬЯ';
+                    
+                    const isTheyFriendWithMe = u.friends && u.friends[this.user.id];
+                    if (u.pmFriendsOnly && !isTheyFriendWithMe && !this.admins.includes(this.user.name)) {
+                        pmAction.style.display = 'none';
+                        friendAction.insertAdjacentHTML('afterend', '<p id="pm-restricted-msg" style="color:#ff4757; font-size:10px; margin-top:10px; font-weight:bold;">🔒 Пользователь принимает ЛС только от друзей</p>');
+                    } else {
+                        pmAction.style.display = 'block';
+                    }
+
                     pmAction.dataset.uid = u.id;
                     pmAction.dataset.name = u.name;
                 } else {
                     pmAction.style.display = 'none';
+                    friendAction.style.display = 'none';
                 }
 
                 const adminActions = document.getElementById('modal-admin-actions');
@@ -1372,15 +1462,21 @@
             this.currentPmUserName = otherName;
             const chatId = this.getChatId(this.user.id, otherUid);
 
-            document.getElementById('pm-chat-title').innerText = 'Диалог с ' + otherName;
-            document.getElementById('pm-chat-modal').style.display = 'flex';
+            db.ref('users/' + otherUid).once('value').then(snap => {
+                const otherUser = snap.val();
+                this.currentPmAutoDelete = this.user.pmAutoDelete || (otherUser && otherUser.pmAutoDelete);
 
-            db.ref('pms/' + chatId + '/messages').off();
-            db.ref('pms/' + chatId + '/messages').on('value', snap => {
-                const data = snap.val();
-                const msgsArray = data ? Object.keys(data).map(key => ({...data[key], key})) : [];
-                this.renderPmChat(msgsArray);
-            }, err => console.error(err));
+                const titleLock = this.currentPmAutoDelete ? ' 🔒 <span style="font-size:10px; color:var(--error);">(Секретно)</span>' : '';
+                document.getElementById('pm-chat-title').innerHTML = 'Диалог с ' + otherName + titleLock;
+                document.getElementById('pm-chat-modal').style.display = 'flex';
+
+                db.ref('pms/' + chatId + '/messages').off();
+                db.ref('pms/' + chatId + '/messages').on('value', chatSnap => {
+                    const data = chatSnap.val();
+                    const msgsArray = data ? Object.keys(data).map(key => ({...data[key], key})) : [];
+                    this.renderPmChat(msgsArray);
+                }, err => console.error(err));
+            });
         },
 
         closePM() {
@@ -1422,7 +1518,15 @@
 
         renderPmChat(msgs) {
             const b = document.getElementById('pm-chat-messages');
-            b.innerHTML = msgs.map(m => {
+            
+            const validMsgs = msgs.filter(m => {
+                if (this.currentPmAutoDelete) {
+                    return (Date.now() - m.time) < (24 * 60 * 60 * 1000); // 24 часа жизни
+                }
+                return true;
+            });
+
+            b.innerHTML = validMsgs.map(m => {
                 const safeText = m.text ? m.text.replace(/</g, "&lt;").replace(/>/g, "&gt;") : '';
                 return `
                 <div class="message-item-wrapper" style="position:relative; width:100%;">
@@ -1508,6 +1612,7 @@
                 
                 const vipClass = isVipPlus ? 'vip-plus-nickname' : (isVip ? 'vip-nickname' : '');
                 const vipBadge = isVipPlus ? '<span class="vip-plus-badge">👑</span>' : (isVip ? '<span class="vip-badge">💎</span>' : '');
+                const vStyles = this.getVipInlineStyles(m);
 
                 return `
                 <div class="message-item-wrapper" style="position:relative; width:100%;">
@@ -1516,7 +1621,7 @@
                          ondblclick="App.copyMessageText('${safeText}')">
                         ${delBtnHtml}
                         <div class="msg-info">
-                            <b class="${vipClass}" onclick="event.stopPropagation(); App.showUserProfile('${m.uid}')" style="cursor:pointer;">${m.name}</b> ${m.isAdmin ? '<div class="verify-badge"></div>' : ''} ${vipBadge}
+                            <b class="${vipClass}" onclick="event.stopPropagation(); App.showUserProfile('${m.uid}')" style="cursor:pointer; ${isVipPlus ? vStyles.nick : ''}">${m.name}</b> ${m.isAdmin ? '<div class="verify-badge"></div>' : ''} ${vipBadge}
                             <span class="msg-time">${m.time ? this.formatTime(m.time) : ''}</span>
                         </div>
                         ${replyHtml}
@@ -1569,15 +1674,16 @@
                 const vipClass = isVipPlus ? 'vip-plus-nickname' : (isVip ? 'vip-nickname' : '');
                 const vipBadge = isVipPlus ? '<span class="vip-plus-badge" style="font-size:14px;">👑</span>' : (isVip ? '<span class="vip-badge" style="font-size:12px;">💎</span>' : '');
                 const vipFrame = isVipPlus ? 'vip-plus-frame' : (isVip ? 'vip-frame' : '');
+                const vStyles = this.getVipInlineStyles(u);
 
                 return `
                 <div class="leader-item" style="background: ${itemBg};">
                     <div class="rank" style="${i < 3 ? 'color:' + nameColor + '; text-shadow:' + nameShadow : ''}">#${i+1}</div>
-                    <img src="${u.photo}" class="avatar-small ${vipFrame}" style="border: ${avatarBorder}; cursor: pointer;" onclick="App.showUserProfile('${u.id}')">
+                    <img src="${u.photo}" class="avatar-small ${vipFrame}" style="${isVipPlus ? vStyles.frame : `border: ${avatarBorder}`}; cursor: pointer;" onclick="App.showUserProfile('${u.id}')">
                     <div class="level-badge">LVL ${lvl}</div>
                     <div style="flex:1; margin-left: 10px;" onclick="App.showUserProfile('${u.id}')" style="cursor: pointer;">
                         <div style="font-weight:800; display:flex; align-items:center; gap:5px; font-size: 15px; color: ${nameColor}; text-shadow: ${nameShadow}; cursor: pointer;" class="${vipClass}">
-                            ${badgeOrEmoji}${u.name} ${this.admins.includes(u.name) ? '<div class="verify-badge"></div>' : ''} ${vipBadge}
+                            <span ${isVipPlus ? `style="${vStyles.nick}"` : ''}>${badgeOrEmoji}${u.name}</span> ${this.admins.includes(u.name) ? '<div class="verify-badge"></div>' : ''} ${vipBadge}
                         </div>
                         <div style="font-size:11px; color:#aaa; margin-top: 4px;">ID: ${u.id} | ${u.bio || 'Новичок'}</div>
                     </div>
@@ -1597,16 +1703,29 @@
             
             const vipClass = isVipPlus ? 'vip-plus-nickname' : (isVip ? 'vip-nickname' : '');
             const vipBadge = isVipPlus ? '<span class="vip-plus-badge" style="font-size:20px;">👑</span>' : (isVip ? '<span class="vip-badge" style="font-size:18px;">💎</span>' : '');
+            const vStyles = this.getVipInlineStyles(this.user);
 
-            document.getElementById('my-name-display').innerHTML = `<span class="${vipClass}">${this.user.name}</span>` + (isAdm ? ' <div class="verify-badge" style="width:24px; height:24px;"></div>' : '') + vipBadge;
+            document.getElementById('my-name-display').innerHTML = `<span class="${vipClass}" ${isVipPlus ? `style="${vStyles.nick}"` : ''}>${this.user.name}</span>` + (isAdm ? ' <div class="verify-badge" style="width:24px; height:24px;"></div>' : '') + vipBadge;
             document.getElementById('my-bio-display').innerText = this.user.bio || 'Ворвался в проект';
             
             const avatarElem = document.getElementById('my-avatar');
             avatarElem.src = this.user.photo;
             
-            avatarElem.classList.remove('vip-frame', 'vip-plus-frame');
-            if(isVipPlus) avatarElem.classList.add('vip-plus-frame');
-            else if(isVip) avatarElem.classList.add('vip-frame');
+            avatarElem.className = `avatar-small`;
+            if (isVipPlus) {
+                avatarElem.classList.add('vip-plus-frame');
+                avatarElem.setAttribute('style', `width:130px; height:130px; margin-bottom:15px; transition: 0.5s; position:relative; z-index:2; ${vStyles.frame}`);
+                document.getElementById('vip-plus-settings').style.display = 'block';
+                document.getElementById('vip-color-1').value = this.user.vipColor1 || '#ffaa00';
+                document.getElementById('vip-color-2').value = this.user.vipColor2 || '#ff0055';
+            } else {
+                if(isVip) avatarElem.classList.add('vip-frame');
+                avatarElem.setAttribute('style', `width:130px; height:130px; border:4px solid var(--primary); box-shadow: 0 0 25px rgba(0,242,255,0.5); margin-bottom:15px; transition: 0.5s; position:relative; z-index:2;`);
+                document.getElementById('vip-plus-settings').style.display = 'none';
+            }
+
+            document.getElementById('pm-friends-only').checked = this.user.pmFriendsOnly || false;
+            document.getElementById('pm-auto-delete').checked = this.user.pmAutoDelete || false;
 
             const coverElem = document.getElementById('my-cover-display');
             if (this.user.coverImage) {
