@@ -83,7 +83,7 @@
         }
         @keyframes floatSticker {
             0% { transform: translateY(0px) scale(1); }
-            50% { transform: translateY(-5px) scale(1.1); }
+            50% { transform: translateY(-5px) scale(1.05); }
             100% { transform: translateY(0px) scale(1); }
         }
 
@@ -304,22 +304,11 @@
         .mic-btn-active { color: var(--error) !important; border-color: var(--error) !important; animation: pulseRecord 1.5s infinite; }
 
         /* СТИКЕРЫ ПАНЕЛЬ */
-        #sticker-panel-ui {
+        #sticker-panel-ui, #pm-sticker-panel-ui {
             display: none; background: rgba(0,0,0,0.7); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
             padding: 15px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); margin-top: 10px; margin-bottom: 10px;
-            gap: 15px; flex-wrap: wrap; justify-content: center; box-shadow: inset 0 0 20px rgba(0,242,255,0.1);
+            gap: 15px; flex-direction: column; align-items: center; box-shadow: inset 0 0 20px rgba(0,242,255,0.1);
             animation: fadeInScale 0.3s ease;
-        }
-        .sticker-item {
-            font-size: 35px; cursor: pointer; transition: 0.2s; user-select: none;
-            display: flex; justify-content: center; align-items: center; width: 45px; height: 45px;
-        }
-        .sticker-item:hover { transform: scale(1.2) translateY(-5px); }
-        .sticker-vip {
-            filter: drop-shadow(0 0 10px var(--primary)); position: relative;
-        }
-        .sticker-vip::after {
-            content: 'VIP++'; position: absolute; bottom: -8px; font-size: 8px; color: var(--vip-plus-1); font-weight: 900; letter-spacing: 1px; text-shadow: 0 0 5px var(--vip-plus-2);
         }
 
         /* Лидеры */
@@ -473,15 +462,14 @@
             </div>
 
             <div id="sticker-panel-ui">
-                <span class="sticker-item" onclick="App.sendSticker('😎')">😎</span>
-                <span class="sticker-item" onclick="App.sendSticker('🔥')">🔥</span>
-                <span class="sticker-item" onclick="App.sendSticker('💀')">💀</span>
-                <span class="sticker-item" onclick="App.sendSticker('❤️')">❤️</span>
-                <span class="sticker-item" onclick="App.sendSticker('🤡')">🤡</span>
-                <span class="sticker-item" onclick="App.sendSticker('👍')">👍</span>
-                <span class="sticker-item sticker-vip" onclick="App.sendSticker('👑', true)">👑</span>
-                <span class="sticker-item sticker-vip" onclick="App.sendSticker('💎', true)" style="filter: drop-shadow(0 0 10px #00f2ff);">💎</span>
-                <span class="sticker-item sticker-vip" onclick="App.sendSticker('🚀', true)" style="filter: drop-shadow(0 0 10px #ff0055);">🚀</span>
+                <span style="font-size: 11px; color: var(--vip-plus-1); font-weight: 900; text-transform: uppercase; letter-spacing: 1px;">👑 Твои анимированные стикеры</span>
+                <div id="my-custom-stickers" style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center; width:100%;">
+                    </div>
+                <label class="btn-main" style="padding: 12px; font-size: 11px; cursor: pointer; margin-top: 10px; width: 100%; text-align: center; background: rgba(255,255,255,0.05); border: 1px dashed var(--primary); box-shadow: none;">
+                    ➕ ЗАГРУЗИТЬ СТИКЕР (GIF/WEBP)
+                    <input type="file" accept="image/gif, image/webp" style="display:none;" onchange="App.uploadCustomSticker(event)">
+                </label>
+                <div style="font-size: 9px; color: #888; text-align: center; width: 100%;">ПКМ (или долгий тап) по стикеру для удаления</div>
             </div>
 
             <div class="chat-tools">
@@ -555,8 +543,8 @@
             
             <div style="text-align: left; background: rgba(0,0,0,0.4); padding: 15px; border-radius: 15px; border: 1px solid rgba(255, 0, 85, 0.2); margin-bottom: 20px;">
                 <div style="margin-bottom: 10px; font-size: 13px;">🔥 <b class="vip-plus-nickname">Спец. градиент VIP++</b> (Настраиваемый)</div>
+                <div style="margin-bottom: 10px; font-size: 13px;">🔥 <b>Свои Анимированные Стикеры</b> (Загрузка GIF)</div>
                 <div style="margin-bottom: 10px; font-size: 13px;">🔥 <b>Кастомный цвет сообщения (Пузыря в чате)</b></div>
-                <div style="margin-bottom: 10px; font-size: 13px;">🔥 <b>Эксклюзивные Неоновые VIP-Стикеры</b></div>
                 <div style="margin-bottom: 10px; font-size: 13px;">🔥 <b>Кастомный ТЕГ (Роль)</b> рядом с ником</div>
                 <div style="margin-bottom: 10px; font-size: 13px;">🔥 Красно-золотая рамка аватара</div>
                 <div style="margin-bottom: 10px; font-size: 13px;">🔥 <b>Обложка профиля (Фон)</b> + Голосовой чат</div>
@@ -849,16 +837,14 @@
     <div class="glass-card chat-container-wrap" style="flex:1; display:flex; flex-direction:column; margin-bottom:0;">
         <div id="pm-chat-messages" style="flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:15px; padding-right:10px; scroll-behavior:smooth;"></div>
         
-        <div id="pm-sticker-panel-ui" style="display: none; background: rgba(0,0,0,0.7); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); padding: 15px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); margin-top: 10px; margin-bottom: 10px; gap: 15px; flex-wrap: wrap; justify-content: center; box-shadow: inset 0 0 20px rgba(0,242,255,0.1); animation: fadeInScale 0.3s ease;">
-            <span class="sticker-item" onclick="App.sendPmSticker('😎')">😎</span>
-            <span class="sticker-item" onclick="App.sendPmSticker('🔥')">🔥</span>
-            <span class="sticker-item" onclick="App.sendPmSticker('💀')">💀</span>
-            <span class="sticker-item" onclick="App.sendPmSticker('❤️')">❤️</span>
-            <span class="sticker-item" onclick="App.sendPmSticker('🤡')">🤡</span>
-            <span class="sticker-item" onclick="App.sendPmSticker('👍')">👍</span>
-            <span class="sticker-item sticker-vip" onclick="App.sendPmSticker('👑', true)">👑</span>
-            <span class="sticker-item sticker-vip" onclick="App.sendPmSticker('💎', true)" style="filter: drop-shadow(0 0 10px #00f2ff);">💎</span>
-            <span class="sticker-item sticker-vip" onclick="App.sendPmSticker('🚀', true)" style="filter: drop-shadow(0 0 10px #ff0055);">🚀</span>
+        <div id="pm-sticker-panel-ui" style="display: none; background: rgba(0,0,0,0.7); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); padding: 15px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); margin-top: 10px; margin-bottom: 10px; gap: 15px; flex-direction: column; align-items: center; box-shadow: inset 0 0 20px rgba(0,242,255,0.1); animation: fadeInScale 0.3s ease;">
+            <span style="font-size: 11px; color: var(--vip-plus-1); font-weight: 900; text-transform: uppercase; letter-spacing: 1px;">👑 Твои анимированные стикеры</span>
+            <div id="pm-my-custom-stickers" style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center; width:100%;">
+                </div>
+            <label class="btn-main" style="padding: 12px; font-size: 11px; cursor: pointer; margin-top: 10px; width: 100%; text-align: center; background: rgba(255,255,255,0.05); border: 1px dashed var(--primary); box-shadow: none;">
+                ➕ ЗАГРУЗИТЬ СТИКЕР (GIF/WEBP)
+                <input type="file" accept="image/gif, image/webp" style="display:none;" onchange="App.uploadCustomSticker(event)">
+            </label>
         </div>
 
         <div class="chat-tools" style="margin-top:15px;">
@@ -1181,6 +1167,7 @@
                     if(fresh) { 
                         this.user = fresh; 
                         localStorage.setItem('indigo_user', JSON.stringify(fresh));
+                        this.renderStickersUI(); // Обновляем UI стикеров
                         
                         if (this.user.isBanned) {
                             document.getElementById('ban-screen').style.display = 'flex';
@@ -1234,7 +1221,8 @@
                         isVipPlus: false,
                         isBanned: false,
                         vipTagText: '',
-                        vipTagColor: '#00f2ff'
+                        vipTagColor: '#00f2ff',
+                        customStickers: []
                     }).then(() => {
                         this.showToast('✅ Аккаунт создан! Теперь выполни вход.');
                         this.toggleAuth(true);
@@ -1326,12 +1314,76 @@
         },
 
         toggleStickersPanel(type) {
+            if (!this.user.isVipPlus) return this.showToast('👑 Анимированные стикеры доступны только Боссам VIP++!');
             const p = document.getElementById(type === 'pm' ? 'pm-sticker-panel-ui' : 'sticker-panel-ui');
             p.style.display = p.style.display === 'none' ? 'flex' : 'none';
+            this.renderStickersUI();
         },
 
-        sendSticker(emoji, isVipSticker = false) {
-            if (isVipSticker && !this.user.isVipPlus) return this.showToast('👑 Этот стикер доступен только Боссам VIP++!');
+        uploadCustomSticker(e) {
+            if (!this.user.isVipPlus) return this.showToast('👑 Доступно только Боссам VIP++!');
+            const file = e.target.files[0];
+            if (!file) return;
+            if (file.size > 2 * 1024 * 1024) return this.showToast('⚠️ Файл слишком большой! Максимум 2MB.');
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const base64 = event.target.result;
+                let stickers = this.user.customStickers || [];
+                stickers.push(base64);
+                db.ref('users/' + this.user.id).update({ customStickers: stickers })
+                  .then(() => {
+                      this.showToast('✅ Анимированный стикер добавлен!');
+                      this.renderStickersUI();
+                  }).catch(err => this.showToast('Ошибка: ' + err.message));
+            };
+            reader.readAsDataURL(file);
+            e.target.value = ''; 
+        },
+
+        deleteCustomSticker(index) {
+            if(confirm('Удалить этот стикер навсегда?')) {
+                let stickers = this.user.customStickers || [];
+                stickers.splice(index, 1);
+                db.ref('users/' + this.user.id).update({ customStickers: stickers })
+                  .then(() => {
+                      this.showToast('🗑️ Стикер удален');
+                      this.renderStickersUI();
+                  });
+            }
+        },
+
+        renderStickersUI() {
+            if(!this.user) return;
+            const stickers = this.user.customStickers || [];
+            const html = stickers.map((s, index) => `
+                <div style="position:relative; display:inline-block;">
+                    <img src="${s}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 12px; cursor: pointer; border: 1px solid var(--primary); box-shadow: 0 5px 15px rgba(0,0,0,0.5);" 
+                    onclick="App.sendCustomSticker('${s}')" 
+                    oncontextmenu="App.deleteCustomSticker(${index}); return false;">
+                </div>
+            `).join('');
+
+            const emptyText = '<div style="font-size:10px; color:#aaa; width:100%; text-align:center; margin: 10px 0;">У тебя пока нет стикеров. Загрузи свой первый GIF!</div>';
+            
+            const globalContainer = document.getElementById('my-custom-stickers');
+            const pmContainer = document.getElementById('pm-my-custom-stickers');
+            
+            if(globalContainer) globalContainer.innerHTML = html || emptyText;
+            if(pmContainer) pmContainer.innerHTML = html || emptyText;
+        },
+
+        sendCustomSticker(base64Image) {
+            const pmModal = document.getElementById('pm-chat-modal');
+            if (pmModal && pmModal.style.display === 'flex') {
+                this.sendPmSticker(base64Image);
+            } else {
+                this.sendSticker(base64Image);
+            }
+        },
+
+        sendSticker(base64Image) {
+            if (!this.user.isVipPlus) return this.showToast('👑 Доступно только Боссам VIP++!');
             
             const ghostToggle = document.getElementById('ghost-mode-toggle');
             const isGhost = ghostToggle && ghostToggle.checked;
@@ -1342,8 +1394,7 @@
                 name: senderName,
                 photo: isGhost ? 'https://api.dicebear.com/7.x/pixel-art/svg?seed=Anon' : this.user.photo,
                 text: '',
-                sticker: emoji,
-                isVipSticker: isVipSticker,
+                sticker: base64Image,
                 time: Date.now(),
                 isAdmin: isGhost ? false : this.admins.includes(this.user.name),
                 isVip: isGhost ? false : (this.user.isVip || false),
@@ -1359,8 +1410,8 @@
             setTimeout(() => this.scrollToBottom(), 100);
         },
 
-        sendPmSticker(emoji, isVipSticker = false) {
-            if (isVipSticker && !this.user.isVipPlus) return this.showToast('👑 Этот стикер доступен только Боссам VIP++!');
+        sendPmSticker(base64Image) {
+            if (!this.user.isVipPlus) return this.showToast('👑 Доступно только Боссам VIP++!');
             const chatId = this.getChatId(this.user.id, this.currentPmUserId);
             
             const msgData = {
@@ -1368,8 +1419,7 @@
                 name: this.user.name,
                 photo: this.user.photo,
                 text: '',
-                sticker: emoji,
-                isVipSticker: isVipSticker,
+                sticker: base64Image,
                 time: Date.now(),
                 isVipPlus: this.user.isVipPlus,
                 vipColor1: this.user.vipColor1 || '#ffaa00'
@@ -1770,8 +1820,8 @@
                 
                 let stickerHtml = '';
                 if(m.sticker) {
-                    const glow = m.isVipSticker ? `filter: drop-shadow(0 0 15px ${m.vipColor1 || '#ffaa00'}); animation: floatSticker 3s infinite;` : '';
-                    stickerHtml = `<div style="font-size: 55px; margin: 10px 0; ${glow}">${m.sticker}</div>`;
+                    const glow = m.isVipPlus ? `filter: drop-shadow(0 0 15px ${m.vipColor1 || '#ffaa00'});` : '';
+                    stickerHtml = `<img src="${m.sticker}" style="width: 120px; height: 120px; object-fit: contain; margin: 10px 0; border-radius: 15px; display: block; ${glow}">`;
                 }
 
                 return `
@@ -1856,8 +1906,8 @@
 
                 let stickerHtml = '';
                 if(m.sticker) {
-                    const glow = m.isVipSticker ? `filter: drop-shadow(0 0 25px ${m.vipColor1 || '#ffaa00'}); animation: floatSticker 3s infinite;` : '';
-                    stickerHtml = `<div style="font-size: 65px; text-align: center; margin: 10px 0; ${glow}">${m.sticker}</div>`;
+                    const glow = m.isVipPlus ? `filter: drop-shadow(0 0 15px ${m.vipColor1 || '#ffaa00'});` : '';
+                    stickerHtml = `<img src="${m.sticker}" style="width: 120px; height: 120px; object-fit: contain; margin: 10px 0; border-radius: 15px; display: block; ${glow}">`;
                 }
                 
                 const safeText = m.text ? m.text.replace(/</g, "&lt;").replace(/>/g, "&gt;") : '';
@@ -1892,7 +1942,7 @@
 
                         <div class="message ${m.uid === this.user.id ? 'my-msg' : 'other-msg'} ${m.isAdmin ? 'admin-msg' : ''}" 
                              style="${customBubble} margin:0;"
-                             onclick="App.setReply('${m.name}', '${safeText || (m.audio ? 'Голосовое сообщение' : (m.sticker ? 'Стикер' : 'Фотография'))}')"
+                             onclick="App.setReply('${m.name}', '${safeText || (m.audio ? 'Голосовое сообщение' : (m.sticker ? 'Анимированный стикер' : 'Фотография'))}')"
                              ondblclick="App.copyMessageText('${safeText}')">
                             ${delBtnHtml}
                             <div class="msg-info">
@@ -2184,3 +2234,4 @@
 </script>
 </body>
 </html>
+
