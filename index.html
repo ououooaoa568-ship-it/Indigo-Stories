@@ -508,6 +508,45 @@
             <div class="logo">МАГАЗИН</div>
             <div style="font-size: 10px; color: var(--warning); border: 1px solid var(--warning); padding: 5px 10px; border-radius: 10px; font-weight: 800;">PREMIUM</div>
         </div>
+
+        <div class="glass-card" style="text-align:center; border-color: var(--primary); box-shadow: 0 0 20px rgba(0, 242, 255, 0.1);">
+            <div style="font-size: 35px; margin-bottom: 10px; animation: pulseGlow 2s infinite;">♻️</div>
+            <h3 style="color: white; font-family: 'Unbounded'; margin-bottom: 10px; font-size: 18px;">БАНК INDICOIN</h3>
+            <p style="font-size: 12px; color: #aaa; margin-bottom: 15px;">Обменяй свой опыт (XP) на премиум-валюту INDICOIN.</p>
+            <div style="background: rgba(0,0,0,0.5); padding: 10px; border-radius: 12px; margin-bottom: 15px; font-weight: 800; color: #fff;">
+                Курс: <span style="color: var(--primary);">1000 XP</span> = <span style="color: #ffaa00;">1 🪙 INDICOIN</span>
+            </div>
+            <button class="btn-main" onclick="App.exchangeXP()" style="font-size: 14px; padding: 14px; background: linear-gradient(135deg, #00f2ff, #0088ff);">ОБМЕНЯТЬ 1000 XP НА 1 🪙</button>
+        </div>
+
+        <div class="glass-card" style="text-align:center;">
+            <div style="font-size: 30px; margin-bottom: 10px;">🛍️</div>
+            <h3 style="color: white; font-family: 'Unbounded'; margin-bottom: 15px; font-size: 18px;">ТОВАРЫ ЗА INDICOINS</h3>
+            
+            <div style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.05); padding: 15px; border-radius: 15px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; text-align: left;">
+                <div>
+                    <div style="font-weight: 800; font-size: 14px; color: white;">Элитный Значок "🦇 Бэтмен"</div>
+                    <div style="font-size: 11px; color: #aaa; margin-top: 5px;">Отображается в профиле навсегда</div>
+                </div>
+                <button class="btn-main" onclick="App.buyStoreItem('batman_badge', 5)" style="width: auto; padding: 10px 15px; font-size: 12px; margin-top:0;">5 🪙</button>
+            </div>
+
+            <div style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.05); padding: 15px; border-radius: 15px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; text-align: left;">
+                <div>
+                    <div style="font-weight: 800; font-size: 14px; color: white;">Элитный Значок "🔥 Легенда"</div>
+                    <div style="font-size: 11px; color: #aaa; margin-top: 5px;">Отображается в профиле навсегда</div>
+                </div>
+                <button class="btn-main" onclick="App.buyStoreItem('legend_badge', 10)" style="width: auto; padding: 10px 15px; font-size: 12px; margin-top:0;">10 🪙</button>
+            </div>
+            
+            <div style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.05); padding: 15px; border-radius: 15px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; text-align: left;">
+                <div>
+                    <div style="font-weight: 800; font-size: 14px; color: white;">Элитный Значок "👾 Хакер"</div>
+                    <div style="font-size: 11px; color: #aaa; margin-top: 5px;">Отображается в профиле навсегда</div>
+                </div>
+                <button class="btn-main" onclick="App.buyStoreItem('hacker_badge', 15)" style="width: auto; padding: 10px 15px; font-size: 12px; margin-top:0;">15 🪙</button>
+            </div>
+        </div>
         
         <div class="glass-card" style="text-align:center; border-color: var(--vip-plus-2); box-shadow: 0 0 30px rgba(255, 0, 85, 0.2);">
             <div style="font-size: 45px; margin-bottom: 10px; animation: float 2.5s ease-in-out infinite;">👑</div>
@@ -524,6 +563,7 @@
             </div>
 
             <button class="btn-main" onclick="window.open('https://boosty.to/indigo_help/posts/193b6959-a758-4e52-a048-b8941a9447b6?share=post_link', '_blank')" style="background: linear-gradient(135deg, var(--vip-plus-1), var(--vip-plus-2)); font-size: 16px; padding: 18px; box-shadow: 0 10px 25px rgba(255, 0, 85, 0.5);">СТАТЬ БОССОМ VIP++</button>
+            <button class="btn-main btn-outline" onclick="App.buyVipPlusWithCoins()" style="margin-top: 10px; border-color: var(--vip-plus-2); color: white; background: rgba(255,0,85,0.1);">КУПИТЬ ЗА 45 🪙 INDICOINS</button>
         </div>
 
         <div class="glass-card" style="text-align:center;">
@@ -538,6 +578,7 @@
             </div>
 
             <button class="btn-main" onclick="window.open('https://boosty.to/indigo_help/bundle/1f0e2536-53a6-4581-9edf-c6e9e14237b6?share=bundle_link', '_blank')" style="font-size: 14px; padding: 16px; box-shadow: 0 10px 25px rgba(0, 242, 255, 0.5);">КУПИТЬ VIP ЗА 150₽</button>
+            <button class="btn-main btn-outline" onclick="App.buyVipWithCoins()" style="margin-top: 10px; border-color: var(--primary); color: white; background: rgba(0,242,255,0.1);">КУПИТЬ ЗА 20 🪙 INDICOINS</button>
         </div>
     </div>
 
@@ -553,9 +594,18 @@
             <h2 id="my-name-display" style="display:flex; justify-content:center; align-items:center; gap:10px; font-size: 22px; text-shadow: 0 0 10px rgba(255,255,255,0.3); position:relative; z-index:2;">Загрузка...</h2>
             <p style="font-size:13px; color:#aaa; margin-bottom:20px; font-weight: 600; padding: 0 20px; position:relative; z-index:2;" id="my-bio-display">Ворвался в проект</p>
             
-            <div style="background:linear-gradient(135deg, rgba(255,255,255,0.05), rgba(0,0,0,0.5)); padding:15px 30px; border-radius:20px; display:inline-block; border: 1px solid rgba(255,255,255,0.1); box-shadow: inset 0 0 20px rgba(0,0,0,0.5); position:relative; z-index:2;">
-                <span id="my-xp" style="color:var(--primary); font-family: 'Unbounded'; font-weight:900; font-size:28px; text-shadow: 0 0 15px rgba(0,242,255,0.4);">0 XP</span>
-                <span id="my-level" style="font-size:11px; color:var(--warning); display:block; font-weight:900; margin-top:8px; letter-spacing: 2px; text-transform: uppercase;">УРОВЕНЬ 1</span>
+            <div style="background:linear-gradient(135deg, rgba(255,255,255,0.05), rgba(0,0,0,0.5)); padding:15px 30px; border-radius:20px; display:inline-block; border: 1px solid rgba(255,255,255,0.1); box-shadow: inset 0 0 20px rgba(0,0,0,0.5); position:relative; z-index:2; margin-bottom: 10px;">
+                <div style="display: flex; gap: 20px; align-items: center; justify-content: center;">
+                    <div>
+                        <span id="my-xp" style="color:var(--primary); font-family: 'Unbounded'; font-weight:900; font-size:24px; text-shadow: 0 0 15px rgba(0,242,255,0.4);">0 XP</span>
+                        <span id="my-level" style="font-size:11px; color:var(--warning); display:block; font-weight:900; margin-top:5px; letter-spacing: 2px; text-transform: uppercase;">УРОВЕНЬ 1</span>
+                    </div>
+                    <div style="border-left: 1px solid rgba(255,255,255,0.2); height: 40px;"></div>
+                    <div>
+                        <span id="my-coins" style="color:#ffaa00; font-family: 'Unbounded'; font-weight:900; font-size:24px; text-shadow: 0 0 15px rgba(255,170,0,0.4);">0 🪙</span>
+                        <span style="font-size:11px; color:#aaa; display:block; font-weight:900; margin-top:5px; letter-spacing: 1px; text-transform: uppercase;">INDICOINS</span>
+                    </div>
+                </div>
             </div>
 
             <button id="daily-bonus-btn" class="btn-main" onclick="App.claimDailyBonus()" style="background: linear-gradient(135deg, #ffaa00, #ff4757); box-shadow: 0 10px 25px rgba(255, 170, 0, 0.4); margin-top: 25px; padding: 20px; position:relative; z-index:2;">🎁 ЗАБРАТЬ МОЩНЫЙ БОНУС (100 XP)</button>
@@ -744,9 +794,16 @@
         <div id="modal-id" style="font-size:10px; color:#aaa; margin-bottom:15px; position:relative; z-index:2; letter-spacing: 1px;">ID: </div>
         <p id="modal-bio" style="font-size:13px; color:#ccc; margin-bottom:25px; position:relative; z-index:2; font-weight: 600;">Био</p>
         
-        <div style="background:rgba(0,0,0,0.5); padding:15px; border-radius:15px; border: 1px solid rgba(255,255,255,0.1); margin-bottom:15px; position:relative; z-index:2;">
-            <span id="modal-xp" style="color:var(--primary); font-family: 'Unbounded'; font-weight:900; font-size:24px; text-shadow: 0 0 10px rgba(0,242,255,0.4);">0 XP</span>
-            <span id="modal-lvl" style="font-size:11px; color:var(--warning); display:block; font-weight:900; margin-top:8px; text-transform: uppercase; letter-spacing: 1px;">УРОВЕНЬ 1</span>
+        <div style="background:rgba(0,0,0,0.5); padding:15px; border-radius:15px; border: 1px solid rgba(255,255,255,0.1); margin-bottom:15px; position:relative; z-index:2; display: flex; justify-content: space-around; align-items: center;">
+            <div style="text-align: center;">
+                <span id="modal-xp" style="color:var(--primary); font-family: 'Unbounded'; font-weight:900; font-size:20px; text-shadow: 0 0 10px rgba(0,242,255,0.4);">0 XP</span>
+                <span id="modal-lvl" style="font-size:10px; color:var(--warning); display:block; font-weight:900; margin-top:5px; text-transform: uppercase; letter-spacing: 1px;">УРОВЕНЬ 1</span>
+            </div>
+            <div style="border-left: 1px solid rgba(255,255,255,0.2); height: 30px;"></div>
+            <div style="text-align: center;">
+                <span id="modal-coins" style="color:#ffaa00; font-family: 'Unbounded'; font-weight:900; font-size:20px; text-shadow: 0 0 10px rgba(255,170,0,0.4);">0 🪙</span>
+                <span style="font-size:10px; color:#aaa; display:block; font-weight:900; margin-top:5px; text-transform: uppercase; letter-spacing: 1px;">INDICOINS</span>
+            </div>
         </div>
         
         <div id="modal-friend-action" style="display:none; position:relative; z-index:2; margin-top: 15px;">
@@ -820,18 +877,20 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
 <script>
+    // === ТВОЯ НОВАЯ КОНФИГУРАЦИЯ FIREBASE ===
     const firebaseConfig = {
-        apiKey: "AIzaSyAaSxthBsh9Q4H5YuYUg6jTrwzEHTq-r1g",
+        apiKey: "AIzaSyCm24iOBPCGEqWdAIdJAPxCaJlQECHMoC8",
         authDomain: "mmmm-96f4f.firebaseapp.com",
         databaseURL: "https://mmmm-96f4f-default-rtdb.firebaseio.com",
         projectId: "mmmm-96f4f",
         storageBucket: "mmmm-96f4f.firebasestorage.app",
         messagingSenderId: "1085619145317",
-        appId: "1:1085619145317:web:bcc2a828ceb980fb30d48c",
-        measurementId: "G-JH6PKP0F3Z"
+        appId: "1:1085619145317:web:bcc2a828ceb980fb30d48c"
     };
 
-    firebase.initializeApp(firebaseConfig);
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+    }
     const db = firebase.database();
 
     const App = {
@@ -1045,6 +1104,62 @@
             return Math.floor((xp || 0) / 100) + 1;
         },
 
+        exchangeXP() {
+            if (!this.user) return;
+            if ((this.user.xp || 0) < 1000) {
+                return this.showToast('⚠️ Недостаточно XP для обмена! Нужно минимум 1000 XP.');
+            }
+            const newXp = this.user.xp - 1000;
+            const newCoins = (this.user.coins || 0) + 1;
+            db.ref('users/' + this.user.id).update({ xp: newXp, coins: newCoins })
+                .then(() => this.showToast('✅ Успешный обмен! +1 INDICOIN 🪙'))
+                .catch(e => this.showToast(e.message));
+        },
+
+        buyVipPlusWithCoins() {
+            if (!this.user) return;
+            if (this.user.isVipPlus) return this.showToast('У тебя уже есть VIP++!');
+            if ((this.user.coins || 0) < 45) return this.showToast('⚠️ Недостаточно INDICOIN! Нужно 45 🪙.');
+            
+            const newCoins = this.user.coins - 45;
+            db.ref('users/' + this.user.id).update({ coins: newCoins, isVip: true, isVipPlus: true })
+                .then(() => this.showToast('👑 ПОЗДРАВЛЯЕМ! Ты стал БОССОМ VIP++!'))
+                .catch(e => this.showToast(e.message));
+        },
+
+        buyVipWithCoins() {
+            if (!this.user) return;
+            if (this.user.isVip) return this.showToast('У тебя уже есть VIP или VIP++!');
+            if ((this.user.coins || 0) < 20) return this.showToast('⚠️ Недостаточно INDICOIN! Нужно 20 🪙.');
+            
+            const newCoins = this.user.coins - 20;
+            db.ref('users/' + this.user.id).update({ coins: newCoins, isVip: true })
+                .then(() => this.showToast('💎 ПОЗДРАВЛЯЕМ! VIP статус активирован!'))
+                .catch(e => this.showToast(e.message));
+        },
+
+        buyStoreItem(itemKey, price) {
+            if (!this.user) return;
+            if ((this.user.coins || 0) < price) return this.showToast(`⚠️ Недостаточно INDICOIN! Нужно ${price} 🪙.`);
+            
+            let currentBadges = this.user.badges || [];
+            let badgeEmoji = '';
+            if(itemKey === 'batman_badge') badgeEmoji = '🦇';
+            if(itemKey === 'legend_badge') badgeEmoji = '🔥';
+            if(itemKey === 'hacker_badge') badgeEmoji = '👾';
+
+            if (currentBadges.includes(badgeEmoji)) {
+                return this.showToast('⚠️ У тебя уже есть этот товар!');
+            }
+
+            currentBadges.push(badgeEmoji);
+            const newCoins = this.user.coins - price;
+            
+            db.ref('users/' + this.user.id).update({ coins: newCoins, badges: currentBadges })
+                .then(() => this.showToast(`🛍️ Покупка успешна! Значок ${badgeEmoji} добавлен в профиль.`))
+                .catch(e => this.showToast(e.message));
+        },
+
         sync() {
             db.ref('system/maintenance').on('value', snap => {
                 const isMaintenance = snap.val();
@@ -1111,7 +1226,7 @@
 
                     const id = 'u' + Date.now();
                     db.ref('users/' + id).set({
-                        id: id, name: u, pass: safePass, xp: 0,
+                        id: id, name: u, pass: safePass, xp: 0, coins: 0, badges: [],
                         bio: 'Только что ворвался в проект',
                         photo: 'https://api.dicebear.com/7.x/pixel-art/svg?seed=' + encodeURIComponent(u),
                         lastBonus: 0,
@@ -1494,7 +1609,9 @@
                     customTagHtml = `<span class="custom-vip-tag" style="color: ${u.vipTagColor}; border-color: ${u.vipTagColor};">${u.vipTagText}</span>`;
                 }
 
-                document.getElementById('modal-name').innerHTML = `<span class="${vipClass}" ${isVipPlus ? `style="${vStyles.nick}"` : ''}>${u.name}</span> ${this.admins.includes(u.name) ? '<div class="verify-badge"></div>' : ''} ${vipBadge} ${customTagHtml}`;
+                let badgesHtml = (u.badges || []).map(b => `<span style="font-size:16px; filter: drop-shadow(0 0 5px rgba(255,255,255,0.5));">${b}</span>`).join(' ');
+
+                document.getElementById('modal-name').innerHTML = `<span class="${vipClass}" ${isVipPlus ? `style="${vStyles.nick}"` : ''}>${u.name}</span> ${this.admins.includes(u.name) ? '<div class="verify-badge"></div>' : ''} ${vipBadge} ${customTagHtml} ${badgesHtml}`;
                 document.getElementById('modal-id').innerText = 'ID: ' + u.id;
                 document.getElementById('modal-bio').innerText = u.bio || 'Нет информации';
                 
@@ -1514,6 +1631,7 @@
 
                 document.getElementById('modal-xp').innerText = (u.xp || 0) + ' XP';
                 document.getElementById('modal-lvl').innerText = 'УРОВЕНЬ ' + this.getLevel(u.xp);
+                document.getElementById('modal-coins').innerText = (u.coins || 0) + ' 🪙';
 
                 const pmAction = document.getElementById('modal-pm-action');
                 const friendAction = document.getElementById('modal-friend-action');
@@ -1568,7 +1686,6 @@
             }
         },
 
-        // --- ЛИЧНЫЕ СООБЩЕНИЯ ---
         startPM() {
             const pmAction = document.getElementById('modal-pm-action');
             const uid = pmAction.dataset.uid;
@@ -1641,13 +1758,12 @@
         renderPmChat(msgs) {
             const b = document.getElementById('pm-chat-messages');
             
-            // Оптимизация ЛС
             const validMsgs = msgs.filter(m => {
                 if (this.currentPmAutoDelete) {
                     return (Date.now() - m.time) < (24 * 60 * 60 * 1000); 
                 }
                 return true;
-            }).slice(-50); // Рендерим только последние 50
+            }).slice(-50); 
 
             b.innerHTML = validMsgs.map(m => {
                 const safeText = m.text ? m.text.replace(/</g, "&lt;").replace(/>/g, "&gt;") : '';
@@ -1720,7 +1836,6 @@
             const b = document.getElementById('chat-messages');
             const isAdminView = this.admins.includes(this.user.name);
             
-            // Оптимизация от лагов на слабых устройствах (рендерим только 50 последних сообщений)
             const optMsgs = msgs.slice(-50);
             
             b.innerHTML = optMsgs.map(m => {
@@ -1764,7 +1879,6 @@
                     customTagHtml = `<span class="custom-vip-tag" style="color: ${m.vipTagColor}; border-color: ${m.vipTagColor};">${m.vipTagText}</span>`;
                 }
 
-                // Кастомный цвет пузыря для VIP++
                 let customBubble = '';
                 if (isVipPlus && m.vipBubbleColor) {
                     customBubble = `background: linear-gradient(135deg, ${m.vipBubbleColor}cc, ${m.vipBubbleColor}80); border: 1px solid ${m.vipBubbleColor}; box-shadow: 0 5px 15px ${m.vipBubbleColor}40;`;
@@ -1881,7 +1995,9 @@
                 customTagHtml = `<span class="custom-vip-tag" style="color: ${this.user.vipTagColor}; border-color: ${this.user.vipTagColor}; margin-left: 10px; font-size: 11px; padding: 4px 8px;">${this.user.vipTagText}</span>`;
             }
 
-            document.getElementById('my-name-display').innerHTML = `<span class="${vipClass}" ${isVipPlus ? `style="${vStyles.nick}"` : ''}>${this.user.name}</span>` + (isAdm ? ' <div class="verify-badge" style="width:24px; height:24px;"></div>' : '') + vipBadge + customTagHtml;
+            let badgesHtml = (this.user.badges || []).map(b => `<span style="font-size:16px; filter: drop-shadow(0 0 5px rgba(255,255,255,0.5));">${b}</span>`).join(' ');
+
+            document.getElementById('my-name-display').innerHTML = `<span class="${vipClass}" ${isVipPlus ? `style="${vStyles.nick}"` : ''}>${this.user.name}</span>` + (isAdm ? ' <div class="verify-badge" style="width:24px; height:24px;"></div>' : '') + vipBadge + customTagHtml + ' ' + badgesHtml;
             document.getElementById('my-bio-display').innerText = this.user.bio || 'Ворвался в проект';
             
             const avatarElem = document.getElementById('my-avatar');
@@ -1916,6 +2032,7 @@
 
             document.getElementById('my-xp').innerText = (this.user.xp || 0) + ' XP';
             document.getElementById('my-level').innerText = 'УРОВЕНЬ ' + lvl;
+            document.getElementById('my-coins').innerText = (this.user.coins || 0) + ' 🪙';
             
             const lastBonus = this.user.lastBonus || 0;
             const btn = document.getElementById('daily-bonus-btn');
