@@ -336,12 +336,12 @@
             position: fixed; 
             bottom: max(25px, env(safe-area-inset-bottom, 25px)); 
             left: 50%; transform: translateX(-50%);
-            width: 90%; max-width: 450px; background: rgba(10, 10, 15, 0.85); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+            width: 90%; max-width: 500px; background: rgba(10, 10, 15, 0.85); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
             border-radius: 30px; display: flex; justify-content: space-around; padding: 12px;
             border: 1px solid rgba(255,255,255,0.1); border-top: 1px solid rgba(255,255,255,0.2); z-index: 1000; 
             box-shadow: 0 15px 35px rgba(0,0,0,0.8), 0 0 20px rgba(0,242,255,0.1);
         }
-        .nav-btn { background: none; border: none; color: #777; font-size: 10px; font-weight: 800; cursor: pointer; padding: 12px 15px; transition: 0.4s; font-family: 'Unbounded', sans-serif; position: relative; border-radius: 20px; }
+        .nav-btn { background: none; border: none; color: #777; font-size: 10px; font-weight: 800; cursor: pointer; padding: 12px 10px; transition: 0.4s; font-family: 'Unbounded', sans-serif; position: relative; border-radius: 20px; }
         .nav-btn.active { color: white; background: rgba(0, 242, 255, 0.15); transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,242,255,0.2); }
         .nav-btn.active::after { content: ''; position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); width: 20px; height: 3px; background: var(--primary); border-radius: 5px; box-shadow: 0 0 10px var(--primary); }
 
@@ -417,6 +417,14 @@
         </div>
 
         <div id="news-container"></div>
+    </div>
+
+    <div id="scr-quests" class="screen">
+        <div class="header">
+            <div class="logo">КВЕСТЫ</div>
+            <div style="font-size: 10px; color: var(--success); border: 1px solid var(--success); padding: 5px 10px; border-radius: 10px; font-weight: 800;">СУПЕР ИВЕНТ</div>
+        </div>
+        <div id="quests-container"></div>
     </div>
 
     <div id="scr-top" class="screen">
@@ -721,6 +729,32 @@
                 <button class="btn-main" style="background:linear-gradient(135deg, #ff4757, #ff0000); padding:15px; box-shadow: 0 10px 20px rgba(255, 71, 87, 0.4);" onclick="App.adminAction('deleteUser')">УДАЛИТЬ ПОЛЬЗОВАТЕЛЯ НАВСЕГДА</button>
             </div>
 
+            <div style="margin-top:20px; background:rgba(0,0,0,0.4); padding:15px; border-radius:15px; border: 1px solid rgba(46, 213, 115, 0.3);">
+                <label style="font-size:11px; color:var(--success); display:block; margin-bottom:8px; font-weight:800; letter-spacing:1px;">СОЗДАТЬ СУПЕР КВЕСТ</label>
+                <input type="text" id="quest-title" placeholder="Название (напр. Отправь 10 сообщений)" style="margin-bottom:10px; border-color:rgba(46, 213, 115, 0.5); background: rgba(46, 213, 115, 0.05);">
+                
+                <select id="quest-action" style="margin-bottom:10px; border-color:rgba(46, 213, 115, 0.5); background: rgba(46, 213, 115, 0.05);">
+                    <option value="msg">Отправить сообщение (Чат)</option>
+                    <option value="photo">Отправить фото (Чат)</option>
+                    <option value="voice">Отправить голосовое (VIP++)</option>
+                    <option value="sticker">Отправить стикер (VIP++)</option>
+                    <option value="pm">Отправить сообщение в ЛС</option>
+                    <option value="bonus">Забрать ежедневный бонус</option>
+                    <option value="exchange">Обменять XP на 🪙</option>
+                    <option value="store_buy">Купить товар в магазине</option>
+                    <option value="add_friend">Добавить в друзья</option>
+                    <option value="theme">Сменить тему профиля</option>
+                </select>
+
+                <input type="number" id="quest-target" placeholder="Количество раз (напр. 10)" style="margin-bottom:10px; border-color:rgba(46, 213, 115, 0.5); background: rgba(46, 213, 115, 0.05);">
+                <select id="quest-reward-type" style="margin-bottom:10px; border-color:rgba(46, 213, 115, 0.5); background: rgba(46, 213, 115, 0.05);">
+                    <option value="xp">Опыт (XP)</option>
+                    <option value="coins">INDICOINS (🪙)</option>
+                </select>
+                <input type="number" id="quest-reward-amount" placeholder="Награда (напр. 100)" style="margin-bottom:15px; border-color:rgba(46, 213, 115, 0.5); background: rgba(46, 213, 115, 0.05);">
+                <button class="btn-main" style="background:linear-gradient(135deg, #2ed573, #00b894); padding:15px; box-shadow: 0 10px 20px rgba(46, 213, 115, 0.4);" onclick="App.createQuest()">ЗАПУСТИТЬ КВЕСТ В СЕТЬ 🚀</button>
+            </div>
+
             <div style="margin-top:20px; background:rgba(0,0,0,0.4); padding:15px; border-radius:15px; border: 1px solid rgba(112, 0, 255, 0.3);">
                 <label style="font-size:11px; color:#7000ff; display:block; margin-bottom:8px; font-weight:800; letter-spacing:1px;">ВЫДАТЬ VIP / VIP++</label>
                 <input type="text" id="vip-target-id" placeholder="ID игрока (напр. u170923...)" style="margin-bottom:15px; border-color:rgba(112, 0, 255, 0.5); background: rgba(112, 0, 255, 0.05);">
@@ -748,10 +782,13 @@
         <button class="btn-main" style="background:rgba(255,255,255,0.05); color:#888; border:1px solid rgba(255,255,255,0.1); margin-top: 20px; box-shadow: none;" onclick="App.logout()">ВЫЙТИ ИЗ СИСТЕМЫ</button>
     </div>
 
-    <nav class="nav-bar">
-        <button class="nav-btn active" onclick="App.nav('news', this)">
+    <nav class="nav-bar" style="max-width: 500px;"> <button class="nav-btn active" onclick="App.nav('news', this)">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin: 0 auto 5px auto; display:block;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
             ЛЕНТА
+        </button>
+        <button class="nav-btn" onclick="App.nav('quests', this)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin: 0 auto 5px auto; display:block;"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+            КВЕСТЫ
         </button>
         <button class="nav-btn" onclick="App.nav('top', this)">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin: 0 auto 5px auto; display:block;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
@@ -863,7 +900,6 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
 <script>
-    // === ТВОЯ НОВАЯ КОНФИГУРАЦИЯ FIREBASE ===
     const firebaseConfig = {
         apiKey: "AIzaSyCm24iOBPCGEqWdAIdJAPxCaJlQECHMoC8",
         authDomain: "mmmm-96f4f.firebaseapp.com",
@@ -890,6 +926,7 @@
         mediaRecorder: null, 
         audioChunks: [],
         chatLogStore: [], 
+        questsStore: [], 
         currentPmUserId: null,
         currentPmUserName: null,
         currentPmAutoDelete: false,
@@ -1035,6 +1072,8 @@
             const xpGain = this.user.isVipPlus ? 20 : (this.user.isVip ? 10 : 5);
             db.ref('users/' + this.user.id + '/xp').set((this.user.xp || 0) + xpGain).catch(e => console.error(e));
             
+            this.updateQuestProgress('voice'); 
+            
             this.cancelReply();
             setTimeout(() => this.scrollToBottom(), 100);
         },
@@ -1080,6 +1119,7 @@
             const secondaryColor = this.adjustColor(color, -40); 
             document.documentElement.style.setProperty('--secondary', secondaryColor);
             this.showToast('Тема интерфейса обновлена!');
+            this.updateQuestProgress('theme');
         },
 
         adjustColor(color, amount) {
@@ -1098,7 +1138,10 @@
             const newXp = this.user.xp - 1000;
             const newCoins = (this.user.coins || 0) + 1;
             db.ref('users/' + this.user.id).update({ xp: newXp, coins: newCoins })
-                .then(() => this.showToast('✅ Успешный обмен! +1 INDICOIN 🪙'))
+                .then(() => {
+                    this.showToast('✅ Успешный обмен! +1 INDICOIN 🪙');
+                    this.updateQuestProgress('exchange');
+                })
                 .catch(e => this.showToast(e.message));
         },
 
@@ -1142,7 +1185,10 @@
             const newCoins = this.user.coins - price;
             
             db.ref('users/' + this.user.id).update({ coins: newCoins, badges: currentBadges })
-                .then(() => this.showToast(`🛍️ Покупка успешна! Значок ${badgeEmoji} добавлен в профиль.`))
+                .then(() => {
+                    this.showToast(`🛍️ Покупка успешна! Значок ${badgeEmoji} добавлен в профиль.`);
+                    this.updateQuestProgress('store_buy');
+                })
                 .catch(e => this.showToast(e.message));
         },
 
@@ -1167,7 +1213,8 @@
                     if(fresh) { 
                         this.user = fresh; 
                         localStorage.setItem('indigo_user', JSON.stringify(fresh));
-                        this.renderStickersUI(); // Обновляем UI стикеров
+                        this.renderStickersUI();
+                        this.renderQuests(); 
                         
                         if (this.user.isBanned) {
                             document.getElementById('ban-screen').style.display = 'flex';
@@ -1190,6 +1237,12 @@
 
             db.ref('stories').on('value', snap => {
                 this.renderNews(snap.val() ? Object.values(snap.val()) : []);
+            }, err => console.error(err));
+
+            db.ref('quests').on('value', snap => {
+                const data = snap.val();
+                this.questsStore = data ? Object.keys(data).map(key => ({...data[key], id: key})) : [];
+                this.renderQuests();
             }, err => console.error(err));
         },
 
@@ -1407,6 +1460,7 @@
 
             db.ref('chat').push(msgData);
             document.getElementById('sticker-panel-ui').style.display = 'none';
+            this.updateQuestProgress('sticker'); 
             setTimeout(() => this.scrollToBottom(), 100);
         },
 
@@ -1432,6 +1486,7 @@
             db.ref('users/' + this.currentPmUserId + '/pm_list/' + this.user.id).set({ name: this.user.name, lastActive: ts });
             
             document.getElementById('pm-sticker-panel-ui').style.display = 'none';
+            this.updateQuestProgress('sticker'); 
             setTimeout(() => this.scrollPmToBottom(), 100);
         },
 
@@ -1478,6 +1533,11 @@
             const xpGain = this.user.isVipPlus ? 20 : (this.user.isVip ? 10 : 5);
             db.ref('users/' + this.user.id + '/xp').set((this.user.xp || 0) + xpGain).catch(e => console.error(e));
             
+            this.updateQuestProgress('msg');
+            if (this.chatTempBase64Photo) {
+                this.updateQuestProgress('photo');
+            }
+
             i.value = '';
             this.cancelReply();
             this.cancelChatImage();
@@ -1513,6 +1573,109 @@
             this.showToast('📣 Публикация успешно размещена!');
         },
 
+        createQuest() {
+            if (!this.admins.includes(this.user.name)) return this.showToast('⛔ Ошибка доступа!');
+            
+            const title = document.getElementById('quest-title').value.trim();
+            const action = document.getElementById('quest-action').value;
+            const target = parseInt(document.getElementById('quest-target').value);
+            const rewardType = document.getElementById('quest-reward-type').value;
+            const rewardAmount = parseInt(document.getElementById('quest-reward-amount').value);
+
+            if(!title || !target || !rewardAmount) return this.showToast('⚠️ Заполни все поля для квеста!');
+
+            db.ref('quests').push({
+                title, action, target, rewardType, rewardAmount, createdAt: Date.now()
+            }).then(() => {
+                this.showToast('🚀 Супер квест успешно запущен!');
+                document.getElementById('quest-title').value = '';
+                document.getElementById('quest-target').value = '';
+                document.getElementById('quest-reward-amount').value = '';
+            });
+        },
+
+        deleteQuest(id) {
+            if (!this.admins.includes(this.user.name)) return;
+            if (confirm('Точно удалить этот квест для всех?')) {
+                db.ref('quests/' + id).remove().then(() => this.showToast('🗑️ Квест удален из системы'));
+            }
+        },
+
+        updateQuestProgress(actionType) {
+            if(!this.user || !this.questsStore) return;
+            
+            this.questsStore.forEach(q => {
+                if(q.action !== actionType) return; 
+                
+                const isCompleted = this.user.completedQuests && this.user.completedQuests[q.id];
+                if(isCompleted) return; 
+                
+                let currentProgress = (this.user.questProgress && this.user.questProgress[q.id]) || 0;
+                currentProgress += 1;
+                
+                let updates = {};
+                updates[`questProgress/${q.id}`] = currentProgress;
+                
+                if(currentProgress >= q.target) {
+                    updates[`completedQuests/${q.id}`] = true;
+                    if(q.rewardType === 'coins') {
+                        updates.coins = (this.user.coins || 0) + Number(q.rewardAmount);
+                    } else {
+                        updates.xp = (this.user.xp || 0) + Number(q.rewardAmount);
+                    }
+                    const rewardStr = q.rewardType === 'coins' ? `+${q.rewardAmount} 🪙` : `+${q.rewardAmount} XP`;
+                    this.showToast(`🎉 КВЕСТ ВЫПОЛНЕН: "${q.title}"! Награда: ${rewardStr}`);
+                }
+                
+                db.ref('users/' + this.user.id).update(updates);
+            });
+        },
+
+        renderQuests() {
+            const c = document.getElementById('quests-container');
+            if (!c) return;
+            
+            if (!this.questsStore || this.questsStore.length === 0) {
+                c.innerHTML = '<div style="text-align:center; color:#aaa; font-weight:600; margin-top:20px;">Нет активных квестов. Возвращайся позже!</div>';
+                return;
+            }
+
+            c.innerHTML = this.questsStore.map(q => {
+                const isCompleted = this.user && this.user.completedQuests && this.user.completedQuests[q.id];
+                const currentProgress = (this.user && this.user.questProgress && this.user.questProgress[q.id]) || 0;
+                const progress = Math.min(currentProgress, q.target);
+                const percent = (progress / q.target) * 100;
+                
+                const rewardIcon = q.rewardType === 'coins' ? '🪙' : 'XP';
+                const rewardColor = q.rewardType === 'coins' ? '#ffaa00' : 'var(--primary)';
+                
+                let adminBtn = '';
+                if (this.user && this.admins.includes(this.user.name)) {
+                    adminBtn = `<button class="del-msg-btn" style="display:block; position:relative; right:auto; top:auto; margin-top:15px; width:100%; padding:10px; font-size:10px; border-radius:12px;" onclick="App.deleteQuest('${q.id}')">УДАЛИТЬ КВЕСТ (АДМИН)</button>`;
+                }
+
+                return `
+                <div class="glass-card" style="${isCompleted ? 'border-color: var(--success); opacity: 0.8;' : 'border-color: rgba(46, 213, 115, 0.3);'}">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px;">
+                        <h3 style="color:white; font-size: 16px; margin:0; line-height: 1.3;">${q.title}</h3>
+                        <div style="background: rgba(0,0,0,0.5); padding: 5px 10px; border-radius: 10px; font-weight: 900; color: ${rewardColor}; font-size: 12px; border: 1px solid ${rewardColor}40; white-space:nowrap; margin-left:10px;">
+                            +${q.rewardAmount} ${rewardIcon}
+                        </div>
+                    </div>
+                    
+                    <div style="font-size: 12px; color: #aaa; margin-bottom: 10px; font-weight: 800;">ПРОГРЕСС: ${progress} / ${q.target}</div>
+                    
+                    <div style="background: rgba(255,255,255,0.05); border-radius: 10px; height: 14px; width: 100%; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); position: relative;">
+                        <div style="background: ${isCompleted ? 'var(--success)' : 'linear-gradient(90deg, var(--primary), var(--secondary))'}; height: 100%; width: ${percent}%; transition: width 0.5s ease; box-shadow: 0 0 15px ${isCompleted ? 'var(--success)' : 'var(--primary)'}; border-radius: 10px;"></div>
+                    </div>
+                    
+                    ${isCompleted ? '<div style="color:var(--success); font-weight:900; font-size:12px; margin-top:15px; text-align:center; background: rgba(46, 213, 115, 0.1); padding: 8px; border-radius: 10px;">✅ НАГРАДА ПОЛУЧЕНА</div>' : ''}
+                    ${adminBtn}
+                </div>
+                `;
+            }).join('');
+        },
+
         claimDailyBonus() {
             const now = Date.now();
             const last = this.user.lastBonus || 0;
@@ -1524,6 +1687,7 @@
                     lastBonus: now
                 }).then(() => {
                     this.showToast('🎁 Успех! +100 XP зачислено на твой баланс.');
+                    this.updateQuestProgress('bonus');
                 }).catch(e => this.showToast(e.message));
             } else {
                 const hoursLeft = Math.ceil((day - (now - last)) / (1000 * 60 * 60));
@@ -1637,6 +1801,7 @@
                 db.ref(`users/${this.user.id}/friends/${targetUid}`).set(true).then(() => {
                     this.showToast('🤝 Добавлен в друзья');
                     document.getElementById('friend-btn').innerText = 'УДАЛИТЬ ИЗ ДРУЗЕЙ';
+                    this.updateQuestProgress('add_friend'); 
                 });
             }
         },
@@ -1801,6 +1966,7 @@
             db.ref('users/' + this.user.id + '/pm_list/' + this.currentPmUserId).set({ name: this.currentPmUserName, lastActive: ts }).catch(e => console.error(e));
             db.ref('users/' + this.currentPmUserId + '/pm_list/' + this.user.id).set({ name: this.user.name, lastActive: ts }).catch(e => console.error(e));
 
+            this.updateQuestProgress('pm'); 
             i.value = '';
             setTimeout(() => this.scrollPmToBottom(), 100);
         },
@@ -2234,4 +2400,3 @@
 </script>
 </body>
 </html>
-
