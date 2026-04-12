@@ -413,6 +413,10 @@
             
             <input type="text" id="news-link" placeholder="Ссылка на TikTok или Источник (необязательно)..." style="margin-bottom:15px;">
             <input type="text" id="news-tags" placeholder="Теги через запятую (например: #история, #тг)..." style="margin-bottom:15px;">
+            
+            <label style="font-size: 10px; color: var(--primary); margin-bottom: 5px; display: block; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">ТАЙМЕР СОБЫТИЯ (Отложенный выход)</label>
+            <input type="datetime-local" id="news-timer" style="margin-bottom:15px; color: white; background: rgba(0,0,0,0.5);">
+
             <button class="btn-main" onclick="App.postNews()">ОПУБЛИКОВАТЬ НА ВСЕХ</button>
         </div>
 
@@ -430,8 +434,16 @@
     <div id="scr-top" class="screen">
         <div class="header">
             <div class="logo">ЭЛИТА</div>
-            <div style="font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 1px;">Топ по XP</div>
+            <div style="font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 1px;">Рейтинг Легенд</div>
         </div>
+        
+        <div style="display:flex; gap:5px; margin-bottom:20px; background: rgba(0,0,0,0.4); padding: 5px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto; white-space: nowrap;">
+            <button class="top-filter-btn active" onclick="App.changeTopSort('xp', this)" style="flex:1; background:rgba(0,242,255,0.1); color:var(--primary); border:none; padding:10px 15px; border-radius:10px; font-weight:900; font-size:10px; cursor:pointer; transition:0.3s;">ОПЫТ (XP)</button>
+            <button class="top-filter-btn" onclick="App.changeTopSort('coins', this)" style="flex:1; background:transparent; color:#888; border:none; padding:10px 15px; border-radius:10px; font-weight:900; font-size:10px; cursor:pointer; transition:0.3s;">МОНЕТЫ</button>
+            <button class="top-filter-btn" onclick="App.changeTopSort('msgCount', this)" style="flex:1; background:transparent; color:#888; border:none; padding:10px 15px; border-radius:10px; font-weight:900; font-size:10px; cursor:pointer; transition:0.3s;">ОБЩЕНИЕ</button>
+            <button class="top-filter-btn" onclick="App.changeTopSort('timeSpent', this)" style="flex:1; background:transparent; color:#888; border:none; padding:10px 15px; border-radius:10px; font-weight:900; font-size:10px; cursor:pointer; transition:0.3s;">ВРЕМЯ В СЕТИ</button>
+        </div>
+
         <div id="leaderboard-list"></div>
     </div>
 
@@ -933,6 +945,8 @@
         audioChunks: [],
         chatLogStore: [], 
         questsStore: [], 
+        allUsersStore: {}, 
+        topSortBy: 'xp', 
         currentPmUserId: null,
         currentPmUserName: null,
         currentPmAutoDelete: false,
@@ -946,6 +960,14 @@
             this.sync();
             this.setupFileReaders();
             this.setupVoice();
+
+            setInterval(() => this.updateNewsTimers(), 1000);
+            
+            setInterval(() => {
+                if(this.user && !this.user.isBanned) {
+                    db.ref('users/' + this.user.id + '/timeSpent').set(firebase.database.ServerValue.increment(1)).catch(e=>{});
+                }
+            }, 60000); 
         },
 
         showToast(text) {
@@ -1077,7 +1099,8 @@
             
             const xpGain = this.user.isVipPlus ? 20 : (this.user.isVip ? 10 : 5);
             db.ref('users/' + this.user.id + '/xp').set(firebase.database.ServerValue.increment(xpGain)).catch(e => console.error(e));
-            
+            db.ref('users/' + this.user.id + '/msgCount').set(firebase.database.ServerValue.increment(1)).catch(e => console.error(e));
+
             this.updateQuestProgress('voice'); 
             
             this.cancelReply();
@@ -1213,8 +1236,8 @@
             db.ref('users').on('value', snap => {
                 const data = snap.val();
                 if(!data) return;
-                const list = Object.values(data).sort((a,b) => b.xp - a.xp);
-                this.renderTop(list);
+                this.allUsersStore = data;
+                this.renderTop(Object.values(data));
                 
                 if(this.user) {
                     const fresh = data[this.user.id];
@@ -1244,7 +1267,9 @@
             }, err => console.error(err));
 
             db.ref('stories').on('value', snap => {
-                this.renderNews(snap.val() ? Object.values(snap.val()) : []);
+                const data = snap.val();
+                const newsArray = data ? Object.keys(data).map(key => ({...data[key], key})) : [];
+                this.renderNews(newsArray);
             }, err => console.error(err));
 
             db.ref('quests').on('value', snap => {
@@ -1274,7 +1299,7 @@
 
                     const id = 'u' + Date.now();
                     db.ref('users/' + id).set({
-                        id: id, name: u, pass: safePass, xp: 0, coins: 0, badges: [],
+                        id: id, name: u, pass: safePass, xp: 0, coins: 0, badges: [], msgCount: 0, timeSpent: 0,
                         bio: 'Только что ворвался в проект',
                         photo: 'https://api.dicebear.com/7.x/pixel-art/svg?seed=' + encodeURIComponent(u),
                         lastBonus: 0,
@@ -1374,6 +1399,16 @@
             }
         },
 
+        deletePost(key, authorName) {
+            if (!this.user) return this.showToast('⛔ Ошибка доступа!');
+            if (!this.admins.includes(this.user.name) && this.user.name !== authorName) {
+                return this.showToast('⛔ Ошибка доступа! Только админ или автор может удалить пост.');
+            }
+            if (confirm('Точно удалить этот пост навсегда? Это действие нельзя отменить.')) {
+                db.ref('stories/' + key).remove().then(() => this.showToast('🗑️ Пост успешно удален!'));
+            }
+        },
+
         toggleStickersPanel(type) {
             if (!this.user.isVipPlus) return this.showToast('👑 Анимированные стикеры доступны только Боссам VIP++!');
             const p = document.getElementById(type === 'pm' ? 'pm-sticker-panel-ui' : 'sticker-panel-ui');
@@ -1467,6 +1502,7 @@
 
             db.ref('chat').push(msgData);
             document.getElementById('sticker-panel-ui').style.display = 'none';
+            db.ref('users/' + this.user.id + '/msgCount').set(firebase.database.ServerValue.increment(1)).catch(e => console.error(e));
             this.updateQuestProgress('sticker'); 
             setTimeout(() => this.scrollToBottom(), 100);
         },
@@ -1496,6 +1532,7 @@
             const ts = Date.now();
             db.ref('users/' + this.user.id + '/pm_list/' + this.currentPmUserId).set({ name: this.currentPmUserName, lastActive: ts });
             db.ref('users/' + this.currentPmUserId + '/pm_list/' + this.user.id).set({ name: this.user.name, lastActive: ts });
+            db.ref('users/' + this.user.id + '/msgCount').set(firebase.database.ServerValue.increment(1)).catch(e => console.error(e));
             
             document.getElementById('pm-sticker-panel-ui').style.display = 'none';
             this.updateQuestProgress('sticker'); 
@@ -1544,6 +1581,7 @@
             
             const xpGain = this.user.isVipPlus ? 20 : (this.user.isVip ? 10 : 5);
             db.ref('users/' + this.user.id + '/xp').set(firebase.database.ServerValue.increment(xpGain)).catch(e => console.error(e));
+            db.ref('users/' + this.user.id + '/msgCount').set(firebase.database.ServerValue.increment(1)).catch(e => console.error(e));
             
             this.updateQuestProgress('msg');
             if (this.chatTempBase64Photo) {
@@ -1565,24 +1603,56 @@
             const text = document.getElementById('news-text').value;
             const link = document.getElementById('news-link').value.trim();
             const tags = document.getElementById('news-tags').value.trim();
+            const timerVal = document.getElementById('news-timer').value;
 
             if(!t || !text) return this.showToast('⚠️ Заполни заголовок и текст истории!');
             
+            let releaseTime = null;
+            if(timerVal) {
+                releaseTime = new Date(timerVal).getTime();
+            }
+
             db.ref('stories').push({ 
                 title: t, 
                 text: text, 
                 link: link || '', 
                 tags: tags || '', 
                 author: this.user.name, 
-                date: Date.now() 
+                date: Date.now(),
+                releaseTime: releaseTime || null
             }).catch(e => this.showToast(e.message));
             
             document.getElementById('news-title').value = '';
             document.getElementById('news-text').value = '';
             document.getElementById('news-link').value = '';
             document.getElementById('news-tags').value = '';
+            document.getElementById('news-timer').value = '';
             
             this.showToast('📣 Публикация успешно размещена!');
+        },
+
+        updateNewsTimers() {
+            const timers = document.querySelectorAll('.news-countdown');
+            const now = Date.now();
+
+            timers.forEach(t => {
+                const release = parseInt(t.dataset.release);
+                if(release > now) {
+                    const diff = release - now;
+                    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+                    const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                    const s = Math.floor((diff % (1000 * 60)) / 1000);
+                    
+                    let timeString = '';
+                    if (d > 0) timeString += `${d}д `;
+                    timeString += `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+                    t.innerText = timeString;
+                } else {
+                    t.innerText = "СОБЫТИЕ НАСТУПИЛО!";
+                    t.classList.remove('news-countdown'); 
+                }
+            });
         },
 
         createQuest() {
@@ -1984,6 +2054,7 @@
             const ts = Date.now();
             db.ref('users/' + this.user.id + '/pm_list/' + this.currentPmUserId).set({ name: this.currentPmUserName, lastActive: ts }).catch(e => console.error(e));
             db.ref('users/' + this.currentPmUserId + '/pm_list/' + this.user.id).set({ name: this.user.name, lastActive: ts }).catch(e => console.error(e));
+            db.ref('users/' + this.user.id + '/msgCount').set(firebase.database.ServerValue.increment(1)).catch(e => console.error(e));
 
             this.updateQuestProgress('pm'); 
             i.value = '';
@@ -2170,8 +2241,26 @@
             }
         },
 
+        changeTopSort(type, btnElem) {
+            this.topSortBy = type;
+            document.querySelectorAll('.top-filter-btn').forEach(b => {
+                b.style.background = 'transparent';
+                b.style.color = '#888';
+                b.classList.remove('active');
+            });
+            btnElem.style.background = 'rgba(0,242,255,0.1)';
+            btnElem.style.color = 'var(--primary)';
+            btnElem.classList.add('active');
+            
+            if(this.allUsersStore) {
+                this.renderTop(Object.values(this.allUsersStore));
+            }
+        },
+
         renderTop(list) {
-            document.getElementById('leaderboard-list').innerHTML = list.map((u, i) => {
+            const sortedList = list.sort((a, b) => (b[this.topSortBy] || 0) - (a[this.topSortBy] || 0));
+
+            document.getElementById('leaderboard-list').innerHTML = sortedList.map((u, i) => {
                 const lvl = this.getLevel(u.xp);
                 
                 let nameColor = "white";
@@ -2213,6 +2302,12 @@
                     customTagHtml = `<span class="custom-vip-tag" style="color: ${u.vipTagColor}; border-color: ${u.vipTagColor};">${u.vipTagText}</span>`;
                 }
 
+                let scoreText = '';
+                if(this.topSortBy === 'xp') scoreText = `${u.xp || 0} XP`;
+                if(this.topSortBy === 'coins') scoreText = `${u.coins || 0} 🪙`;
+                if(this.topSortBy === 'msgCount') scoreText = `${u.msgCount || 0} СООБЩ.`;
+                if(this.topSortBy === 'timeSpent') scoreText = `${u.timeSpent || 0} МИН.`;
+
                 return `
                 <div class="leader-item" style="background: ${itemBg};">
                     <div class="rank" style="${i < 3 ? 'color:' + nameColor + '; text-shadow:' + nameShadow : ''}">#${i+1}</div>
@@ -2224,7 +2319,7 @@
                         </div>
                         <div style="font-size:11px; color:#aaa; margin-top: 4px;">ID: ${u.id} | ${u.bio || 'Новичок'}</div>
                     </div>
-                    <div style="font-weight:900; color:var(--primary); font-size: 16px; font-family: 'Unbounded';">${u.xp} XP</div>
+                    <div style="font-weight:900; color:var(--primary); font-size: 14px; font-family: 'Unbounded';">${scoreText}</div>
                 </div>
                 `;
             }).join('');
@@ -2307,6 +2402,8 @@
         },
 
         renderNews(news) {
+            const now = Date.now();
+            
             document.getElementById('news-container').innerHTML = news.reverse().map(n => {
                 let tagsHtml = '';
                 if(n.tags) {
@@ -2321,6 +2418,20 @@
                     linkHtml = `<a href="${n.link}" target="_blank" style="display: inline-block; margin-top: 15px; background: rgba(255,255,255,0.1); padding: 10px 18px; border-radius: 14px; color: white; text-decoration: none; font-size: 12px; font-weight: 800; border: 1px solid rgba(255,255,255,0.2); transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.3);" onmouseover="this.style.background='var(--primary)'; this.style.color='#000'; this.style.transform='translateY(-2px)';" onmouseout="this.style.background='rgba(255,255,255,0.1)'; this.style.color='white'; this.style.transform='translateY(0)';">▶️ Смотреть материал / TikTok</a>`;
                 }
 
+                let timerHtml = '';
+                if (n.releaseTime && n.releaseTime > now) {
+                    timerHtml = `
+                    <div style="margin-top: 15px; background: rgba(0, 242, 255, 0.05); padding: 12px; border-radius: 12px; border: 1px dashed var(--primary); text-align: center;">
+                        <span style="font-size: 11px; color: var(--primary); font-weight: 800; text-transform: uppercase;">⏳ СОБЫТИЕ ЧЕРЕЗ:</span>
+                        <div class="news-countdown" data-release="${n.releaseTime}" style="font-family: 'Unbounded'; font-size: 16px; font-weight: 900; color: white; margin-top: 5px;">Загрузка...</div>
+                    </div>`;
+                }
+
+                let adminBtn = '';
+                if (this.user && (this.admins.includes(this.user.name) || this.user.name === n.author)) {
+                    adminBtn = `<button class="btn-main" style="margin-top: 15px; background: rgba(255, 71, 87, 0.1); color: var(--error); border: 1px solid var(--error); padding: 10px; font-size: 10px; box-shadow: none;" onclick="App.deletePost('${n.key}', '${n.author}')">УДАЛИТЬ ПОСТ</button>`;
+                }
+
                 return `
                 <div class="glass-card" style="transition: 0.4s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
                     <div style="font-size:11px; color:var(--primary); margin-bottom:12px; display:flex; justify-content:space-between; font-weight: 800; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px;">
@@ -2328,9 +2439,11 @@
                         <span style="opacity:0.7;">${new Date(n.date).toLocaleDateString()}</span>
                     </div>
                     <h3 style="margin-bottom:12px; color:white; font-size: 18px; line-height: 1.3;">${n.title}</h3>
-                    <p style="font-size:14px; line-height:1.6; color:#ccc;">${n.text}</p>
+                    <p style="font-size:14px; line-height:1.6; color:#ccc; word-wrap: break-word;">${n.text}</p>
                     ${tagsHtml}
                     ${linkHtml}
+                    ${timerHtml}
+                    ${adminBtn}
                 </div>
                 `;
             }).join('');
