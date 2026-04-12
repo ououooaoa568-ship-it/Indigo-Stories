@@ -470,9 +470,12 @@
             </div>
 
             <div id="sticker-panel-ui">
-                <span style="font-size: 11px; color: var(--vip-plus-1); font-weight: 900; text-transform: uppercase; letter-spacing: 1px;">👑 Твои анимированные стикеры</span>
+                <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <span style="font-size: 11px; color: var(--vip-plus-1); font-weight: 900; text-transform: uppercase; letter-spacing: 1px;">👑 Твои анимированные стикеры</span>
+                    <button onclick="App.toggleStickersPanel('global')" style="background:none; border:none; color:var(--error); font-size:24px; cursor:pointer;">&times;</button>
+                </div>
                 <div id="my-custom-stickers" style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center; width:100%;">
-                    </div>
+                </div>
                 <label class="btn-main" style="padding: 12px; font-size: 11px; cursor: pointer; margin-top: 10px; width: 100%; text-align: center; background: rgba(255,255,255,0.05); border: 1px dashed var(--primary); box-shadow: none;">
                     ➕ ЗАГРУЗИТЬ СТИКЕР (GIF/WEBP)
                     <input type="file" accept="image/gif, image/webp" style="display:none;" onchange="App.uploadCustomSticker(event)">
@@ -875,7 +878,10 @@
         <div id="pm-chat-messages" style="flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:15px; padding-right:10px; scroll-behavior:smooth;"></div>
         
         <div id="pm-sticker-panel-ui" style="display: none; background: rgba(0,0,0,0.7); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); padding: 15px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); margin-top: 10px; margin-bottom: 10px; gap: 15px; flex-direction: column; align-items: center; box-shadow: inset 0 0 20px rgba(0,242,255,0.1); animation: fadeInScale 0.3s ease;">
-            <span style="font-size: 11px; color: var(--vip-plus-1); font-weight: 900; text-transform: uppercase; letter-spacing: 1px;">👑 Твои анимированные стикеры</span>
+            <div style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 11px; color: var(--vip-plus-1); font-weight: 900; text-transform: uppercase; letter-spacing: 1px;">👑 Твои анимированные стикеры</span>
+                <button onclick="App.toggleStickersPanel('pm')" style="background:none; border:none; color:var(--error); font-size:24px; cursor:pointer;">&times;</button>
+            </div>
             <div id="pm-my-custom-stickers" style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center; width:100%;">
                 </div>
             <label class="btn-main" style="padding: 12px; font-size: 11px; cursor: pointer; margin-top: 10px; width: 100%; text-align: center; background: rgba(255,255,255,0.05); border: 1px dashed var(--primary); box-shadow: none;">
@@ -1070,7 +1076,7 @@
             db.ref('chat').push(msgData).catch(e => this.showToast('Ошибка сети: ' + e.message));
             
             const xpGain = this.user.isVipPlus ? 20 : (this.user.isVip ? 10 : 5);
-            db.ref('users/' + this.user.id + '/xp').set((this.user.xp || 0) + xpGain).catch(e => console.error(e));
+            db.ref('users/' + this.user.id + '/xp').set(firebase.database.ServerValue.increment(xpGain)).catch(e => console.error(e));
             
             this.updateQuestProgress('voice'); 
             
@@ -1135,14 +1141,13 @@
             if ((this.user.xp || 0) < 1000) {
                 return this.showToast('⚠️ Недостаточно XP для обмена! Нужно минимум 1000 XP.');
             }
-            const newXp = this.user.xp - 1000;
-            const newCoins = (this.user.coins || 0) + 1;
-            db.ref('users/' + this.user.id).update({ xp: newXp, coins: newCoins })
-                .then(() => {
-                    this.showToast('✅ Успешный обмен! +1 INDICOIN 🪙');
-                    this.updateQuestProgress('exchange');
-                })
-                .catch(e => this.showToast(e.message));
+            db.ref('users/' + this.user.id).update({ 
+                xp: firebase.database.ServerValue.increment(-1000), 
+                coins: firebase.database.ServerValue.increment(1) 
+            }).then(() => {
+                this.showToast('✅ Успешный обмен! +1 INDICOIN 🪙');
+                this.updateQuestProgress('exchange');
+            }).catch(e => this.showToast(e.message));
         },
 
         buyVipPlusWithCoins() {
@@ -1150,10 +1155,12 @@
             if (this.user.isVipPlus) return this.showToast('У тебя уже есть VIP++!');
             if ((this.user.coins || 0) < 45) return this.showToast('⚠️ Недостаточно INDICOIN! Нужно 45 🪙.');
             
-            const newCoins = this.user.coins - 45;
-            db.ref('users/' + this.user.id).update({ coins: newCoins, isVip: true, isVipPlus: true })
-                .then(() => this.showToast('👑 ПОЗДРАВЛЯЕМ! Ты стал БОССОМ VIP++!'))
-                .catch(e => this.showToast(e.message));
+            db.ref('users/' + this.user.id).update({ 
+                coins: firebase.database.ServerValue.increment(-45), 
+                isVip: true, 
+                isVipPlus: true 
+            }).then(() => this.showToast('👑 ПОЗДРАВЛЯЕМ! Ты стал БОССОМ VIP++!'))
+              .catch(e => this.showToast(e.message));
         },
 
         buyVipWithCoins() {
@@ -1161,10 +1168,11 @@
             if (this.user.isVip) return this.showToast('У тебя уже есть VIP или VIP++!');
             if ((this.user.coins || 0) < 20) return this.showToast('⚠️ Недостаточно INDICOIN! Нужно 20 🪙.');
             
-            const newCoins = this.user.coins - 20;
-            db.ref('users/' + this.user.id).update({ coins: newCoins, isVip: true })
-                .then(() => this.showToast('💎 ПОЗДРАВЛЯЕМ! VIP статус активирован!'))
-                .catch(e => this.showToast(e.message));
+            db.ref('users/' + this.user.id).update({ 
+                coins: firebase.database.ServerValue.increment(-20), 
+                isVip: true 
+            }).then(() => this.showToast('💎 ПОЗДРАВЛЯЕМ! VIP статус активирован!'))
+              .catch(e => this.showToast(e.message));
         },
 
         buyStoreItem(itemKey, price) {
@@ -1182,14 +1190,14 @@
             }
 
             currentBadges.push(badgeEmoji);
-            const newCoins = this.user.coins - price;
             
-            db.ref('users/' + this.user.id).update({ coins: newCoins, badges: currentBadges })
-                .then(() => {
-                    this.showToast(`🛍️ Покупка успешна! Значок ${badgeEmoji} добавлен в профиль.`);
-                    this.updateQuestProgress('store_buy');
-                })
-                .catch(e => this.showToast(e.message));
+            db.ref('users/' + this.user.id).update({ 
+                coins: firebase.database.ServerValue.increment(-price), 
+                badges: currentBadges 
+            }).then(() => {
+                this.showToast(`🛍️ Покупка успешна! Значок ${badgeEmoji} добавлен в профиль.`);
+                this.updateQuestProgress('store_buy');
+            }).catch(e => this.showToast(e.message));
         },
 
         sync() {
@@ -1382,12 +1390,11 @@
             const reader = new FileReader();
             reader.onload = (event) => {
                 const base64 = event.target.result;
-                let stickers = this.user.customStickers || [];
+                let stickers = [...(this.user.customStickers || [])];
                 stickers.push(base64);
                 db.ref('users/' + this.user.id).update({ customStickers: stickers })
                   .then(() => {
                       this.showToast('✅ Анимированный стикер добавлен!');
-                      this.renderStickersUI();
                   }).catch(err => this.showToast('Ошибка: ' + err.message));
             };
             reader.readAsDataURL(file);
@@ -1396,12 +1403,11 @@
 
         deleteCustomSticker(index) {
             if(confirm('Удалить этот стикер навсегда?')) {
-                let stickers = this.user.customStickers || [];
+                let stickers = [...(this.user.customStickers || [])];
                 stickers.splice(index, 1);
                 db.ref('users/' + this.user.id).update({ customStickers: stickers })
                   .then(() => {
                       this.showToast('🗑️ Стикер удален');
-                      this.renderStickersUI();
                   });
             }
         },
@@ -1455,7 +1461,8 @@
                 vipColor1: this.user.vipColor1 || '#ffaa00',
                 vipColor2: this.user.vipColor2 || '#ff0055',
                 vipTagText: this.user.vipTagText || '',
-                vipTagColor: this.user.vipTagColor || '#00f2ff'
+                vipTagColor: this.user.vipTagColor || '#00f2ff',
+                vipBubbleColor: this.user.vipBubbleColor || ''
             };
 
             db.ref('chat').push(msgData);
@@ -1475,8 +1482,13 @@
                 text: '',
                 sticker: base64Image,
                 time: Date.now(),
-                isVipPlus: this.user.isVipPlus,
-                vipColor1: this.user.vipColor1 || '#ffaa00'
+                isVip: this.user.isVip || false,
+                isVipPlus: this.user.isVipPlus || false,
+                vipColor1: this.user.vipColor1 || '#ffaa00',
+                vipColor2: this.user.vipColor2 || '#ff0055',
+                vipTagText: this.user.vipTagText || '',
+                vipTagColor: this.user.vipTagColor || '#00f2ff',
+                vipBubbleColor: this.user.vipBubbleColor || ''
             };
 
             db.ref('pms/' + chatId + '/messages').push(msgData);
@@ -1531,7 +1543,7 @@
             db.ref('chat').push(msgData).catch(e => this.showToast('Ошибка сети: ' + e.message));
             
             const xpGain = this.user.isVipPlus ? 20 : (this.user.isVip ? 10 : 5);
-            db.ref('users/' + this.user.id + '/xp').set((this.user.xp || 0) + xpGain).catch(e => console.error(e));
+            db.ref('users/' + this.user.id + '/xp').set(firebase.database.ServerValue.increment(xpGain)).catch(e => console.error(e));
             
             this.updateQuestProgress('msg');
             if (this.chatTempBase64Photo) {
@@ -1619,9 +1631,9 @@
                 if(currentProgress >= q.target) {
                     updates[`completedQuests/${q.id}`] = true;
                     if(q.rewardType === 'coins') {
-                        updates.coins = (this.user.coins || 0) + Number(q.rewardAmount);
+                        updates.coins = firebase.database.ServerValue.increment(Number(q.rewardAmount));
                     } else {
-                        updates.xp = (this.user.xp || 0) + Number(q.rewardAmount);
+                        updates.xp = firebase.database.ServerValue.increment(Number(q.rewardAmount));
                     }
                     const rewardStr = q.rewardType === 'coins' ? `+${q.rewardAmount} 🪙` : `+${q.rewardAmount} XP`;
                     this.showToast(`🎉 КВЕСТ ВЫПОЛНЕН: "${q.title}"! Награда: ${rewardStr}`);
@@ -1683,7 +1695,7 @@
             
             if (now - last > day) {
                 db.ref('users/' + this.user.id).update({
-                    xp: (this.user.xp || 0) + 100,
+                    xp: firebase.database.ServerValue.increment(100),
                     lastBonus: now
                 }).then(() => {
                     this.showToast('🎁 Успех! +100 XP зачислено на твой баланс.');
@@ -1957,7 +1969,14 @@
                 name: this.user.name,
                 photo: this.user.photo,
                 text: text,
-                time: Date.now()
+                time: Date.now(),
+                isVip: this.user.isVip || false,
+                isVipPlus: this.user.isVipPlus || false,
+                vipColor1: this.user.vipColor1 || '#ffaa00',
+                vipColor2: this.user.vipColor2 || '#ff0055',
+                vipTagText: this.user.vipTagText || '',
+                vipTagColor: this.user.vipTagColor || '#00f2ff',
+                vipBubbleColor: this.user.vipBubbleColor || ''
             };
 
             db.ref('pms/' + chatId + '/messages').push(msgData).catch(e => this.showToast(e.message));
@@ -1990,14 +2009,31 @@
                     stickerHtml = `<img src="${m.sticker}" style="width: 120px; height: 120px; object-fit: contain; margin: 10px 0; border-radius: 15px; display: block; ${glow}">`;
                 }
 
+                const isVipPlus = m.isVipPlus;
+                const isVip = m.isVip && !isVipPlus;
+                
+                const vipClass = isVipPlus ? 'vip-plus-nickname' : (isVip ? 'vip-nickname' : '');
+                const vipBadge = isVipPlus ? '<span class="vip-plus-badge">👑</span>' : (isVip ? '<span class="vip-badge">💎</span>' : '');
+                const vStyles = this.getVipInlineStyles(m);
+                
+                let customTagHtml = '';
+                if (isVipPlus && m.vipTagText) {
+                    customTagHtml = `<span class="custom-vip-tag" style="color: ${m.vipTagColor}; border-color: ${m.vipTagColor};">${m.vipTagText}</span>`;
+                }
+
+                let customBubble = '';
+                if (isVipPlus && m.vipBubbleColor) {
+                    customBubble = `background: linear-gradient(135deg, ${m.vipBubbleColor}cc, ${m.vipBubbleColor}80); border: 1px solid ${m.vipBubbleColor}; box-shadow: 0 5px 15px ${m.vipBubbleColor}40;`;
+                }
+
                 return `
                 <div class="message-item-wrapper" style="position:relative; width:100%;">
                     <div style="display: flex; gap: 8px; align-items: flex-end; justify-content: ${m.uid === this.user.id ? 'flex-end' : 'flex-start'}; width: 100%; margin-bottom: 5px;">
                         ${m.uid !== this.user.id ? `<img src="${m.photo || 'https://api.dicebear.com/7.x/pixel-art/svg?seed=Anon'}" class="chat-avatar-mini" onclick="App.showUserProfile('${m.uid}')">` : ''}
                         
-                        <div class="message ${m.uid === this.user.id ? 'my-msg' : 'other-msg'}" style="margin:0;">
+                        <div class="message ${m.uid === this.user.id ? 'my-msg' : 'other-msg'}" style="${customBubble} margin:0;">
                             <div class="msg-info">
-                                <b>${m.name}</b>
+                                <b class="${vipClass}" style="${isVipPlus ? vStyles.nick : ''}">${m.name}</b> ${vipBadge} ${customTagHtml}
                                 <span class="msg-time">${m.time ? this.formatTime(m.time) : ''}</span>
                             </div>
                             ${safeText}
@@ -2183,8 +2219,8 @@
                     <img src="${u.photo || 'https://api.dicebear.com/7.x/pixel-art/svg?seed=Anon'}" class="avatar-small ${vipFrame}" style="${isVipPlus ? vStyles.frame : `border: ${avatarBorder}`}; cursor: pointer;" onclick="App.showUserProfile('${u.id}')">
                     <div class="level-badge">LVL ${lvl}</div>
                     <div style="flex:1; margin-left: 10px;" onclick="App.showUserProfile('${u.id}')" style="cursor: pointer;">
-                        <div style="font-weight:800; display:flex; align-items:center; gap:5px; font-size: 15px; color: ${nameColor}; text-shadow: ${nameShadow}; cursor: pointer; flex-wrap:wrap;" class="${vipClass}">
-                            <span ${isVipPlus ? `style="${vStyles.nick}"` : ''}>${badgeOrEmoji}${u.name}</span> ${this.admins.includes(u.name) ? '<div class="verify-badge"></div>' : ''} ${vipBadge} ${customTagHtml}
+                        <div style="font-weight:800; display:flex; align-items:center; gap:5px; font-size: 15px; color: ${nameColor}; text-shadow: ${nameShadow}; cursor: pointer; flex-wrap:wrap;">
+                            <span>${badgeOrEmoji}</span><span class="${vipClass}" ${isVipPlus ? `style="${vStyles.nick}"` : ''}>${u.name}</span> ${this.admins.includes(u.name) ? '<div class="verify-badge"></div>' : ''} ${vipBadge} ${customTagHtml}
                         </div>
                         <div style="font-size:11px; color:#aaa; margin-top: 4px;">ID: ${u.id} | ${u.bio || 'Новичок'}</div>
                     </div>
