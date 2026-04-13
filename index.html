@@ -22,7 +22,13 @@
             --vip-plus-2: #ff0055;
         }
 
+        /* ГЛОБАЛЬНЫЙ ФИКС УХОДА ЭКРАНА ВПРАВО */
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        html, body {
+            max-width: 100%;
+            overflow-x: hidden;
+            width: 100%;
+        }
 
         /* Живой анимированный фон */
         @keyframes gradientBG {
@@ -37,7 +43,6 @@
             animation: gradientBG 15s ease infinite;
             color: var(--text);
             font-family: 'Manrope', sans-serif; 
-            overflow-x: hidden; 
             min-height: 100vh;
             transition: background 0.5s ease;
         }
@@ -81,10 +86,12 @@
             50% { transform: translateY(-10px); }
             100% { transform: translateY(0px); }
         }
-        @keyframes floatSticker {
-            0% { transform: translateY(0px) scale(1); }
-            50% { transform: translateY(-5px) scale(1.05); }
-            100% { transform: translateY(0px) scale(1); }
+        @keyframes crashShake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
         }
 
         /* VIP СТИЛИ */
@@ -175,6 +182,7 @@
             box-shadow: 0 15px 35px rgba(0,0,0,0.6), inset 0 0 20px rgba(0,242,255,0.02);
             animation: fadeInScale 0.7s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative; overflow: hidden;
+            width: 100%;
         }
 
         .input-group { margin-bottom: 18px; text-align: left; position: relative; }
@@ -207,15 +215,15 @@
         .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); box-shadow: none; }
 
         /* Экраны */
-        .app-container { max-width: 600px; margin: 0 auto; padding: 20px 20px max(150px, calc(env(safe-area-inset-bottom, 0px) + 120px)) 20px; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 35px; padding-top: 15px; position: relative; }
+        .app-container { max-width: 600px; width: 100%; margin: 0 auto; padding: 20px 20px max(150px, calc(env(safe-area-inset-bottom, 0px) + 120px)) 20px; overflow-x: hidden; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 35px; padding-top: 15px; position: relative; width: 100%; }
         .header::after { content: ''; position: absolute; bottom: -10px; left: 0; width: 50px; height: 3px; background: var(--primary); border-radius: 5px; box-shadow: 0 0 10px var(--primary); }
         .logo { font-size: 28px; font-weight: 900; color: var(--text); text-shadow: 0 0 15px var(--primary), 0 0 30px var(--secondary); letter-spacing: 1px; }
-        .screen { display: none; opacity: 0; transition: opacity 0.5s ease; }
+        .screen { display: none; opacity: 0; transition: opacity 0.5s ease; width: 100%; }
         .screen.active { display: block; opacity: 1; animation: fadeInScale 0.5s ease; }
 
         /* Чат */
-        .chat-container-wrap { position: relative; padding: 15px; }
+        .chat-container-wrap { position: relative; padding: 15px; width: 100%; }
         
         .chat-search-box {
             width: 100%; padding: 14px 20px; border-radius: 18px; border: 1px solid rgba(255,255,255,0.08);
@@ -224,14 +232,17 @@
         }
         .chat-search-box:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(0,242,255,0.2), inset 0 2px 10px rgba(0,0,0,0.5); }
 
-        #chat-messages { height: 55vh; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; padding-right: 10px; scroll-behavior: smooth; }
+        #chat-messages { height: 55vh; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; padding-right: 10px; scroll-behavior: smooth; overflow-x: hidden; }
         #chat-messages::-webkit-scrollbar { width: 4px; }
         #chat-messages::-webkit-scrollbar-thumb { background: linear-gradient(var(--primary), var(--secondary)); border-radius: 10px; }
+        
+        .message-item-wrapper { width: 100%; max-width: 100%; position: relative; }
         
         .message { 
             max-width: 85%; padding: 14px 18px; border-radius: 22px; font-size: 14px; line-height: 1.5; 
             position: relative; cursor: pointer; transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3); backdrop-filter: blur(10px); word-wrap: break-word;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3); backdrop-filter: blur(10px); 
+            word-wrap: break-word; overflow-wrap: break-word; word-break: break-word;
         }
         .message:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
         .message:active { transform: scale(0.97); opacity: 0.9; }
@@ -256,7 +267,7 @@
             box-shadow: 0 0 15px rgba(0, 242, 255, 0.2) inset, 0 5px 15px rgba(0,0,0,0.3); 
         }
         
-        .reply-block { background: rgba(0,0,0,0.4); border-left: 3px solid var(--primary); padding: 8px 12px; border-radius: 8px; font-size: 12px; margin-bottom: 8px; opacity: 0.9; }
+        .reply-block { background: rgba(0,0,0,0.4); border-left: 3px solid var(--primary); padding: 8px 12px; border-radius: 8px; font-size: 12px; margin-bottom: 8px; opacity: 0.9; word-wrap: break-word; }
         .chat-image-attachment { max-width: 100%; border-radius: 12px; margin-top: 10px; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
 
         .chat-avatar-mini {
@@ -266,6 +277,32 @@
             transition: 0.3s;
         }
         .chat-avatar-mini:hover { transform: scale(1.1); box-shadow: 0 0 15px rgba(0,242,255,0.6); }
+
+        /* Реакции */
+        .reactions-bar {
+            display: flex; gap: 5px; margin-top: 8px; flex-wrap: wrap; align-items: center;
+        }
+        .reaction-pill {
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+            padding: 4px 8px; border-radius: 12px; font-size: 11px; cursor: pointer;
+            display: flex; align-items: center; gap: 4px; transition: 0.2s; user-select: none;
+        }
+        .reaction-pill:hover { background: rgba(255,255,255,0.2); transform: scale(1.05); }
+        .reaction-pill.active { background: rgba(0, 242, 255, 0.2); border-color: var(--primary); color: var(--primary); box-shadow: 0 0 10px rgba(0,242,255,0.3); }
+        
+        .add-reaction-btn {
+            background: rgba(255,255,255,0.05); border: 1px dashed rgba(255,255,255,0.3);
+            padding: 4px 8px; border-radius: 12px; font-size: 11px; cursor: pointer;
+            color: #aaa; transition: 0.2s; display: flex; justify-content: center; align-items: center;
+        }
+        .add-reaction-btn:hover { color: white; border-color: white; }
+        .reaction-picker {
+            position: absolute; bottom: 100%; left: 0; background: rgba(10,10,15,0.95);
+            border: 1px solid var(--primary); border-radius: 15px; padding: 8px;
+            display: none; gap: 8px; box-shadow: 0 5px 20px rgba(0,0,0,0.8); z-index: 50; backdrop-filter: blur(10px);
+        }
+        .reaction-picker span { font-size: 18px; cursor: pointer; transition: 0.2s; display: block; }
+        .reaction-picker span:hover { transform: scale(1.3); }
 
         /* Навигация чата */
         .scroll-nav-btn {
@@ -290,14 +327,15 @@
         #reply-preview-ui {
             display: none; background: rgba(0,0,0,0.5); border-left: 4px solid var(--primary);
             padding: 12px 15px; border-radius: 12px; margin-top: 15px; display: flex; justify-content: space-between; align-items: center;
-            box-shadow: inset 0 0 15px rgba(0,242,255,0.1);
+            box-shadow: inset 0 0 15px rgba(0,242,255,0.1); width: 100%;
         }
 
-        .chat-tools { display: flex; gap: 8px; margin-top: 15px; align-items: center; background: rgba(0,0,0,0.3); padding: 8px; border-radius: 22px; border: 1px solid rgba(255,255,255,0.05); }
+        .chat-tools { display: flex; gap: 8px; margin-top: 15px; align-items: center; background: rgba(0,0,0,0.3); padding: 8px; border-radius: 22px; border: 1px solid rgba(255,255,255,0.05); width: 100%; }
         .tool-btn { 
             background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); 
             color: var(--primary); padding: 12px; border-radius: 18px; cursor: pointer; 
             display: flex; justify-content: center; align-items: center; transition: 0.3s;
+            flex-shrink: 0;
         }
         .tool-btn:hover { background: rgba(0, 242, 255, 0.15); border-color: var(--primary); transform: rotate(10deg); box-shadow: 0 0 15px rgba(0,242,255,0.3); }
         
@@ -308,7 +346,7 @@
             display: none; background: rgba(0,0,0,0.7); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
             padding: 15px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); margin-top: 10px; margin-bottom: 10px;
             gap: 15px; flex-direction: column; align-items: center; box-shadow: inset 0 0 20px rgba(0,242,255,0.1);
-            animation: fadeInScale 0.3s ease;
+            animation: fadeInScale 0.3s ease; width: 100%;
         }
 
         /* Лидеры */
@@ -316,41 +354,41 @@
             display: flex; align-items: center; gap: 15px; padding: 18px; 
             background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)); 
             border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 22px; margin-bottom: 12px; transition: 0.4s; position: relative; overflow: hidden; 
+            border-radius: 22px; margin-bottom: 12px; transition: 0.4s; position: relative; overflow: hidden; width: 100%;
         }
         .leader-item::before { content: ''; position: absolute; left: 0; top: 0; width: 4px; height: 100%; background: var(--primary); opacity: 0; transition: 0.4s; box-shadow: 0 0 15px var(--primary); }
         .leader-item:hover { transform: scale(1.02) translateX(5px); background: rgba(255,255,255,0.08); border-color: rgba(0,242,255,0.3); }
         .leader-item:hover::before { opacity: 1; }
         .rank { width: 35px; font-family: 'Unbounded'; font-weight: 900; color: var(--primary); font-size: 20px; text-shadow: 0 0 10px rgba(0,242,255,0.5); }
-        .avatar-small { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); padding: 2px; position: relative; box-shadow: 0 0 15px rgba(0,242,255,0.2); z-index: 2; background: #000; }
+        .avatar-small { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); padding: 2px; position: relative; box-shadow: 0 0 15px rgba(0,242,255,0.2); z-index: 2; background: #000; flex-shrink: 0;}
         .level-badge { position: absolute; bottom: 12px; left: 60px; background: linear-gradient(90deg, var(--primary), var(--secondary)); color: white; font-size: 9px; font-weight: 900; padding: 3px 8px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.5); z-index: 3;}
         
         .verify-badge {
             width: 18px; height: 18px; display: inline-block;
             background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2300f2ff"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"/></svg>') no-repeat center;
-            background-size: contain; filter: drop-shadow(0 0 8px var(--primary)); margin-left: 5px;
+            background-size: contain; filter: drop-shadow(0 0 8px var(--primary)); margin-left: 5px; flex-shrink: 0;
         }
 
-        /* Навигация */
+        /* Навигация (ИСПРАВЛЕНО ДЛЯ ТЕЛЕФОНОВ) */
         .nav-bar {
             position: fixed; 
             bottom: max(25px, env(safe-area-inset-bottom, 25px)); 
             left: 50%; transform: translateX(-50%);
-            width: 90%; max-width: 500px; background: rgba(10, 10, 15, 0.85); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+            width: 90%; max-width: 600px; background: rgba(10, 10, 15, 0.85); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
             border-radius: 30px; display: flex; justify-content: space-around; padding: 12px;
             border: 1px solid rgba(255,255,255,0.1); border-top: 1px solid rgba(255,255,255,0.2); z-index: 1000; 
             box-shadow: 0 15px 35px rgba(0,0,0,0.8), 0 0 20px rgba(0,242,255,0.1);
         }
-        .nav-btn { background: none; border: none; color: #777; font-size: 10px; font-weight: 800; cursor: pointer; padding: 12px 10px; transition: 0.4s; font-family: 'Unbounded', sans-serif; position: relative; border-radius: 20px; }
+        .nav-btn { background: none; border: none; color: #777; font-size: 20px; font-weight: 800; cursor: pointer; padding: 10px; transition: 0.4s; font-family: 'Unbounded', sans-serif; position: relative; border-radius: 20px; flex: 1; text-align: center;}
         .nav-btn.active { color: white; background: rgba(0, 242, 255, 0.15); transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,242,255,0.2); }
         .nav-btn.active::after { content: ''; position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); width: 20px; height: 3px; background: var(--primary); border-radius: 5px; box-shadow: 0 0 10px var(--primary); }
 
         /* Массивные настройки */
-        .settings-block { background: rgba(0,0,0,0.4); border-radius: 20px; padding: 20px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.05); box-shadow: inset 0 0 20px rgba(0,0,0,0.5); }
+        .settings-block { background: rgba(0,0,0,0.4); border-radius: 20px; padding: 20px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.05); box-shadow: inset 0 0 20px rgba(0,0,0,0.5); width: 100%;}
         .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px dashed rgba(255,255,255,0.08); transition: 0.3s; }
         .toggle-row:hover { background: rgba(255,255,255,0.02); padding-left: 10px; padding-right: 10px; border-radius: 10px; }
         .toggle-row:last-child { border: none; }
-        .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+        .switch { position: relative; display: inline-block; width: 44px; height: 24px; flex-shrink: 0; }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255,255,255,0.1); transition: .4s; border-radius: 24px; border: 1px solid rgba(255,255,255,0.2); }
         .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 2px; bottom: 2px; background-color: white; transition: .4s cubic-bezier(0.175, 0.885, 0.32, 1.275); border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.5); }
@@ -364,8 +402,27 @@
         .file-upload-wrapper:hover .fake-btn { background: rgba(0, 242, 255, 0.1); border-color: var(--primary); box-shadow: 0 0 20px rgba(0,242,255,0.2) inset; transform: scale(0.98); }
 
         /* Тост уведомления */
-        #toast-container { position: fixed; top: 40px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
-        .toast { background: rgba(20,20,25,0.95); border-left: 4px solid var(--primary); border-right: 1px solid rgba(255,255,255,0.1); border-top: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1); color: white; padding: 16px 25px; border-radius: 12px; font-size: 13px; font-weight: 700; box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 20px rgba(0,242,255,0.2); animation: toastUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; backdrop-filter: blur(15px); letter-spacing: 0.5px; }
+        #toast-container { position: fixed; top: 40px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; width: 90%; max-width: 400px; }
+        .toast { background: rgba(20,20,25,0.95); border-left: 4px solid var(--primary); border-right: 1px solid rgba(255,255,255,0.1); border-top: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1); color: white; padding: 16px 25px; border-radius: 12px; font-size: 13px; font-weight: 700; box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 20px rgba(0,242,255,0.2); animation: toastUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; backdrop-filter: blur(15px); letter-spacing: 0.5px; word-break: break-word; }
+
+        /* ИГРА CRASH */
+        #crash-canvas-container {
+            width: 100%; height: 250px; background: rgba(0,0,0,0.6); border-radius: 20px; 
+            border: 1px solid rgba(255,255,255,0.1); box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+            position: relative; overflow: hidden; margin-bottom: 15px;
+        }
+        #crash-multiplier {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            font-family: 'Unbounded'; font-size: 45px; font-weight: 900; color: white; z-index: 10;
+            text-shadow: 0 0 20px rgba(0,0,0,0.8); transition: color 0.3s;
+        }
+        #crash-canvas { width: 100%; height: 100%; display: block; }
+        .crash-bet-item {
+            display: flex; justify-content: space-between; align-items: center; padding: 10px 15px;
+            background: rgba(255,255,255,0.05); border-radius: 12px; margin-bottom: 8px; font-size: 13px;
+        }
+        .crash-bet-item.win { background: rgba(46, 213, 115, 0.1); border: 1px solid var(--success); }
+        .crash-bet-item.lose { background: rgba(255, 71, 87, 0.1); border: 1px dashed var(--error); opacity: 0.6; }
     </style>
 </head>
 <body>
@@ -375,7 +432,7 @@
 
 <div id="toast-container"></div>
 
-<div id="auth-screen" style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh; padding:20px;">
+<div id="auth-screen" style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh; padding:20px; width:100%;">
     <div class="glass-card" style="width:100%; max-width:400px; text-align:center;">
         <h1 class="logo" style="margin-bottom: 5px; font-size:38px; animation: float 4s ease-in-out infinite;">INDIGO</h1>
         <p style="color: var(--primary); font-size: 11px; margin-bottom: 30px; letter-spacing:4px; font-weight: 900; opacity: 0.8;">PREMIUM VIP++ PORTAL</p>
@@ -420,7 +477,7 @@
             <button class="btn-main" onclick="App.postNews()">ОПУБЛИКОВАТЬ НА ВСЕХ</button>
         </div>
 
-        <div id="news-container"></div>
+        <div id="news-container" style="width: 100%;"></div>
     </div>
 
     <div id="scr-quests" class="screen">
@@ -428,7 +485,7 @@
             <div class="logo">КВЕСТЫ</div>
             <div style="font-size: 10px; color: var(--success); border: 1px solid var(--success); padding: 5px 10px; border-radius: 10px; font-weight: 800;">СУПЕР ИВЕНТ</div>
         </div>
-        <div id="quests-container"></div>
+        <div id="quests-container" style="width: 100%;"></div>
     </div>
 
     <div id="scr-top" class="screen">
@@ -441,10 +498,10 @@
             <button class="top-filter-btn active" onclick="App.changeTopSort('xp', this)" style="flex:1; background:rgba(0,242,255,0.1); color:var(--primary); border:none; padding:10px 15px; border-radius:10px; font-weight:900; font-size:10px; cursor:pointer; transition:0.3s;">ОПЫТ (XP)</button>
             <button class="top-filter-btn" onclick="App.changeTopSort('coins', this)" style="flex:1; background:transparent; color:#888; border:none; padding:10px 15px; border-radius:10px; font-weight:900; font-size:10px; cursor:pointer; transition:0.3s;">МОНЕТЫ</button>
             <button class="top-filter-btn" onclick="App.changeTopSort('msgCount', this)" style="flex:1; background:transparent; color:#888; border:none; padding:10px 15px; border-radius:10px; font-weight:900; font-size:10px; cursor:pointer; transition:0.3s;">ОБЩЕНИЕ</button>
-            <button class="top-filter-btn" onclick="App.changeTopSort('timeSpent', this)" style="flex:1; background:transparent; color:#888; border:none; padding:10px 15px; border-radius:10px; font-weight:900; font-size:10px; cursor:pointer; transition:0.3s;">ВРЕМЯ В СЕТИ</button>
+            <button class="top-filter-btn" onclick="App.changeTopSort('timeSpent', this)" style="flex:1; background:transparent; color:#888; border:none; padding:10px 15px; border-radius:10px; font-weight:900; font-size:10px; cursor:pointer; transition:0.3s;">ВРЕМЯ</button>
         </div>
 
-        <div id="leaderboard-list"></div>
+        <div id="leaderboard-list" style="width: 100%;"></div>
     </div>
 
     <div id="scr-chat" class="screen">
@@ -452,32 +509,28 @@
             <div class="logo">СВЯЗЬ</div>
             <div style="display: flex; gap: 10px; align-items: center;">
                 <button onclick="App.showPmList()" style="background:rgba(0,242,255,0.1); border:1px solid var(--primary); color:var(--primary); font-size:10px; padding:6px 12px; border-radius:12px; font-weight:bold; cursor:pointer; font-family:'Manrope',sans-serif;">📥 ЛС</button>
-                <button onclick="App.exportChatLogs()" style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); color:white; font-size:10px; padding:6px 12px; border-radius:12px; font-weight:bold; cursor:pointer; font-family:'Manrope',sans-serif;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline; vertical-align:middle; margin-right:4px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> ЭКСПОРТ</button>
-                <div style="font-size: 10px; color: #aaa; background: rgba(255,255,255,0.05); padding: 6px 10px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">Двойной тап: КОПИРОВАТЬ</div>
+                <button onclick="App.exportChatLogs()" style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); color:white; font-size:10px; padding:6px 12px; border-radius:12px; font-weight:bold; cursor:pointer; font-family:'Manrope',sans-serif;">ЭКСПОРТ</button>
             </div>
         </div>
         <div class="glass-card chat-container-wrap">
             
-            <input type="text" id="chat-search" class="chat-search-box" placeholder="🔍 Найти сообщение в истории..." onkeyup="App.searchChat()">
+            <input type="text" id="chat-search" class="chat-search-box" placeholder="🔍 Найти сообщение..." onkeyup="App.searchChat()">
 
             <div id="chat-messages" onscroll="App.handleChatScroll()"></div>
             
             <button id="scroll-up-btn" class="scroll-nav-btn" onclick="App.scrollToTop()">↑</button>
             <button id="scroll-down-btn" class="scroll-nav-btn" onclick="App.scrollToBottom()">↓</button>
             
-            <div id="reply-preview-ui" style="display:none;">
+            <div id="reply-preview-ui">
                 <div style="overflow:hidden; flex: 1;">
                     <span style="font-size:10px; color:var(--primary); font-weight:900; letter-spacing: 1px; text-transform: uppercase;">Отвечаем: <span id="reply-to-name" style="color: white;"></span></span>
                     <div id="reply-to-text" style="font-size:13px; color:#aaa; white-space:nowrap; text-overflow:ellipsis; overflow:hidden; max-width:90%; margin-top: 4px;"></div>
                 </div>
-                <button onclick="App.cancelReply()" style="background:none; border:none; color:var(--error); font-size:24px; cursor:pointer; padding:0 10px; text-shadow: 0 0 10px var(--error); transition: 0.3s;" onmouseover="this.style.transform='rotate(90deg)'" onmouseout="this.style.transform='rotate(0deg)'">×</button>
+                <button onclick="App.cancelReply()" style="background:none; border:none; color:var(--error); font-size:24px; cursor:pointer; padding:0 10px; text-shadow: 0 0 10px var(--error); transition: 0.3s;">×</button>
             </div>
 
-            <div id="chat-img-preview-ui" style="display:none; background:rgba(46, 213, 115, 0.1); border:1px solid var(--success); padding:12px; border-radius:12px; margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
-                <span style="font-size:12px; color:var(--success); font-weight: 800; display:flex; align-items:center; gap:8px;">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-                    Фотография заряжена
-                </span>
+            <div id="chat-img-preview-ui">
+                <span style="font-size:12px; color:var(--success); font-weight: 800; display:flex; align-items:center; gap:8px;">📸 Фото заряжено</span>
                 <button onclick="App.cancelChatImage()" style="background:none; border:none; color:var(--error); font-size:20px; cursor:pointer; font-weight:bold;">×</button>
             </div>
 
@@ -486,31 +539,58 @@
                     <span style="font-size: 11px; color: var(--vip-plus-1); font-weight: 900; text-transform: uppercase; letter-spacing: 1px;">👑 Твои анимированные стикеры</span>
                     <button onclick="App.toggleStickersPanel('global')" style="background:none; border:none; color:var(--error); font-size:24px; cursor:pointer;">&times;</button>
                 </div>
-                <div id="my-custom-stickers" style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center; width:100%;">
-                </div>
+                <div id="my-custom-stickers" style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center; width:100%;"></div>
                 <label class="btn-main" style="padding: 12px; font-size: 11px; cursor: pointer; margin-top: 10px; width: 100%; text-align: center; background: rgba(255,255,255,0.05); border: 1px dashed var(--primary); box-shadow: none;">
                     ➕ ЗАГРУЗИТЬ СТИКЕР (GIF/WEBP)
                     <input type="file" accept="image/gif, image/webp" style="display:none;" onchange="App.uploadCustomSticker(event)">
                 </label>
-                <div style="font-size: 9px; color: #888; text-align: center; width: 100%;">ПКМ (или долгий тап) по стикеру для удаления</div>
             </div>
 
             <div class="chat-tools">
-                <button class="tool-btn" title="Стикеры" onclick="App.toggleStickersPanel('global')">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
-                </button>
+                <button class="tool-btn" title="Стикеры" onclick="App.toggleStickersPanel('global')">🎁</button>
                 <label class="tool-btn" title="Прикрепить фото">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-                    <input type="file" id="chat-file-input" accept="image/*" style="display:none;" onchange="App.handleChatImageUpload(event)">
+                    📸 <input type="file" id="chat-file-input" accept="image/*" style="display:none;" onchange="App.handleChatImageUpload(event)">
                 </label>
-                <button id="voice-mic-btn" class="tool-btn" title="Голосовой ввод" onclick="App.startVoiceInput()">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
-                </button>
+                <button id="voice-mic-btn" class="tool-btn" title="Голосовой ввод" onclick="App.startVoiceInput()">🎤</button>
                 <input type="text" id="chat-input" placeholder="Набери сообщение..." style="margin:0; flex:1; background: rgba(0,0,0,0.5); border: none; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);" onkeypress="if(event.key === 'Enter') App.sendMessage()">
-                <button class="btn-main" style="width:50px; height:50px; margin:0; padding:0; display:flex; justify-content:center; align-items:center; border-radius: 18px;" onclick="App.sendMessage()">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transform: translateX(-2px);"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-                </button>
+                <button class="btn-main" style="width:50px; height:50px; margin:0; padding:0; display:flex; justify-content:center; align-items:center; border-radius: 18px; flex-shrink: 0;" onclick="App.sendMessage()">➤</button>
             </div>
+        </div>
+    </div>
+
+    <div id="scr-crash" class="screen">
+        <div class="header">
+            <div class="logo">CRASH 📈</div>
+            <div style="font-size: 10px; color: var(--primary); border: 1px solid var(--primary); padding: 5px 10px; border-radius: 10px; font-weight: 800;">МИНИ-ИГРА</div>
+        </div>
+
+        <div class="glass-card" style="padding: 15px;">
+            <div id="crash-canvas-container">
+                <div id="crash-multiplier">1.00x</div>
+                <canvas id="crash-canvas"></canvas>
+            </div>
+
+            <div style="background: rgba(0,0,0,0.4); padding: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 15px; text-align: center;">
+                <div style="font-size: 11px; color: #aaa; margin-bottom: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">Твой баланс</div>
+                <div style="font-size: 24px; font-weight: 900; color: #ffaa00; font-family: 'Unbounded'; text-shadow: 0 0 15px rgba(255,170,0,0.4);" id="crash-balance">0 🪙</div>
+            </div>
+
+            <div class="input-group" style="margin-bottom: 10px;">
+                <label style="text-align: center; color: white;">СТАВКА (Минимум 1 🪙)</label>
+                <div style="display: flex; gap: 10px;">
+                    <input type="number" id="crash-bet-input" value="1" min="1" style="text-align: center; font-size: 18px; font-weight: bold;">
+                    <button class="btn-main" style="width: 60px; padding: 0; margin: 0; font-size: 12px; border-radius: 18px; flex-shrink: 0;" onclick="document.getElementById('crash-bet-input').value = App.user.coins || 0">MAX</button>
+                </div>
+            </div>
+
+            <button id="crash-action-btn" class="btn-main" style="padding: 20px; font-size: 16px; background: linear-gradient(135deg, #2ed573, #00b894); box-shadow: 0 10px 25px rgba(46, 213, 115, 0.4);" onclick="App.handleCrashAction()">ПОСТАВИТЬ СТАВКУ</button>
+            <div id="crash-status-text" style="text-align: center; font-size: 12px; color: #aaa; margin-top: 15px; font-weight: bold;">Ожидание игры...</div>
+        </div>
+
+        <div class="glass-card" style="padding: 15px;">
+            <h3 style="font-size: 12px; color: var(--primary); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;">Игроки в раунде</h3>
+            <div id="crash-players-list" style="max-height: 200px; overflow-y: auto; padding-right: 5px;">
+                </div>
         </div>
     </div>
 
@@ -537,7 +617,7 @@
             <div style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.05); padding: 15px; border-radius: 15px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; text-align: left;">
                 <div>
                     <div style="font-weight: 800; font-size: 14px; color: white;">Элитный Значок "🦇 Бэтмен"</div>
-                    <div style="font-size: 11px; color: #aaa; margin-top: 5px;">Отображается в профиле навсегда</div>
+                    <div style="font-size: 11px; color: #aaa; margin-top: 5px;">Навсегда</div>
                 </div>
                 <button class="btn-main" onclick="App.buyStoreItem('batman_badge', 5)" style="width: auto; padding: 10px 15px; font-size: 12px; margin-top:0;">5 🪙</button>
             </div>
@@ -545,7 +625,7 @@
             <div style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.05); padding: 15px; border-radius: 15px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; text-align: left;">
                 <div>
                     <div style="font-weight: 800; font-size: 14px; color: white;">Элитный Значок "🔥 Легенда"</div>
-                    <div style="font-size: 11px; color: #aaa; margin-top: 5px;">Отображается в профиле навсегда</div>
+                    <div style="font-size: 11px; color: #aaa; margin-top: 5px;">Навсегда</div>
                 </div>
                 <button class="btn-main" onclick="App.buyStoreItem('legend_badge', 10)" style="width: auto; padding: 10px 15px; font-size: 12px; margin-top:0;">10 🪙</button>
             </div>
@@ -553,7 +633,7 @@
             <div style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.05); padding: 15px; border-radius: 15px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; text-align: left;">
                 <div>
                     <div style="font-weight: 800; font-size: 14px; color: white;">Элитный Значок "👾 Хакер"</div>
-                    <div style="font-size: 11px; color: #aaa; margin-top: 5px;">Отображается в профиле навсегда</div>
+                    <div style="font-size: 11px; color: #aaa; margin-top: 5px;">Навсегда</div>
                 </div>
                 <button class="btn-main" onclick="App.buyStoreItem('hacker_badge', 15)" style="width: auto; padding: 10px 15px; font-size: 12px; margin-top:0;">15 🪙</button>
             </div>
@@ -565,30 +645,28 @@
             <p style="font-size: 13px; color: #aaa; margin-bottom: 20px; line-height: 1.5;">Абсолютный максимум для истинных Боссов проекта:</p>
             
             <div style="text-align: left; background: rgba(0,0,0,0.4); padding: 15px; border-radius: 15px; border: 1px solid rgba(255, 0, 85, 0.2); margin-bottom: 20px;">
-                <div style="margin-bottom: 10px; font-size: 13px;">🔥 <b class="vip-plus-nickname">Спец. градиент VIP++</b> (Настраиваемый)</div>
-                <div style="margin-bottom: 10px; font-size: 13px;">🔥 <b>Свои Анимированные Стикеры</b> (Загрузка GIF)</div>
-                <div style="margin-bottom: 10px; font-size: 13px;">🔥 <b>Кастомный цвет сообщения (Пузыря в чате)</b></div>
-                <div style="margin-bottom: 10px; font-size: 13px;">🔥 <b>Кастомный ТЕГ (Роль)</b> рядом с ником</div>
+                <div style="margin-bottom: 10px; font-size: 13px;">🔥 <b class="vip-plus-nickname">Спец. градиент VIP++</b></div>
+                <div style="margin-bottom: 10px; font-size: 13px;">🔥 <b>Свои Анимированные Стикеры</b></div>
+                <div style="margin-bottom: 10px; font-size: 13px;">🔥 <b>Кастомный цвет сообщения</b></div>
+                <div style="margin-bottom: 10px; font-size: 13px;">🔥 <b>Кастомный ТЕГ (Роль)</b></div>
                 <div style="margin-bottom: 10px; font-size: 13px;">🔥 Красно-золотая рамка аватара</div>
-                <div style="margin-bottom: 10px; font-size: 13px;">🔥 <b>Обложка профиля (Фон)</b> + Голосовой чат</div>
+                <div style="margin-bottom: 10px; font-size: 13px;">🔥 <b>Обложка профиля (Фон)</b> + Голос</div>
             </div>
 
-            <button class="btn-main" onclick="window.open('https://boosty.to/indigo_help/posts/193b6959-a758-4e52-a048-b8941a9447b6?share=post_link', '_blank')" style="background: linear-gradient(135deg, var(--vip-plus-1), var(--vip-plus-2)); font-size: 16px; padding: 18px; box-shadow: 0 10px 25px rgba(255, 0, 85, 0.5);">СТАТЬ БОССОМ VIP++</button>
             <button class="btn-main btn-outline" onclick="App.buyVipPlusWithCoins()" style="margin-top: 10px; border-color: var(--vip-plus-2); color: white; background: rgba(255,0,85,0.1);">КУПИТЬ ЗА 45 🪙 INDICOINS</button>
         </div>
 
         <div class="glass-card" style="text-align:center;">
             <div style="font-size: 35px; margin-bottom: 10px; animation: float 3s ease-in-out infinite;">💎</div>
             <h3 style="color: white; font-family: 'Unbounded'; margin-bottom: 15px; font-size: 20px;">INDIGO VIP <span style="color: var(--primary);">[FOREVER]</span></h3>
-            <p style="font-size: 13px; color: #aaa; margin-bottom: 20px; line-height: 1.5;">Стань легендой Indigo Project! Уникальные фишки навсегда:</p>
+            <p style="font-size: 13px; color: #aaa; margin-bottom: 20px; line-height: 1.5;">Уникальные фишки навсегда:</p>
             
             <div style="text-align: left; background: rgba(0,0,0,0.4); padding: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 20px;">
-                <div style="margin-bottom: 10px; font-size: 13px;">✅ <b class="vip-nickname">Анимированный ник</b> в чате и топе</div>
-                <div style="margin-bottom: 10px; font-size: 13px;">✅ <b>Неоновая рамка</b> вокруг профиля</div>
-                <div style="margin-bottom: 10px; font-size: 13px;">✅ <b>Уникальный значок</b> мецената (💎)</div>
+                <div style="margin-bottom: 10px; font-size: 13px;">✅ <b class="vip-nickname">Анимированный ник</b></div>
+                <div style="margin-bottom: 10px; font-size: 13px;">✅ <b>Неоновая рамка</b> профиля</div>
+                <div style="margin-bottom: 10px; font-size: 13px;">✅ <b>Уникальный значок</b> (💎)</div>
             </div>
 
-            <button class="btn-main" onclick="window.open('https://boosty.to/indigo_help/bundle/1f0e2536-53a6-4581-9edf-c6e9e14237b6?share=bundle_link', '_blank')" style="font-size: 14px; padding: 16px; box-shadow: 0 10px 25px rgba(0, 242, 255, 0.5);">КУПИТЬ VIP ЗА 150₽</button>
             <button class="btn-main btn-outline" onclick="App.buyVipWithCoins()" style="margin-top: 10px; border-color: var(--primary); color: white; background: rgba(0,242,255,0.1);">КУПИТЬ ЗА 20 🪙 INDICOINS</button>
         </div>
     </div>
@@ -600,7 +678,7 @@
             <img id="my-cover-display" src="" class="profile-cover" style="display:none;">
             <div style="position:absolute; top:10px; left:50%; transform:translateX(-50%); width:150px; height:150px; background:var(--primary); filter:blur(60px); opacity:0.3; z-index:0; border-radius: 50%; animation: pulseGlow 4s infinite;"></div>
             
-            <img id="my-avatar" src="" class="avatar-small" style="width:130px; height:130px; border:4px solid var(--primary); box-shadow: 0 0 25px rgba(0,242,255,0.5); margin-bottom:15px; transition: 0.5s; position:relative; z-index:2;" onmouseover="this.style.transform='scale(1.05) rotate(5deg)'" onmouseout="this.style.transform='scale(1) rotate(0deg)'">
+            <img id="my-avatar" src="" class="avatar-small" style="width:130px; height:130px; border:4px solid var(--primary); box-shadow: 0 0 25px rgba(0,242,255,0.5); margin-bottom:15px; transition: 0.5s; position:relative; z-index:2;">
             
             <h2 id="my-name-display" style="display:flex; justify-content:center; align-items:center; gap:10px; font-size: 22px; text-shadow: 0 0 10px rgba(255,255,255,0.3); position:relative; z-index:2;">Загрузка...</h2>
             <p style="font-size:13px; color:#aaa; margin-bottom:20px; font-weight: 600; padding: 0 20px; position:relative; z-index:2;" id="my-bio-display">Ворвался в проект</p>
@@ -624,8 +702,7 @@
 
         <div class="glass-card">
             <h3 style="margin-bottom:25px; font-size:18px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:15px; color: var(--text); display:flex; align-items:center; gap: 10px;">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-                СИСТЕМНЫЕ НАСТРОЙКИ
+                ⚙️ СИСТЕМНЫЕ НАСТРОЙКИ
             </h3>
 
             <div class="settings-block" id="vip-plus-settings" style="display:none; border-color: var(--vip-plus-2); box-shadow: inset 0 0 20px rgba(255, 0, 85, 0.1);">
@@ -654,24 +731,13 @@
             
             <div class="settings-block">
                 <h4 style="font-size:11px; color:var(--primary); margin-bottom:15px; text-transform:uppercase; letter-spacing:2px; font-weight:900;">Внешний вид и данные</h4>
-                
-                <div class="input-group">
-                    <label>Изменить Никнейм</label>
-                    <input type="text" id="edit-name" placeholder="Новое крутое имя">
-                </div>
-                
-                <div class="input-group">
-                    <label>О себе (Твой статус)</label>
-                    <textarea id="edit-bio" placeholder="Напиши что-нибудь эпичное..." style="height: 80px;"></textarea>
-                </div>
+                <div class="input-group"><label>Изменить Никнейм</label><input type="text" id="edit-name" placeholder="Новое крутое имя"></div>
+                <div class="input-group"><label>О себе (Твой статус)</label><textarea id="edit-bio" placeholder="Напиши что-нибудь эпичное..." style="height: 80px;"></textarea></div>
 
                 <div class="input-group">
                     <label>Установить аватар из галереи</label>
                     <div class="file-upload-wrapper">
-                        <div class="fake-btn">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-bottom: 5px; display:block; margin: 0 auto 5px auto;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-                            ВЫБРАТЬ АВАТАР СО СМАРТФОНА
-                        </div>
+                        <div class="fake-btn">📸 ВЫБРАТЬ АВАТАР СО СМАРТФОНА</div>
                         <input type="file" id="file-upload" accept="image/*">
                     </div>
                     <small id="upload-status" style="color:var(--success); font-size:11px; display:none; font-weight:800; background: rgba(46, 213, 115, 0.1); padding: 8px; border-radius: 8px; border: 1px solid var(--success); text-align:center;">✓ Аватар успешно загружен в буфер.</small>
@@ -680,10 +746,7 @@
                 <div class="input-group">
                     <label>Фон профиля (Обложка VIP++)</label>
                     <div class="file-upload-wrapper">
-                        <div class="fake-btn" style="border-color: var(--vip-plus-2); color: var(--vip-plus-1);">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-bottom: 5px; display:block; margin: 0 auto 5px auto;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-                            ЗАГРУЗИТЬ ФОНОВУЮ КАРТИНКУ
-                        </div>
+                        <div class="fake-btn" style="border-color: var(--vip-plus-2); color: var(--vip-plus-1);">🖼️ ЗАГРУЗИТЬ ФОНОВУЮ КАРТИНКУ</div>
                         <input type="file" id="cover-upload" accept="image/*">
                     </div>
                     <small id="cover-status" style="color:var(--vip-plus-1); font-size:11px; display:none; font-weight:800; background: rgba(255, 0, 85, 0.1); padding: 8px; border-radius: 8px; border: 1px solid var(--vip-plus-2); text-align:center;">✓ Фон профиля подготовлен.</small>
@@ -720,10 +783,6 @@
                     <span style="font-size:14px; font-weight:600;">Скрытый режим (Призрак) <br><small style="font-size: 9px; color: #888; font-weight: 400;">Сообщения отправляются от имени "Аноним"</small></span>
                     <label class="switch"><input type="checkbox" id="ghost-mode-toggle"><span class="slider"></span></label>
                 </div>
-                <div class="toggle-row">
-                    <span style="font-size:14px; font-weight:600;">Системные звуки</span>
-                    <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
-                </div>
                 <button class="btn-main btn-outline" style="padding:15px; font-size:11px; margin-top:20px; border-color:rgba(255,255,255,0.2); color:#aaa;" onclick="App.showToast('Заявка на смену уникального ID отправлена модераторам.')">ЗАПРОСИТЬ СМЕНУ УНИКАЛЬНОГО ID</button>
             </div>
 
@@ -732,18 +791,11 @@
 
         <div id="admin-zone" class="glass-card" style="display:none; border-color: var(--error); box-shadow: 0 0 30px rgba(255, 71, 87, 0.15);">
             <h3 style="color:var(--error); margin-bottom:20px; display:flex; align-items:center; gap:10px;">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l10 6.5v7L12 22 2 15.5v-7L12 2z"></path></svg>
-                ПАНЕЛЬ БОГА (СОЗДАТЕЛЬ)
+                ⚡ ПАНЕЛЬ БОГА (СОЗДАТЕЛЬ)
             </h3>
             
             <button class="btn-main" style="background:rgba(255,71,87,0.1); color:var(--error); border:2px solid var(--error); box-shadow:none;" onclick="App.adminAction('clearChat')" onmouseover="this.style.background='var(--error)'; this.style.color='white'" onmouseout="this.style.background='rgba(255,71,87,0.1)'; this.style.color='var(--error)'">ОЧИСТИТЬ ВЕСЬ ЧАТ К ЧЕРТЯМ</button>
             
-            <div style="margin-top:20px; background:rgba(0,0,0,0.4); padding:15px; border-radius:15px; border: 1px solid rgba(255,71,87,0.3);">
-                <label style="font-size:11px; color:var(--error); display:block; margin-bottom:8px; font-weight:800; letter-spacing:1px;">ID ИГРОКА ДЛЯ УДАЛЕНИЯ</label>
-                <input type="text" id="target-id" placeholder="Например: u170923..." style="margin-bottom:15px; border-color:rgba(255,71,87,0.5); background: rgba(255,71,87,0.05);">
-                <button class="btn-main" style="background:linear-gradient(135deg, #ff4757, #ff0000); padding:15px; box-shadow: 0 10px 20px rgba(255, 71, 87, 0.4);" onclick="App.adminAction('deleteUser')">УДАЛИТЬ ПОЛЬЗОВАТЕЛЯ НАВСЕГДА</button>
-            </div>
-
             <div style="margin-top:20px; background:rgba(0,0,0,0.4); padding:15px; border-radius:15px; border: 1px solid rgba(46, 213, 115, 0.3);">
                 <label style="font-size:11px; color:var(--success); display:block; margin-bottom:8px; font-weight:800; letter-spacing:1px;">СОЗДАТЬ СУПЕР КВЕСТ</label>
                 <input type="text" id="quest-title" placeholder="Название (напр. Отправь 10 сообщений)" style="margin-bottom:10px; border-color:rgba(46, 213, 115, 0.5); background: rgba(46, 213, 115, 0.05);">
@@ -761,13 +813,41 @@
                     <option value="theme">Сменить тему профиля</option>
                 </select>
 
-                <input type="number" id="quest-target" placeholder="Количество раз (напр. 10)" style="margin-bottom:10px; border-color:rgba(46, 213, 115, 0.5); background: rgba(46, 213, 115, 0.05);">
-                <select id="quest-reward-type" style="margin-bottom:10px; border-color:rgba(46, 213, 115, 0.5); background: rgba(46, 213, 115, 0.05);">
-                    <option value="xp">Опыт (XP)</option>
-                    <option value="coins">INDICOINS (🪙)</option>
-                </select>
-                <input type="number" id="quest-reward-amount" placeholder="Награда (напр. 100)" style="margin-bottom:15px; border-color:rgba(46, 213, 115, 0.5); background: rgba(46, 213, 115, 0.05);">
+                <div style="display:flex; gap:10px; margin-bottom:10px;">
+                    <input type="number" id="quest-target" placeholder="Сколько надо? (Кол-во)" style="flex:1; border-color:rgba(46, 213, 115, 0.5); background: rgba(46, 213, 115, 0.05);">
+                    <select id="quest-difficulty" style="flex:1; border-color:rgba(46, 213, 115, 0.5); background: rgba(46, 213, 115, 0.05);">
+                        <option value="Легко">Легко 🟢</option>
+                        <option value="Средне">Средне 🟡</option>
+                        <option value="Хардкор">Хардкор 🔴</option>
+                    </select>
+                </div>
+
+                <div style="display:flex; gap:10px; margin-bottom:10px;">
+                    <input type="number" id="quest-rating" placeholder="Оценивание (1-5 звезд)" min="1" max="5" style="flex:1; border-color:rgba(46, 213, 115, 0.5); background: rgba(46, 213, 115, 0.05);">
+                    <div style="flex:1; background: rgba(46, 213, 115, 0.05); border: 1px solid rgba(46, 213, 115, 0.5); border-radius: 18px; padding: 10px; display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size:10px; font-weight:800; color:white;">АВТО-ОБНОВЛЕНИЕ<br>(каждый день)</span>
+                        <label class="switch" style="transform: scale(0.8);"><input type="checkbox" id="quest-auto"><span class="slider"></span></label>
+                    </div>
+                </div>
+
+                <div style="display:flex; gap:10px; margin-bottom:15px;">
+                    <select id="quest-reward-type" style="flex:1; border-color:rgba(46, 213, 115, 0.5); background: rgba(46, 213, 115, 0.05);">
+                        <option value="xp">Опыт (XP)</option>
+                        <option value="coins">INDICOINS (🪙)</option>
+                    </select>
+                    <input type="number" id="quest-reward-amount" placeholder="Награда" style="flex:1; border-color:rgba(46, 213, 115, 0.5); background: rgba(46, 213, 115, 0.05);">
+                </div>
+
                 <button class="btn-main" style="background:linear-gradient(135deg, #2ed573, #00b894); padding:15px; box-shadow: 0 10px 20px rgba(46, 213, 115, 0.4);" onclick="App.createQuest()">ЗАПУСТИТЬ КВЕСТ В СЕТЬ 🚀</button>
+            </div>
+
+            <div style="margin-top:20px; background:rgba(0,0,0,0.4); padding:15px; border-radius:15px; border: 1px solid rgba(0, 242, 255, 0.3);">
+                <label style="font-size:11px; color:var(--primary); display:block; margin-bottom:8px; font-weight:800; letter-spacing:1px;">📈 ПОДКУРУТКА ИГРЫ CRASH</label>
+                <div style="font-size: 10px; color: #aaa; margin-bottom: 10px;">Задай точный ИКС (множитель) для следующего раунда. Оставь пустым для рандома.</div>
+                <div style="display:flex; gap:10px;">
+                    <input type="number" id="admin-crash-target" placeholder="Например: 10.5" step="0.1" style="flex:1; border-color:rgba(0, 242, 255, 0.5); background: rgba(0, 242, 255, 0.05);">
+                    <button class="btn-main" style="width: auto; padding: 10px 20px; margin:0;" onclick="App.setAdminCrashTarget()">УСТАНОВИТЬ</button>
+                </div>
             </div>
 
             <div style="margin-top:20px; background:rgba(0,0,0,0.4); padding:15px; border-radius:15px; border: 1px solid rgba(112, 0, 255, 0.3);">
@@ -797,119 +877,64 @@
         <button class="btn-main" style="background:rgba(255,255,255,0.05); color:#888; border:1px solid rgba(255,255,255,0.1); margin-top: 20px; box-shadow: none;" onclick="App.logout()">ВЫЙТИ ИЗ СИСТЕМЫ</button>
     </div>
 
-    <nav class="nav-bar" style="max-width: 500px;"> <button class="nav-btn active" onclick="App.nav('news', this)">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin: 0 auto 5px auto; display:block;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-            ЛЕНТА
-        </button>
-        <button class="nav-btn" onclick="App.nav('quests', this)">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin: 0 auto 5px auto; display:block;"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
-            КВЕСТЫ
-        </button>
-        <button class="nav-btn" onclick="App.nav('top', this)">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin: 0 auto 5px auto; display:block;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-            ТОП
-        </button>
-        <button class="nav-btn" onclick="App.nav('chat', this)">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin: 0 auto 5px auto; display:block;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-            ЧАТ
-        </button>
-        <button class="nav-btn" onclick="App.nav('store', this)">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin: 0 auto 5px auto; display:block;"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
-            МАГАЗИН
-        </button>
-        <button class="nav-btn" onclick="App.nav('profile', this)">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin: 0 auto 5px auto; display:block;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            ПРОФИЛЬ
-        </button>
+    <nav class="nav-bar"> 
+        <button class="nav-btn active" onclick="App.nav('news', this)" title="ЛЕНТА" style="font-size: 20px;">📰</button>
+        <button class="nav-btn" onclick="App.nav('quests', this)" title="КВЕСТЫ" style="font-size: 20px;">🎯</button>
+        <button class="nav-btn" onclick="App.nav('crash', this)" title="CRASH" style="font-size: 20px; color: var(--primary); text-shadow: 0 0 10px var(--primary);">📈</button>
+        <button class="nav-btn" onclick="App.nav('top', this)" title="ТОП" style="font-size: 20px;">🏆</button>
+        <button class="nav-btn" onclick="App.nav('chat', this)" title="ЧАТ" style="font-size: 20px;">💬</button>
+        <button class="nav-btn" onclick="App.nav('store', this)" title="МАГАЗИН" style="font-size: 20px;">🛒</button>
+        <button class="nav-btn" onclick="App.nav('profile', this)" title="ПРОФИЛЬ" style="font-size: 20px;">👤</button>
     </nav>
 </div>
 
-<div id="user-profile-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); backdrop-filter:blur(15px); -webkit-backdrop-filter:blur(15px); z-index:10000; justify-content:center; align-items:center; padding:20px;">
+<div id="user-profile-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); backdrop-filter:blur(15px); z-index:10000; justify-content:center; align-items:center; padding:20px;">
     <div class="glass-card" style="width:100%; max-width:400px; text-align:center; position:relative; overflow:hidden;">
         <button onclick="App.closeUserProfile()" style="position:absolute; top:15px; right:15px; background:none; border:none; color:white; font-size:28px; cursor:pointer; z-index:10;">&times;</button>
         <img id="modal-cover" src="" style="position:absolute; top:0; left:0; width:100%; height:120px; object-fit:cover; z-index:0; opacity:0.5; border-radius:25px 25px 0 0; display:none;">
-        
         <img id="modal-avatar" src="" class="avatar-small" style="width:110px; height:110px; border:3px solid var(--primary); margin-top:40px; margin-bottom:15px; position:relative; z-index:2; box-shadow: 0 0 20px rgba(0,242,255,0.4);">
         <h2 id="modal-name" style="font-size: 22px; position:relative; z-index:2; text-shadow: 0 0 10px rgba(255,255,255,0.3); display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 5px;">Имя</h2>
         <div id="modal-id" style="font-size:10px; color:#aaa; margin-bottom:15px; position:relative; z-index:2; letter-spacing: 1px;">ID: </div>
         <p id="modal-bio" style="font-size:13px; color:#ccc; margin-bottom:25px; position:relative; z-index:2; font-weight: 600;">Био</p>
-        
         <div style="background:rgba(0,0,0,0.5); padding:15px; border-radius:15px; border: 1px solid rgba(255,255,255,0.1); margin-bottom:15px; position:relative; z-index:2; display: flex; justify-content: space-around; align-items: center;">
-            <div style="text-align: center;">
-                <span id="modal-xp" style="color:var(--primary); font-family: 'Unbounded'; font-weight:900; font-size:20px; text-shadow: 0 0 10px rgba(0,242,255,0.4);">0 XP</span>
-                <span id="modal-lvl" style="font-size:10px; color:var(--warning); display:block; font-weight:900; margin-top:5px; text-transform: uppercase; letter-spacing: 1px;">УРОВЕНЬ 1</span>
-            </div>
+            <div style="text-align: center;"><span id="modal-xp" style="color:var(--primary); font-family: 'Unbounded'; font-weight:900; font-size:20px;">0 XP</span><span id="modal-lvl" style="font-size:10px; color:var(--warning); display:block; font-weight:900; margin-top:5px;">УРОВЕНЬ 1</span></div>
             <div style="border-left: 1px solid rgba(255,255,255,0.2); height: 30px;"></div>
-            <div style="text-align: center;">
-                <span id="modal-coins" style="color:#ffaa00; font-family: 'Unbounded'; font-weight:900; font-size:20px; text-shadow: 0 0 10px rgba(255,170,0,0.4);">0 🪙</span>
-                <span style="font-size:10px; color:#aaa; display:block; font-weight:900; margin-top:5px; text-transform: uppercase; letter-spacing: 1px;">INDICOINS</span>
-            </div>
+            <div style="text-align: center;"><span id="modal-coins" style="color:#ffaa00; font-family: 'Unbounded'; font-weight:900; font-size:20px;">0 🪙</span><span style="font-size:10px; color:#aaa; display:block; font-weight:900; margin-top:5px;">INDICOINS</span></div>
         </div>
-        
-        <div id="modal-friend-action" style="display:none; position:relative; z-index:2; margin-top: 15px;">
-            <button id="friend-btn" class="btn-main" style="padding: 15px; font-size: 12px; background: rgba(255,255,255,0.1); border: 1px solid var(--primary); box-shadow: none;" onclick="App.toggleFriend()">ДОБАВИТЬ В ДРУЗЬЯ</button>
-        </div>
-
-        <div id="modal-pm-action" style="display:none; position:relative; z-index:2; margin-top: 10px;">
-            <button class="btn-main" style="padding: 15px; font-size: 12px; background: linear-gradient(135deg, var(--primary), var(--secondary)); box-shadow: 0 5px 15px rgba(0,242,255,0.4);" onclick="App.startPM()">НАПИСАТЬ В ЛС</button>
-        </div>
-
-        <div id="modal-admin-actions" style="display:none; position:relative; z-index:2; margin-top: 15px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 15px;">
-            <button class="btn-main" style="padding: 12px; font-size: 11px; background: rgba(255, 71, 87, 0.1); border: 1px solid var(--error); color: var(--error); box-shadow:none;" onclick="App.banFromModal()">ЗАБЛОКИРОВАТЬ АККАУНТ</button>
-        </div>
+        <div id="modal-friend-action" style="display:none; position:relative; z-index:2; margin-top: 15px;"><button id="friend-btn" class="btn-main" style="padding: 15px; font-size: 12px; background: rgba(255,255,255,0.1); border: 1px solid var(--primary); box-shadow: none;" onclick="App.toggleFriend()">ДОБАВИТЬ В ДРУЗЬЯ</button></div>
+        <div id="modal-pm-action" style="display:none; position:relative; z-index:2; margin-top: 10px;"><button class="btn-main" style="padding: 15px; font-size: 12px; background: linear-gradient(135deg, var(--primary), var(--secondary)); box-shadow: 0 5px 15px rgba(0,242,255,0.4);" onclick="App.startPM()">НАПИСАТЬ В ЛС</button></div>
+        <div id="modal-admin-actions" style="display:none; position:relative; z-index:2; margin-top: 15px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 15px;"><button class="btn-main" style="padding: 12px; font-size: 11px; background: rgba(255, 71, 87, 0.1); border: 1px solid var(--error); color: var(--error); box-shadow:none;" onclick="App.banFromModal()">ЗАБЛОКИРОВАТЬ АККАУНТ</button></div>
     </div>
 </div>
 
 <div id="ban-screen" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#050508; z-index:100000; flex-direction:column; justify-content:center; align-items:center; padding:20px; text-align:center;">
-    <div style="font-size: 80px; margin-bottom: 20px;">🚫</div>
-    <h1 style="color: var(--error); font-family: 'Unbounded'; font-size: 28px; margin-bottom: 10px; text-shadow: 0 0 20px rgba(255,71,87,0.5);">ДОСТУП ЗАКРЫТ</h1>
-    <p style="color: #aaa; font-size: 14px; margin-bottom: 30px; font-weight: 600;">Твой аккаунт был навсегда заблокирован администрацией проекта.</p>
-    <button class="btn-main" style="max-width: 200px; padding: 15px; font-size: 12px; background: rgba(255,255,255,0.05); color: #888; border: 1px solid rgba(255,255,255,0.1); box-shadow: none;" onclick="App.logout()">ВЫЙТИ ИЗ АККАУНТА</button>
+    <div style="font-size: 80px; margin-bottom: 20px;">🚫</div><h1 style="color: var(--error); font-family: 'Unbounded'; font-size: 28px; margin-bottom: 10px;">ДОСТУП ЗАКРЫТ</h1><p style="color: #aaa; font-size: 14px; margin-bottom: 30px;">Твой аккаунт был навсегда заблокирован.</p><button class="btn-main" style="max-width: 200px; padding: 15px; font-size: 12px; background: rgba(255,255,255,0.05); color: #888; border: 1px solid rgba(255,255,255,0.1); box-shadow: none;" onclick="App.logout()">ВЫЙТИ</button>
 </div>
 
 <div id="maintenance-screen" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(5,5,8,0.95); backdrop-filter: blur(20px); z-index:99999; flex-direction:column; justify-content:center; align-items:center; padding:20px; text-align:center;">
-    <div style="font-size: 80px; margin-bottom: 20px; animation: float 3s ease-in-out infinite;">🛠️</div>
-    <h1 style="color: var(--primary); font-family: 'Unbounded'; font-size: 24px; margin-bottom: 15px; text-shadow: 0 0 20px rgba(0,242,255,0.5);">ТЕХНИЧЕСКИЙ ПЕРЕРЫВ</h1>
-    <p style="color: #aaa; font-size: 14px; max-width: 320px; font-weight: 600; line-height: 1.6;">Легенды, мы устанавливаем мощное обновление! Скоро проект снова будет в строю. Пожалуйста, подождите.</p>
+    <div style="font-size: 80px; margin-bottom: 20px; animation: float 3s ease-in-out infinite;">🛠️</div><h1 style="color: var(--primary); font-family: 'Unbounded'; font-size: 24px; margin-bottom: 15px;">ТЕХНИЧЕСКИЙ ПЕРЕРЫВ</h1><p style="color: #aaa; font-size: 14px; max-width: 320px;">Устанавливаем мощное обновление! Скоро будем в строю.</p>
 </div>
 
 <div id="pm-list-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(5,5,8,0.95); backdrop-filter:blur(15px); z-index:10005; flex-direction:column; padding:20px;">
-    <div class="header">
-        <div class="logo" style="font-size: 20px;">📥 МОИ ДИАЛОГИ</div>
-        <button onclick="App.closePmList()" style="background:none; border:none; color:white; font-size:28px; cursor:pointer;">&times;</button>
-    </div>
-    <div id="pm-list-container" style="overflow-y:auto; flex:1; margin-top:20px;"></div>
+    <div class="header"><div class="logo" style="font-size: 20px;">📥 МОИ ДИАЛОГИ</div><button onclick="App.closePmList()" style="background:none; border:none; color:white; font-size:28px; cursor:pointer;">&times;</button></div>
+    <div id="pm-list-container" style="overflow-y:auto; flex:1; margin-top:20px; width: 100%;"></div>
 </div>
 
 <div id="pm-chat-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:var(--bg); z-index:10010; flex-direction:column; padding:20px;">
-    <div class="header" style="margin-bottom:15px;">
-        <div class="logo" id="pm-chat-title" style="font-size: 16px;">Диалог</div>
-        <button onclick="App.closePM()" style="background:none; border:none; color:white; font-size:28px; cursor:pointer;">&times;</button>
-    </div>
-    <div class="glass-card chat-container-wrap" style="flex:1; display:flex; flex-direction:column; margin-bottom:0;">
-        <div id="pm-chat-messages" style="flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:15px; padding-right:10px; scroll-behavior:smooth;"></div>
+    <div class="header" style="margin-bottom:15px;"><div class="logo" id="pm-chat-title" style="font-size: 16px;">Диалог</div><button onclick="App.closePM()" style="background:none; border:none; color:white; font-size:28px; cursor:pointer;">&times;</button></div>
+    <div class="glass-card chat-container-wrap" style="flex:1; display:flex; flex-direction:column; margin-bottom:0; width: 100%;">
+        <div id="pm-chat-messages" style="flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:15px; padding-right:10px; scroll-behavior:smooth; overflow-x: hidden;"></div>
         
-        <div id="pm-sticker-panel-ui" style="display: none; background: rgba(0,0,0,0.7); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); padding: 15px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); margin-top: 10px; margin-bottom: 10px; gap: 15px; flex-direction: column; align-items: center; box-shadow: inset 0 0 20px rgba(0,242,255,0.1); animation: fadeInScale 0.3s ease;">
-            <div style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
-                <span style="font-size: 11px; color: var(--vip-plus-1); font-weight: 900; text-transform: uppercase; letter-spacing: 1px;">👑 Твои анимированные стикеры</span>
-                <button onclick="App.toggleStickersPanel('pm')" style="background:none; border:none; color:var(--error); font-size:24px; cursor:pointer;">&times;</button>
-            </div>
-            <div id="pm-my-custom-stickers" style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center; width:100%;">
-                </div>
-            <label class="btn-main" style="padding: 12px; font-size: 11px; cursor: pointer; margin-top: 10px; width: 100%; text-align: center; background: rgba(255,255,255,0.05); border: 1px dashed var(--primary); box-shadow: none;">
-                ➕ ЗАГРУЗИТЬ СТИКЕР (GIF/WEBP)
-                <input type="file" accept="image/gif, image/webp" style="display:none;" onchange="App.uploadCustomSticker(event)">
-            </label>
+        <div id="pm-sticker-panel-ui" style="display: none; background: rgba(0,0,0,0.7); backdrop-filter: blur(15px); padding: 15px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); margin-top: 10px; margin-bottom: 10px; gap: 15px; flex-direction: column; align-items: center; box-shadow: inset 0 0 20px rgba(0,242,255,0.1); animation: fadeInScale 0.3s ease; width: 100%;">
+            <div style="width: 100%; display: flex; justify-content: space-between; align-items: center;"><span style="font-size: 11px; color: var(--vip-plus-1); font-weight: 900;">👑 Твои анимированные стикеры</span><button onclick="App.toggleStickersPanel('pm')" style="background:none; border:none; color:var(--error); font-size:24px; cursor:pointer;">&times;</button></div>
+            <div id="pm-my-custom-stickers" style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center; width:100%;"></div>
+            <label class="btn-main" style="padding: 12px; font-size: 11px; cursor: pointer; margin-top: 10px; width: 100%; text-align: center; background: rgba(255,255,255,0.05); border: 1px dashed var(--primary); box-shadow: none;">➕ ЗАГРУЗИТЬ СТИКЕР<input type="file" accept="image/gif, image/webp" style="display:none;" onchange="App.uploadCustomSticker(event)"></label>
         </div>
 
         <div class="chat-tools" style="margin-top:15px;">
-            <button class="tool-btn" title="Стикеры" onclick="App.toggleStickersPanel('pm')">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
-            </button>
+            <button class="tool-btn" title="Стикеры" onclick="App.toggleStickersPanel('pm')">🎁</button>
             <input type="text" id="pm-chat-input" placeholder="Набери сообщение..." style="margin:0; flex:1; background: rgba(0,0,0,0.5); border: none; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);" onkeypress="if(event.key === 'Enter') App.sendPmMessage()">
-            <button class="btn-main" style="width:50px; height:50px; margin:0; padding:0; display:flex; justify-content:center; align-items:center; border-radius: 18px;" onclick="App.sendPmMessage()">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transform: translateX(-2px);"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-            </button>
+            <button class="btn-main" style="width:50px; height:50px; margin:0; padding:0; display:flex; justify-content:center; align-items:center; border-radius: 18px; flex-shrink:0;" onclick="App.sendPmMessage()">➤</button>
         </div>
     </div>
 </div>
@@ -933,6 +958,8 @@
     }
     const db = firebase.database();
 
+    const EMOJIS = ['👍', '❤️', '🔥', '💩'];
+
     const App = {
         user: null,
         admins: ['Indigo Stories', 'Fan Indigo'],
@@ -950,6 +977,13 @@
         currentPmUserId: null,
         currentPmUserName: null,
         currentPmAutoDelete: false,
+        serverTimeOffset: 0,
+        
+        // Crash state
+        crashState: { phase: 'WAITING', startTime: 0, target: 1.0, bets: {} },
+        crashAnimId: null,
+        crashCurrentMulti: 1.0,
+        myCrashBet: 0,
 
         init() {
             const saved = localStorage.getItem('indigo_user');
@@ -957,9 +991,13 @@
                 this.user = JSON.parse(saved);
                 this.showApp();
             }
+            db.ref('.info/serverTimeOffset').on('value', snap => {
+                this.serverTimeOffset = snap.val() || 0;
+            });
             this.sync();
             this.setupFileReaders();
             this.setupVoice();
+            this.initCrashCanvas();
 
             setInterval(() => this.updateNewsTimers(), 1000);
             
@@ -969,6 +1007,8 @@
                 }
             }, 60000); 
         },
+
+        getServerTime() { return Date.now() + this.serverTimeOffset; },
 
         showToast(text) {
             const container = document.getElementById('toast-container');
@@ -1079,7 +1119,7 @@
                 photo: isGhost ? 'https://api.dicebear.com/7.x/pixel-art/svg?seed=Anon' : this.user.photo,
                 text: '', 
                 audio: base64Audio,
-                time: Date.now(),
+                time: this.getServerTime(),
                 isAdmin: senderIsAdmin,
                 isVip: senderIsVip,
                 isVipPlus: senderIsVipPlus,
@@ -1102,7 +1142,6 @@
             db.ref('users/' + this.user.id + '/msgCount').set(firebase.database.ServerValue.increment(1)).catch(e => console.error(e));
 
             this.updateQuestProgress('voice'); 
-            
             this.cancelReply();
             setTimeout(() => this.scrollToBottom(), 100);
         },
@@ -1245,7 +1284,8 @@
                         this.user = fresh; 
                         localStorage.setItem('indigo_user', JSON.stringify(fresh));
                         this.renderStickersUI();
-                        this.renderQuests(); 
+                        this.renderQuests();
+                        this.updateCrashBalanceUI();
                         
                         if (this.user.isBanned) {
                             document.getElementById('ban-screen').style.display = 'flex';
@@ -1277,6 +1317,20 @@
                 this.questsStore = data ? Object.keys(data).map(key => ({...data[key], id: key})) : [];
                 this.renderQuests();
             }, err => console.error(err));
+
+            // CRASH GAME SYNC
+            db.ref('crash').on('value', snap => {
+                const data = snap.val();
+                if(data) {
+                    this.crashState = data;
+                    this.renderCrashPlayers();
+                } else {
+                    // Initialize first round if none exists
+                    if(this.admins.includes(this.user?.name)) {
+                        db.ref('crash').set({ phase: 'WAITING', startTime: this.getServerTime() + 15000, target: 2.0, bets: {} });
+                    }
+                }
+            });
         },
 
         auth(mode) {
@@ -1390,9 +1444,7 @@
         },
 
         deleteMessage(msgKey) {
-            if (!this.admins.includes(this.user.name)) {
-                return this.showToast('⛔ Ошибка доступа! У вас нет прав для удаления.');
-            }
+            if (!this.admins.includes(this.user.name)) return this.showToast('⛔ Ошибка доступа! У вас нет прав для удаления.');
             if(confirm('Удалить это сообщение из базы данных навсегда?')) {
                 db.ref('chat/' + msgKey).remove().catch(e => this.showToast(e.message));
                 this.showToast('🗑️ Сообщение уничтожено');
@@ -1409,6 +1461,59 @@
             }
         },
 
+        // РЕАКЦИИ
+        toggleReactionPanel(msgId, isPost = false) {
+            const pid = isPost ? `react-post-${msgId}` : `react-msg-${msgId}`;
+            const el = document.getElementById(pid);
+            if(el.style.display === 'flex') {
+                el.style.display = 'none';
+            } else {
+                document.querySelectorAll('.reaction-picker').forEach(p => p.style.display = 'none'); // close others
+                el.style.display = 'flex';
+                el.style.animation = 'fadeInScale 0.2s ease';
+            }
+        },
+
+        addReaction(id, emoji, isPost = false) {
+            if(!this.user) return;
+            const path = isPost ? `stories/${id}/reactions/${emoji}/${this.user.id}` : `chat/${id}/reactions/${emoji}/${this.user.id}`;
+            
+            db.ref(path).once('value').then(snap => {
+                if(snap.val()) {
+                    db.ref(path).remove(); // убрать реакцию
+                } else {
+                    db.ref(path).set(true); // добавить реакцию
+                }
+            });
+            document.querySelectorAll('.reaction-picker').forEach(p => p.style.display = 'none');
+        },
+
+        renderReactionsHTML(id, reactionsObj, isPost = false) {
+            let html = '<div class="reactions-bar">';
+            if(reactionsObj) {
+                for(let emoji of EMOJIS) {
+                    if(reactionsObj[emoji]) {
+                        const count = Object.keys(reactionsObj[emoji]).length;
+                        const iReacted = reactionsObj[emoji][this.user?.id];
+                        if(count > 0) {
+                            html += `<div class="reaction-pill ${iReacted ? 'active' : ''}" onclick="App.addReaction('${id}', '${emoji}', ${isPost})">${emoji} ${count}</div>`;
+                        }
+                    }
+                }
+            }
+            html += `
+                <div style="position:relative;">
+                    <div class="add-reaction-btn" onclick="event.stopPropagation(); App.toggleReactionPanel('${id}', ${isPost})">+</div>
+                    <div id="${isPost ? 'react-post' : 'react-msg'}-${id}" class="reaction-picker">
+                        ${EMOJIS.map(e => `<span onclick="App.addReaction('${id}', '${e}', ${isPost})">${e}</span>`).join('')}
+                    </div>
+                </div>
+            `;
+            html += '</div>';
+            return html;
+        },
+
+        // СТИКЕРЫ
         toggleStickersPanel(type) {
             if (!this.user.isVipPlus) return this.showToast('👑 Анимированные стикеры доступны только Боссам VIP++!');
             const p = document.getElementById(type === 'pm' ? 'pm-sticker-panel-ui' : 'sticker-panel-ui');
@@ -1489,7 +1594,7 @@
                 photo: isGhost ? 'https://api.dicebear.com/7.x/pixel-art/svg?seed=Anon' : this.user.photo,
                 text: '',
                 sticker: base64Image,
-                time: Date.now(),
+                time: this.getServerTime(),
                 isAdmin: isGhost ? false : this.admins.includes(this.user.name),
                 isVip: isGhost ? false : (this.user.isVip || false),
                 isVipPlus: isGhost ? false : (this.user.isVipPlus || false),
@@ -1517,7 +1622,7 @@
                 photo: this.user.photo,
                 text: '',
                 sticker: base64Image,
-                time: Date.now(),
+                time: this.getServerTime(),
                 isVip: this.user.isVip || false,
                 isVipPlus: this.user.isVipPlus || false,
                 vipColor1: this.user.vipColor1 || '#ffaa00',
@@ -1529,7 +1634,7 @@
 
             db.ref('pms/' + chatId + '/messages').push(msgData);
             
-            const ts = Date.now();
+            const ts = this.getServerTime();
             db.ref('users/' + this.user.id + '/pm_list/' + this.currentPmUserId).set({ name: this.currentPmUserName, lastActive: ts });
             db.ref('users/' + this.currentPmUserId + '/pm_list/' + this.user.id).set({ name: this.user.name, lastActive: ts });
             db.ref('users/' + this.user.id + '/msgCount').set(firebase.database.ServerValue.increment(1)).catch(e => console.error(e));
@@ -1557,7 +1662,7 @@
                 name: senderName,
                 photo: isGhost ? 'https://api.dicebear.com/7.x/pixel-art/svg?seed=Anon' : this.user.photo,
                 text: text, 
-                time: Date.now(),
+                time: this.getServerTime(),
                 isAdmin: senderIsAdmin,
                 isVip: senderIsVip,
                 isVipPlus: senderIsVipPlus,
@@ -1618,7 +1723,7 @@
                 link: link || '', 
                 tags: tags || '', 
                 author: this.user.name, 
-                date: Date.now(),
+                date: this.getServerTime(),
                 releaseTime: releaseTime || null
             }).catch(e => this.showToast(e.message));
             
@@ -1633,7 +1738,7 @@
 
         updateNewsTimers() {
             const timers = document.querySelectorAll('.news-countdown');
-            const now = Date.now();
+            const now = this.getServerTime();
 
             timers.forEach(t => {
                 const release = parseInt(t.dataset.release);
@@ -1661,17 +1766,21 @@
             const title = document.getElementById('quest-title').value.trim();
             const action = document.getElementById('quest-action').value;
             const target = parseInt(document.getElementById('quest-target').value);
+            const difficulty = document.getElementById('quest-difficulty').value;
+            const rating = document.getElementById('quest-rating').value;
+            const isAuto = document.getElementById('quest-auto').checked;
             const rewardType = document.getElementById('quest-reward-type').value;
             const rewardAmount = parseInt(document.getElementById('quest-reward-amount').value);
 
-            if(!title || !target || !rewardAmount) return this.showToast('⚠️ Заполни все поля для квеста!');
+            if(!title || !target || !rewardAmount) return this.showToast('⚠️ Заполни все обязательные поля для квеста!');
 
             db.ref('quests').push({
-                title, action, target, rewardType, rewardAmount, createdAt: Date.now()
+                title, action, target, difficulty, rating, isAuto, rewardType, rewardAmount, createdAt: this.getServerTime()
             }).then(() => {
                 this.showToast('🚀 Супер квест успешно запущен!');
                 document.getElementById('quest-title').value = '';
                 document.getElementById('quest-target').value = '';
+                document.getElementById('quest-rating').value = '';
                 document.getElementById('quest-reward-amount').value = '';
             });
         },
@@ -1736,15 +1845,24 @@
                     adminBtn = `<button class="del-msg-btn" style="display:block; position:relative; right:auto; top:auto; margin-top:15px; width:100%; padding:10px; font-size:10px; border-radius:12px;" onclick="App.deleteQuest('${q.id}')">УДАЛИТЬ КВЕСТ (АДМИН)</button>`;
                 }
 
+                let diffColor = q.difficulty === 'Хардкор' ? 'var(--error)' : (q.difficulty === 'Средне' ? 'var(--warning)' : 'var(--success)');
+                let stars = '⭐'.repeat(q.rating || 1);
+
                 return `
                 <div class="glass-card" style="${isCompleted ? 'border-color: var(--success); opacity: 0.8;' : 'border-color: rgba(46, 213, 115, 0.3);'}">
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 8px;">
                         <h3 style="color:white; font-size: 16px; margin:0; line-height: 1.3;">${q.title}</h3>
                         <div style="background: rgba(0,0,0,0.5); padding: 5px 10px; border-radius: 10px; font-weight: 900; color: ${rewardColor}; font-size: 12px; border: 1px solid ${rewardColor}40; white-space:nowrap; margin-left:10px;">
                             +${q.rewardAmount} ${rewardIcon}
                         </div>
                     </div>
                     
+                    <div style="display: flex; gap: 10px; font-size: 10px; font-weight: 800; margin-bottom: 12px; color: #888; text-transform: uppercase;">
+                        <span style="color: ${diffColor}; border: 1px solid ${diffColor}; padding: 2px 6px; border-radius: 6px;">${q.difficulty || 'Легко'}</span>
+                        <span style="background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 6px;">Рейтинг: ${stars}</span>
+                        ${q.isAuto ? '<span style="background: rgba(0,242,255,0.1); color: var(--primary); padding: 2px 6px; border-radius: 6px;">🔄 ЕЖЕДНЕВНЫЙ</span>' : ''}
+                    </div>
+
                     <div style="font-size: 12px; color: #aaa; margin-bottom: 10px; font-weight: 800;">ПРОГРЕСС: ${progress} / ${q.target}</div>
                     
                     <div style="background: rgba(255,255,255,0.05); border-radius: 10px; height: 14px; width: 100%; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); position: relative;">
@@ -1759,16 +1877,33 @@
         },
 
         claimDailyBonus() {
-            const now = Date.now();
+            const now = this.getServerTime();
             const last = this.user.lastBonus || 0;
             const day = 24 * 60 * 60 * 1000;
             
             if (now - last > day) {
-                db.ref('users/' + this.user.id).update({
+                // Если прошел день, сбрасываем авто-квесты
+                let updates = {
                     xp: firebase.database.ServerValue.increment(100),
                     lastBonus: now
-                }).then(() => {
-                    this.showToast('🎁 Успех! +100 XP зачислено на твой баланс.');
+                };
+                
+                // Проверка авто-квестов
+                if (this.user.completedQuests) {
+                    let newCompleted = { ...this.user.completedQuests };
+                    let newProgress = { ...this.user.questProgress };
+                    this.questsStore.forEach(q => {
+                        if (q.isAuto) {
+                            delete newCompleted[q.id];
+                            newProgress[q.id] = 0;
+                        }
+                    });
+                    updates.completedQuests = newCompleted;
+                    updates.questProgress = newProgress;
+                }
+
+                db.ref('users/' + this.user.id).update(updates).then(() => {
+                    this.showToast('🎁 Успех! +100 XP зачислено. Ежедневные квесты сброшены!');
                     this.updateQuestProgress('bonus');
                 }).catch(e => this.showToast(e.message));
             } else {
@@ -2039,7 +2174,7 @@
                 name: this.user.name,
                 photo: this.user.photo,
                 text: text,
-                time: Date.now(),
+                time: this.getServerTime(),
                 isVip: this.user.isVip || false,
                 isVipPlus: this.user.isVipPlus || false,
                 vipColor1: this.user.vipColor1 || '#ffaa00',
@@ -2051,7 +2186,7 @@
 
             db.ref('pms/' + chatId + '/messages').push(msgData).catch(e => this.showToast(e.message));
 
-            const ts = Date.now();
+            const ts = this.getServerTime();
             db.ref('users/' + this.user.id + '/pm_list/' + this.currentPmUserId).set({ name: this.currentPmUserName, lastActive: ts }).catch(e => console.error(e));
             db.ref('users/' + this.currentPmUserId + '/pm_list/' + this.user.id).set({ name: this.user.name, lastActive: ts }).catch(e => console.error(e));
             db.ref('users/' + this.user.id + '/msgCount').set(firebase.database.ServerValue.increment(1)).catch(e => console.error(e));
@@ -2066,7 +2201,7 @@
             
             const validMsgs = msgs.filter(m => {
                 if (this.currentPmAutoDelete) {
-                    return (Date.now() - m.time) < (24 * 60 * 60 * 1000); 
+                    return (this.getServerTime() - m.time) < (24 * 60 * 60 * 1000); 
                 }
                 return true;
             }).slice(-50); 
@@ -2207,26 +2342,31 @@
                     customBubble = `background: linear-gradient(135deg, ${m.vipBubbleColor}cc, ${m.vipBubbleColor}80); border: 1px solid ${m.vipBubbleColor}; box-shadow: 0 5px 15px ${m.vipBubbleColor}40;`;
                 }
 
+                const reactionsHtml = this.renderReactionsHTML(m.key, m.reactions, false);
+
                 return `
                 <div class="message-item-wrapper" style="position:relative; width:100%;">
                     <div style="display: flex; gap: 8px; align-items: flex-end; justify-content: ${m.uid === this.user.id ? 'flex-end' : 'flex-start'}; width: 100%; margin-bottom: 5px;">
                         
                         ${m.uid !== this.user.id ? `<img src="${m.photo || 'https://api.dicebear.com/7.x/pixel-art/svg?seed=Anon'}" class="chat-avatar-mini" style="border-color: ${isVipPlus ? (m.vipColor1 || 'var(--primary)') : 'var(--primary)'};" onclick="App.showUserProfile('${m.uid}')">` : ''}
 
-                        <div class="message ${m.uid === this.user.id ? 'my-msg' : 'other-msg'} ${m.isAdmin ? 'admin-msg' : ''}" 
-                             style="${customBubble} margin:0;"
-                             onclick="App.setReply('${m.name}', '${safeText || (m.audio ? 'Голосовое сообщение' : (m.sticker ? 'Анимированный стикер' : 'Фотография'))}')"
-                             ondblclick="App.copyMessageText('${safeText}')">
-                            ${delBtnHtml}
-                            <div class="msg-info">
-                                <b class="${vipClass}" onclick="event.stopPropagation(); App.showUserProfile('${m.uid}')" style="cursor:pointer; ${isVipPlus ? vStyles.nick : ''}">${m.name}</b> ${m.isAdmin ? '<div class="verify-badge"></div>' : ''} ${vipBadge} ${customTagHtml}
-                                <span class="msg-time">${m.time ? this.formatTime(m.time) : ''}</span>
+                        <div style="max-width: 85%; display: flex; flex-direction: column; align-items: ${m.uid === this.user.id ? 'flex-end' : 'flex-start'};">
+                            <div class="message ${m.uid === this.user.id ? 'my-msg' : 'other-msg'} ${m.isAdmin ? 'admin-msg' : ''}" 
+                                 style="${customBubble} margin:0; max-width: 100%;"
+                                 onclick="App.setReply('${m.name}', '${safeText || (m.audio ? 'Голосовое сообщение' : (m.sticker ? 'Анимированный стикер' : 'Фотография'))}')"
+                                 ondblclick="App.copyMessageText('${safeText}')">
+                                ${delBtnHtml}
+                                <div class="msg-info">
+                                    <b class="${vipClass}" onclick="event.stopPropagation(); App.showUserProfile('${m.uid}')" style="cursor:pointer; ${isVipPlus ? vStyles.nick : ''}">${m.name}</b> ${m.isAdmin ? '<div class="verify-badge"></div>' : ''} ${vipBadge} ${customTagHtml}
+                                    <span class="msg-time">${m.time ? this.formatTime(m.time) : ''}</span>
+                                </div>
+                                ${replyHtml}
+                                ${safeText}
+                                ${stickerHtml}
+                                ${audioHtml}
+                                ${imgHtml}
                             </div>
-                            ${replyHtml}
-                            ${safeText}
-                            ${stickerHtml}
-                            ${audioHtml}
-                            ${imgHtml}
+                            ${reactionsHtml}
                         </div>
 
                         ${m.uid === this.user.id ? `<img src="${m.photo || 'https://api.dicebear.com/7.x/pixel-art/svg?seed=Anon'}" class="chat-avatar-mini" style="border-color: ${isVipPlus ? (m.vipColor1 || 'var(--primary)') : 'var(--primary)'};" onclick="App.showUserProfile('${m.uid}')">` : ''}
@@ -2402,7 +2542,7 @@
         },
 
         renderNews(news) {
-            const now = Date.now();
+            const now = this.getServerTime();
             
             document.getElementById('news-container').innerHTML = news.reverse().map(n => {
                 let tagsHtml = '';
@@ -2432,8 +2572,10 @@
                     adminBtn = `<button class="btn-main" style="margin-top: 15px; background: rgba(255, 71, 87, 0.1); color: var(--error); border: 1px solid var(--error); padding: 10px; font-size: 10px; box-shadow: none;" onclick="App.deletePost('${n.key}', '${n.author}')">УДАЛИТЬ ПОСТ</button>`;
                 }
 
+                const reactionsHtml = this.renderReactionsHTML(n.key, n.reactions, true);
+
                 return `
-                <div class="glass-card" style="transition: 0.4s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                <div class="glass-card" style="transition: 0.4s; width: 100%;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
                     <div style="font-size:11px; color:var(--primary); margin-bottom:12px; display:flex; justify-content:space-between; font-weight: 800; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px;">
                         <span><span style="opacity:0.5;">АВТОР:</span> ${n.author}</span>
                         <span style="opacity:0.7;">${new Date(n.date).toLocaleDateString()}</span>
@@ -2443,10 +2585,246 @@
                     ${tagsHtml}
                     ${linkHtml}
                     ${timerHtml}
+                    <div style="margin-top: 15px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 10px;">
+                        ${reactionsHtml}
+                    </div>
                     ${adminBtn}
                 </div>
                 `;
             }).join('');
+        },
+
+        // ---------- CRASH GAME LOGIC ---------- //
+        initCrashCanvas() {
+            const canvas = document.getElementById('crash-canvas');
+            if(!canvas) return;
+            this.crashCtx = canvas.getContext('2d');
+            this.crashLoop();
+        },
+
+        updateCrashBalanceUI() {
+            const el = document.getElementById('crash-balance');
+            if(el && this.user) el.innerText = (this.user.coins || 0) + ' 🪙';
+        },
+
+        setAdminCrashTarget() {
+            if(!this.admins.includes(this.user.name)) return;
+            const t = parseFloat(document.getElementById('admin-crash-target').value);
+            if(t >= 1) {
+                db.ref('crash/nextTarget').set(t).then(() => {
+                    this.showToast('🔧 Подкрутка установлена! Следующий икс будет: ' + t);
+                    document.getElementById('admin-crash-target').value = '';
+                });
+            }
+        },
+
+        handleCrashAction() {
+            if(!this.user) return;
+            
+            // Если уже поставил ставку
+            if(this.crashState.bets && this.crashState.bets[this.user.id]) {
+                const myBet = this.crashState.bets[this.user.id];
+                if(this.crashState.phase === 'FLYING' && myBet.status === 'playing') {
+                    // Выводим (Withdraw)
+                    const winAmount = Math.floor(myBet.amount * this.crashCurrentMulti);
+                    db.ref(`crash/bets/${this.user.id}/status`).set('won');
+                    db.ref(`crash/bets/${this.user.id}/winMulti`).set(this.crashCurrentMulti);
+                    db.ref(`users/${this.user.id}/coins`).set(firebase.database.ServerValue.increment(winAmount));
+                    this.showToast(`💸 ЗАБРАЛ! Выигрыш: ${winAmount} 🪙 (x${this.crashCurrentMulti.toFixed(2)})`);
+                    return;
+                }
+                return;
+            }
+
+            // Ставка
+            if(this.crashState.phase !== 'WAITING') {
+                return this.showToast('⏳ Жди начала следующего раунда!');
+            }
+
+            const betAmount = parseInt(document.getElementById('crash-bet-input').value);
+            if(isNaN(betAmount) || betAmount < 1) return this.showToast('Минимальная ставка 1 INDICOIN!');
+            if((this.user.coins || 0) < betAmount) return this.showToast('⚠️ Недостаточно средств!');
+
+            db.ref(`users/${this.user.id}/coins`).set(firebase.database.ServerValue.increment(-betAmount)).then(() => {
+                db.ref(`crash/bets/${this.user.id}`).set({
+                    name: this.user.name,
+                    amount: betAmount,
+                    status: 'playing',
+                    photo: this.user.photo || 'https://api.dicebear.com/7.x/pixel-art/svg?seed=Anon'
+                });
+                this.showToast(`✅ Ставка ${betAmount} 🪙 принята!`);
+            }).catch(e => this.showToast(e.message));
+        },
+
+        renderCrashPlayers() {
+            const list = document.getElementById('crash-players-list');
+            const btn = document.getElementById('crash-action-btn');
+            if(!list || !btn) return;
+
+            const betsObj = this.crashState.bets || {};
+            const bets = Object.keys(betsObj).map(k => ({uid: k, ...betsObj[k]}));
+
+            list.innerHTML = bets.map(b => {
+                let badge = '';
+                let statusClass = '';
+                if(b.status === 'won') { badge = `Вывел: x${b.winMulti.toFixed(2)}`; statusClass = 'win'; }
+                if(b.status === 'lost') { badge = 'СГОРЕЛ 💥'; statusClass = 'lose'; }
+                if(b.status === 'playing') badge = 'В полёте 🚀';
+
+                return `
+                <div class="crash-bet-item ${statusClass}">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <img src="${b.photo}" style="width:20px; height:20px; border-radius:50%; object-fit:cover;">
+                        <b style="color:white;">${b.name}</b>
+                    </div>
+                    <div style="text-align:right;">
+                        <div style="color:#ffaa00; font-weight:800;">${b.amount} 🪙</div>
+                        <div style="font-size:9px; color:#aaa; text-transform:uppercase;">${badge}</div>
+                    </div>
+                </div>`;
+            }).join('');
+
+            const myBet = betsObj[this.user?.id];
+            
+            if(this.crashState.phase === 'WAITING') {
+                if(myBet) {
+                    btn.innerText = 'СТАВКА ПРИНЯТА (ЖДЕМ НАЧАЛА)';
+                    btn.style.background = 'rgba(255,255,255,0.1)';
+                    btn.style.pointerEvents = 'none';
+                } else {
+                    btn.innerText = 'ПОСТАВИТЬ СТАВКУ';
+                    btn.style.background = 'linear-gradient(135deg, #2ed573, #00b894)';
+                    btn.style.pointerEvents = 'auto';
+                }
+                const waitTime = Math.max(0, Math.floor((this.crashState.startTime - this.getServerTime())/1000));
+                document.getElementById('crash-status-text').innerText = `Следующий запуск через ${waitTime}с...`;
+                document.getElementById('crash-status-text').style.color = '#aaa';
+            } 
+            else if (this.crashState.phase === 'FLYING') {
+                document.getElementById('crash-status-text').innerText = `ЛЕТИМ! УСПЕЙ ЗАБРАТЬ!`;
+                document.getElementById('crash-status-text').style.color = 'var(--success)';
+                if(myBet && myBet.status === 'playing') {
+                    btn.innerText = `ЗАБРАТЬ (x${this.crashCurrentMulti.toFixed(2)})`;
+                    btn.style.background = 'linear-gradient(135deg, #ffaa00, #ff4757)';
+                    btn.style.pointerEvents = 'auto';
+                } else {
+                    btn.innerText = 'ОЖИДАЙТЕ ОКОНЧАНИЯ';
+                    btn.style.background = 'rgba(255,255,255,0.1)';
+                    btn.style.pointerEvents = 'none';
+                }
+            } 
+            else if (this.crashState.phase === 'CRASHED') {
+                document.getElementById('crash-status-text').innerText = `ГРАФИК ОБРУШИЛСЯ НА x${this.crashState.target.toFixed(2)}`;
+                document.getElementById('crash-status-text').style.color = 'var(--error)';
+                btn.innerText = 'КРАШ💥';
+                btn.style.background = 'var(--error)';
+                btn.style.pointerEvents = 'none';
+            }
+        },
+
+        crashLoop() {
+            if(!this.crashCtx) return;
+            const canvas = document.getElementById('crash-canvas');
+            const cw = canvas.width = canvas.parentElement.clientWidth;
+            const ch = canvas.height = canvas.parentElement.clientHeight;
+            const ctx = this.crashCtx;
+            
+            const now = this.getServerTime();
+            const state = this.crashState;
+
+            ctx.clearRect(0, 0, cw, ch);
+            const mText = document.getElementById('crash-multiplier');
+
+            if (state.phase === 'WAITING') {
+                this.crashCurrentMulti = 1.0;
+                mText.innerText = '1.00x';
+                mText.style.color = '#aaa';
+                canvas.style.animation = 'none';
+                this.renderCrashPlayers(); 
+
+                // ИСПРАВЛЕНИЕ БАГА: Старт раунда после окончания таймера
+                if (now >= state.startTime) {
+                    if (this.admins.includes(this.user?.name)) {
+                        db.ref('crash/phase').set('FLYING');
+                    }
+                }
+            } 
+            else if (state.phase === 'FLYING') {
+                const timeSec = (now - state.startTime) / 1000;
+                let multi = Math.exp(0.0693 * timeSec);
+                
+                if (multi >= state.target) {
+                    multi = state.target;
+                    if(this.admins.includes(this.user?.name)) {
+                        db.ref('crash/phase').set('CRASHED');
+                        if(state.bets) {
+                            Object.keys(state.bets).forEach(uid => {
+                                if(state.bets[uid].status === 'playing') {
+                                    db.ref(`crash/bets/${uid}/status`).set('lost');
+                                }
+                            });
+                        }
+                    }
+                }
+                this.crashCurrentMulti = multi;
+                mText.innerText = multi.toFixed(2) + 'x';
+                mText.style.color = 'white';
+
+                ctx.beginPath();
+                ctx.moveTo(0, ch);
+                ctx.quadraticCurveTo(cw * 0.5, ch, cw, ch - Math.min(ch * 0.9, timeSec * 10));
+                ctx.lineWidth = 4;
+                ctx.strokeStyle = '#00f2ff';
+                ctx.stroke();
+
+                ctx.shadowBlur = 20;
+                ctx.shadowColor = '#00f2ff';
+                ctx.stroke();
+                ctx.shadowBlur = 0;
+                
+                this.renderCrashPlayers(); 
+            }
+            else if (state.phase === 'CRASHED') {
+                this.crashCurrentMulti = state.target;
+                mText.innerText = state.target.toFixed(2) + 'x';
+                mText.style.color = 'var(--error)';
+                canvas.style.animation = 'crashShake 0.4s ease';
+
+                ctx.beginPath();
+                ctx.moveTo(0, ch);
+                ctx.quadraticCurveTo(cw * 0.5, ch, cw, ch - Math.min(ch * 0.9, ((state.target - 1)*10)));
+                ctx.lineWidth = 4;
+                ctx.strokeStyle = 'var(--error)';
+                ctx.stroke();
+
+                const crashTimeMs = (Math.log(state.target) / 0.0693) * 1000;
+                const crashRealTime = state.startTime + crashTimeMs;
+                
+                if (this.admins.includes(this.user?.name) && now > crashRealTime + 15000) {
+                    let nextTarget = 1.00;
+                    if(state.nextTarget) {
+                        nextTarget = state.nextTarget;
+                        db.ref('crash/nextTarget').remove();
+                    } else {
+                        const r = Math.random();
+                        if(r < 0.05) nextTarget = 1.00;
+                        else nextTarget = Math.max(1.01, 0.99 / Math.random());
+                        
+                        if(nextTarget > 100) nextTarget = 100 + Math.random()*50; 
+                    }
+
+                    db.ref('crash').update({
+                        phase: 'WAITING',
+                        startTime: this.getServerTime() + 15000,
+                        target: nextTarget,
+                        bets: null
+                    });
+                }
+                
+                this.renderCrashPlayers();
+            }
+
+            requestAnimationFrame(() => this.crashLoop());
         },
 
         adminAction(type) {
@@ -2544,6 +2922,11 @@
             location.reload(); 
         }
     };
+
+    // Закрытие попапа реакций при клике в пустоту
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.reaction-picker').forEach(p => p.style.display = 'none');
+    });
 
     App.init();
 </script>
