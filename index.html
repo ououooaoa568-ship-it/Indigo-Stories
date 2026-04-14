@@ -423,6 +423,21 @@
         }
         .crash-bet-item.win { background: rgba(46, 213, 115, 0.1); border: 1px solid var(--success); }
         .crash-bet-item.lose { background: rgba(255, 71, 87, 0.1); border: 1px dashed var(--error); opacity: 0.6; }
+
+        /* ИГРА САПЁР (MINES) */
+        #mines-grid {
+            display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 20px;
+        }
+        .mine-cell {
+            aspect-ratio: 1; background: rgba(0,0,0,0.6); border-radius: 12px;
+            display: flex; justify-content: center; align-items: center; font-size: 28px;
+            cursor: pointer; border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .mine-cell:hover { transform: scale(1.05); background: rgba(0, 242, 255, 0.15); border-color: var(--primary); }
+        .mine-cell.revealed { cursor: default; transform: scale(0.95); pointer-events: none; }
+        .mine-cell.revealed.safe { background: rgba(46, 213, 115, 0.15); border-color: var(--success); box-shadow: 0 0 15px rgba(46, 213, 115, 0.3) inset; }
+        .mine-cell.revealed.mine { background: rgba(255, 71, 87, 0.15); border-color: var(--error); box-shadow: 0 0 15px rgba(255, 71, 87, 0.3) inset; }
     </style>
 </head>
 <body>
@@ -486,6 +501,117 @@
             <div style="font-size: 10px; color: var(--success); border: 1px solid var(--success); padding: 5px 10px; border-radius: 10px; font-weight: 800;">СУПЕР ИВЕНТ</div>
         </div>
         <div id="quests-container" style="width: 100%;"></div>
+    </div>
+
+    <div id="scr-games" class="screen">
+        <div class="header">
+            <div class="logo">ИГРОЦЕНТР</div>
+            <div style="font-size: 10px; color: var(--primary); border: 1px solid var(--primary); padding: 5px 10px; border-radius: 10px; font-weight: 800;">АДРЕНАЛИН</div>
+        </div>
+
+        <div class="glass-card" style="display:flex; align-items:center; gap:15px; margin-bottom:15px;">
+            <div style="font-size: 40px; background: rgba(0,0,0,0.5); width: 70px; height: 70px; border-radius: 18px; display:flex; justify-content:center; align-items:center; border: 1px solid var(--primary); flex-shrink: 0;">📈</div>
+            <div style="flex:1;">
+                <h3 style="font-size:18px; color:white; margin-bottom:5px;">CRASH</h3>
+                <p style="font-size:11px; color:#aaa;">Успей забрать куш до обвала графика! Играют все вместе.</p>
+            </div>
+            <button class="btn-main" style="width:auto; padding: 10px 15px; font-size:12px; margin:0;" onclick="App.nav('crash')">ИГРАТЬ</button>
+        </div>
+
+        <div class="glass-card" style="display:flex; align-items:center; gap:15px;">
+            <div style="font-size: 40px; background: rgba(0,0,0,0.5); width: 70px; height: 70px; border-radius: 18px; display:flex; justify-content:center; align-items:center; border: 1px solid var(--warning); flex-shrink: 0;">💣</div>
+            <div style="flex:1;">
+                <h3 style="font-size:18px; color:white; margin-bottom:5px;">САПЁР (MINES)</h3>
+                <p style="font-size:11px; color:#aaa;">Ищи кристаллы и уклоняйся от мин. Забирай выигрыш на любом шаге!</p>
+            </div>
+            <button class="btn-main" style="width:auto; padding: 10px 15px; font-size:12px; margin:0; background:linear-gradient(135deg, #ffaa00, #ff4757); box-shadow: 0 5px 15px rgba(255, 170, 0, 0.4);" onclick="App.nav('minesweeper')">ИГРАТЬ</button>
+        </div>
+    </div>
+
+    <div id="scr-crash" class="screen">
+        <div class="header">
+            <div style="display:flex; align-items:center; gap:10px;">
+                <button onclick="App.nav('games')" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:white; width: 35px; height: 35px; border-radius: 12px; display:flex; justify-content:center; align-items:center; font-size: 16px; cursor:pointer;">🔙</button>
+                <div class="logo">CRASH 📈</div>
+            </div>
+            <div style="font-size: 10px; color: var(--primary); border: 1px solid var(--primary); padding: 5px 10px; border-radius: 10px; font-weight: 800;">МУЛЬТИПЛЕЕР</div>
+        </div>
+
+        <div class="glass-card" style="padding: 15px;">
+            <div id="crash-canvas-container">
+                <div id="crash-multiplier">1.00x</div>
+                <canvas id="crash-canvas"></canvas>
+            </div>
+
+            <div style="background: rgba(0,0,0,0.4); padding: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 15px; text-align: center;">
+                <div style="font-size: 11px; color: #aaa; margin-bottom: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">Твой баланс</div>
+                <div style="font-size: 24px; font-weight: 900; color: #ffaa00; font-family: 'Unbounded'; text-shadow: 0 0 15px rgba(255,170,0,0.4);" id="crash-balance">0 🪙</div>
+            </div>
+
+            <div class="input-group" style="margin-bottom: 10px;">
+                <label style="text-align: center; color: white;">СТАВКА (Минимум 1 🪙)</label>
+                <div style="display: flex; gap: 10px;">
+                    <input type="number" id="crash-bet-input" value="1" min="1" style="text-align: center; font-size: 18px; font-weight: bold;">
+                    <button class="btn-main" style="width: 60px; padding: 0; margin: 0; font-size: 12px; border-radius: 18px; flex-shrink: 0;" onclick="document.getElementById('crash-bet-input').value = App.user.coins || 0">MAX</button>
+                </div>
+            </div>
+
+            <button id="crash-action-btn" class="btn-main" style="padding: 20px; font-size: 16px; background: linear-gradient(135deg, #2ed573, #00b894); box-shadow: 0 10px 25px rgba(46, 213, 115, 0.4);" onclick="App.handleCrashAction()">ПОСТАВИТЬ СТАВКУ</button>
+            <div id="crash-status-text" style="text-align: center; font-size: 12px; color: #aaa; margin-top: 15px; font-weight: bold;">Ожидание игры...</div>
+        </div>
+
+        <div class="glass-card" style="padding: 15px;">
+            <h3 style="font-size: 12px; color: var(--primary); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;">Игроки в раунде</h3>
+            <div id="crash-players-list" style="max-height: 200px; overflow-y: auto; padding-right: 5px;"></div>
+        </div>
+    </div>
+
+    <div id="scr-minesweeper" class="screen">
+        <div class="header">
+            <div style="display:flex; align-items:center; gap:10px;">
+                <button onclick="App.nav('games')" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:white; width: 35px; height: 35px; border-radius: 12px; display:flex; justify-content:center; align-items:center; font-size: 16px; cursor:pointer;">🔙</button>
+                <div class="logo">САПЁР 💣</div>
+            </div>
+            <div style="font-size: 10px; color: var(--warning); border: 1px solid var(--warning); padding: 5px 10px; border-radius: 10px; font-weight: 800;">ОДИНОЧНАЯ</div>
+        </div>
+
+        <div class="glass-card" style="padding: 15px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; background: rgba(0,0,0,0.4); padding: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 20px;">
+                <div style="text-align: center;">
+                    <div style="font-size: 11px; color: #aaa; margin-bottom: 5px; font-weight: 800; text-transform: uppercase;">Твой баланс</div>
+                    <div style="font-size: 18px; font-weight: 900; color: #ffaa00; font-family: 'Unbounded';" id="mines-balance">0 🪙</div>
+                </div>
+                <div style="border-left: 1px solid rgba(255,255,255,0.2); height: 30px;"></div>
+                <div style="text-align: center;">
+                    <div style="font-size: 11px; color: #aaa; margin-bottom: 5px; font-weight: 800; text-transform: uppercase;">Текущий X</div>
+                    <div style="font-size: 18px; font-weight: 900; color: white; font-family: 'Unbounded';" id="mines-multi-display">1.00x</div>
+                </div>
+            </div>
+
+            <div id="mines-grid"></div>
+
+            <div class="input-group" style="margin-bottom: 10px;">
+                <label style="color: white;">Количество мин на поле (из 25)</label>
+                <select id="mines-count-select" style="text-align: center; font-size: 16px; font-weight: bold;">
+                    <option value="3" selected>3 мины (Легко)</option>
+                    <option value="5">5 мин (Средне)</option>
+                    <option value="10">10 мин (Сложно)</option>
+                    <option value="15">15 мин (Хардкор)</option>
+                    <option value="24">24 мины (Безумие)</option>
+                </select>
+            </div>
+
+            <div class="input-group" style="margin-bottom: 15px;">
+                <label style="color: white;">СТАВКА (Минимум 1 🪙)</label>
+                <div style="display: flex; gap: 10px;">
+                    <input type="number" id="mines-bet-input" value="1" min="1" style="text-align: center; font-size: 18px; font-weight: bold;">
+                    <button class="btn-main" style="width: 60px; padding: 0; margin: 0; font-size: 12px; border-radius: 18px; flex-shrink: 0;" onclick="document.getElementById('mines-bet-input').value = App.user.coins || 0">MAX</button>
+                </div>
+            </div>
+
+            <button id="mines-start-btn" class="btn-main" style="padding: 20px; font-size: 16px; background: linear-gradient(135deg, #00f2ff, #7000ff); box-shadow: 0 10px 25px rgba(112, 0, 255, 0.4);" onclick="App.startMinesweeper()">НАЧАТЬ ИГРУ</button>
+            <button id="mines-cashout-btn" class="btn-main" style="padding: 20px; font-size: 16px; background: linear-gradient(135deg, #2ed573, #00b894); box-shadow: 0 10px 25px rgba(46, 213, 115, 0.4); display: none;" onclick="App.cashoutMinesweeper()">ЗАБРАТЬ ВЫИГРЫШ</button>
+        </div>
     </div>
 
     <div id="scr-top" class="screen">
@@ -555,42 +681,6 @@
                 <input type="text" id="chat-input" placeholder="Набери сообщение..." style="margin:0; flex:1; background: rgba(0,0,0,0.5); border: none; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);" onkeypress="if(event.key === 'Enter') App.sendMessage()">
                 <button class="btn-main" style="width:50px; height:50px; margin:0; padding:0; display:flex; justify-content:center; align-items:center; border-radius: 18px; flex-shrink: 0;" onclick="App.sendMessage()">➤</button>
             </div>
-        </div>
-    </div>
-
-    <div id="scr-crash" class="screen">
-        <div class="header">
-            <div class="logo">CRASH 📈</div>
-            <div style="font-size: 10px; color: var(--primary); border: 1px solid var(--primary); padding: 5px 10px; border-radius: 10px; font-weight: 800;">МИНИ-ИГРА</div>
-        </div>
-
-        <div class="glass-card" style="padding: 15px;">
-            <div id="crash-canvas-container">
-                <div id="crash-multiplier">1.00x</div>
-                <canvas id="crash-canvas"></canvas>
-            </div>
-
-            <div style="background: rgba(0,0,0,0.4); padding: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 15px; text-align: center;">
-                <div style="font-size: 11px; color: #aaa; margin-bottom: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">Твой баланс</div>
-                <div style="font-size: 24px; font-weight: 900; color: #ffaa00; font-family: 'Unbounded'; text-shadow: 0 0 15px rgba(255,170,0,0.4);" id="crash-balance">0 🪙</div>
-            </div>
-
-            <div class="input-group" style="margin-bottom: 10px;">
-                <label style="text-align: center; color: white;">СТАВКА (Минимум 1 🪙)</label>
-                <div style="display: flex; gap: 10px;">
-                    <input type="number" id="crash-bet-input" value="1" min="1" style="text-align: center; font-size: 18px; font-weight: bold;">
-                    <button class="btn-main" style="width: 60px; padding: 0; margin: 0; font-size: 12px; border-radius: 18px; flex-shrink: 0;" onclick="document.getElementById('crash-bet-input').value = App.user.coins || 0">MAX</button>
-                </div>
-            </div>
-
-            <button id="crash-action-btn" class="btn-main" style="padding: 20px; font-size: 16px; background: linear-gradient(135deg, #2ed573, #00b894); box-shadow: 0 10px 25px rgba(46, 213, 115, 0.4);" onclick="App.handleCrashAction()">ПОСТАВИТЬ СТАВКУ</button>
-            <div id="crash-status-text" style="text-align: center; font-size: 12px; color: #aaa; margin-top: 15px; font-weight: bold;">Ожидание игры...</div>
-        </div>
-
-        <div class="glass-card" style="padding: 15px;">
-            <h3 style="font-size: 12px; color: var(--primary); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;">Игроки в раунде</h3>
-            <div id="crash-players-list" style="max-height: 200px; overflow-y: auto; padding-right: 5px;">
-                </div>
         </div>
     </div>
 
@@ -880,7 +970,7 @@
     <nav class="nav-bar"> 
         <button class="nav-btn active" onclick="App.nav('news', this)" title="ЛЕНТА" style="font-size: 20px;">📰</button>
         <button class="nav-btn" onclick="App.nav('quests', this)" title="КВЕСТЫ" style="font-size: 20px;">🎯</button>
-        <button class="nav-btn" onclick="App.nav('crash', this)" title="CRASH" style="font-size: 20px; color: var(--primary); text-shadow: 0 0 10px var(--primary);">📈</button>
+        <button class="nav-btn" onclick="App.nav('games', this)" title="ИГРЫ" style="font-size: 20px; color: var(--primary); text-shadow: 0 0 10px var(--primary);">🎮</button>
         <button class="nav-btn" onclick="App.nav('top', this)" title="ТОП" style="font-size: 20px;">🏆</button>
         <button class="nav-btn" onclick="App.nav('chat', this)" title="ЧАТ" style="font-size: 20px;">💬</button>
         <button class="nav-btn" onclick="App.nav('store', this)" title="МАГАЗИН" style="font-size: 20px;">🛒</button>
@@ -912,7 +1002,7 @@
 </div>
 
 <div id="maintenance-screen" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(5,5,8,0.95); backdrop-filter: blur(20px); z-index:99999; flex-direction:column; justify-content:center; align-items:center; padding:20px; text-align:center;">
-    <div style="font-size: 80px; margin-bottom: 20px; animation: float 3s ease-in-out infinite;">🛠️</div><h1 style="color: var(--primary); font-family: 'Unbounded'; font-size: 24px; margin-bottom: 15px;">ТЕХНИЧЕСКИЙ ПЕРЕРЫВ</h1><p style="color: #aaa; font-size: 14px; max-width: 320px;">Устанавливаем мощное обновление! Скоро будем в строю.</p>
+    <div style="font-size: 80px; margin-bottom: 20px; animation: float 3s ease-in-out infinite;">🛠️</div><h1 style="color: var(--primary); font-family: 'Unbounded'; font-size: 24px; margin-bottom: 15px;">ТЕХНИЧЕСКИЕ РАБОТЫ</h1><p style="color: #aaa; font-size: 14px; max-width: 320px;">Устанавливаем мощное обновление! Скоро будем в строю.</p>
 </div>
 
 <div id="pm-list-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(5,5,8,0.95); backdrop-filter:blur(15px); z-index:10005; flex-direction:column; padding:20px;">
@@ -985,6 +1075,17 @@
         crashCurrentMulti: 1.0,
         myCrashBet: 0,
 
+        // Minesweeper state
+        minesweeperState: {
+            active: false,
+            bet: 0,
+            minesCount: 3,
+            grid: [],
+            revealed: 0,
+            currentMulti: 1.0,
+            revealedCells: {}
+        },
+
         init() {
             const saved = localStorage.getItem('indigo_user');
             if(saved) {
@@ -998,6 +1099,7 @@
             this.setupFileReaders();
             this.setupVoice();
             this.initCrashCanvas();
+            this.renderMinesweeperGrid(); // Инициализация пустой сетки сапёра
 
             setInterval(() => this.updateNewsTimers(), 1000);
             
@@ -1160,7 +1262,8 @@
             a.href = url;
             a.download = `indigo_chat_${new Date().getTime()}.txt`;
             a.click();
-            URL.revokeObjectURL(url);
+            URL.
+revokeObjectURL(url);
             this.showToast('💾 Экспорт логов чата запущен!');
         },
 
@@ -1286,6 +1389,7 @@
                         this.renderStickersUI();
                         this.renderQuests();
                         this.updateCrashBalanceUI();
+                        this.renderMinesweeperGrid();
                         
                         if (this.user.isBanned) {
                             document.getElementById('ban-screen').style.display = 'flex';
@@ -1325,7 +1429,6 @@
                     this.crashState = data;
                     this.renderCrashPlayers();
                 } else {
-                    // Initialize first round if none exists
                     if(this.admins.includes(this.user?.name)) {
                         db.ref('crash').set({ phase: 'WAITING', startTime: this.getServerTime() + 15000, target: 2.0, bets: {} });
                     }
@@ -1400,11 +1503,20 @@
                 setTimeout(() => { document.getElementById('scr-' + id).style.opacity = '1'; }, 50);
             }, 200);
 
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            if (btnElement) btnElement.classList.add('active');
-            else if (window.event && window.event.currentTarget) window.event.currentTarget.classList.add('active');
+            if(btnElement && btnElement.classList.contains('nav-btn')) {
+                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                btnElement.classList.add('active');
+            } else if (!btnElement && ['news', 'quests', 'games', 'top', 'chat', 'store', 'profile'].includes(id)) {
+                 document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                 const navs = document.querySelectorAll('.nav-btn');
+                 if(id === 'games') navs[2].classList.add('active');
+            }
             
             if(id === 'chat') setTimeout(() => this.scrollToBottom(), 300);
+            if(id === 'minesweeper' || id === 'crash') {
+                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.nav-btn')[2].classList.add('active'); // Активируем кнопку Геймпада
+            }
         },
 
         setReply(name, text) {
@@ -1468,7 +1580,7 @@
             if(el.style.display === 'flex') {
                 el.style.display = 'none';
             } else {
-                document.querySelectorAll('.reaction-picker').forEach(p => p.style.display = 'none'); // close others
+                document.querySelectorAll('.reaction-picker').forEach(p => p.style.display = 'none'); 
                 el.style.display = 'flex';
                 el.style.animation = 'fadeInScale 0.2s ease';
             }
@@ -1480,9 +1592,9 @@
             
             db.ref(path).once('value').then(snap => {
                 if(snap.val()) {
-                    db.ref(path).remove(); // убрать реакцию
+                    db.ref(path).remove(); 
                 } else {
-                    db.ref(path).set(true); // добавить реакцию
+                    db.ref(path).set(true); 
                 }
             });
             document.querySelectorAll('.reaction-picker').forEach(p => p.style.display = 'none');
@@ -1882,13 +1994,11 @@
             const day = 24 * 60 * 60 * 1000;
             
             if (now - last > day) {
-                // Если прошел день, сбрасываем авто-квесты
                 let updates = {
                     xp: firebase.database.ServerValue.increment(100),
                     lastBonus: now
                 };
                 
-                // Проверка авто-квестов
                 if (this.user.completedQuests) {
                     let newCompleted = { ...this.user.completedQuests };
                     let newProgress = { ...this.user.questProgress };
@@ -2605,6 +2715,8 @@
         updateCrashBalanceUI() {
             const el = document.getElementById('crash-balance');
             if(el && this.user) el.innerText = (this.user.coins || 0) + ' 🪙';
+            const mEl = document.getElementById('mines-balance');
+            if(mEl && this.user) mEl.innerText = (this.user.coins || 0) + ' 🪙';
         },
 
         setAdminCrashTarget() {
@@ -2621,11 +2733,9 @@
         handleCrashAction() {
             if(!this.user) return;
             
-            // Если уже поставил ставку
             if(this.crashState.bets && this.crashState.bets[this.user.id]) {
                 const myBet = this.crashState.bets[this.user.id];
                 if(this.crashState.phase === 'FLYING' && myBet.status === 'playing') {
-                    // Выводим (Withdraw)
                     const winAmount = Math.floor(myBet.amount * this.crashCurrentMulti);
                     db.ref(`crash/bets/${this.user.id}/status`).set('won');
                     db.ref(`crash/bets/${this.user.id}/winMulti`).set(this.crashCurrentMulti);
@@ -2636,7 +2746,6 @@
                 return;
             }
 
-            // Ставка
             if(this.crashState.phase !== 'WAITING') {
                 return this.showToast('⏳ Жди начала следующего раунда!');
             }
@@ -2742,7 +2851,6 @@
                 canvas.style.animation = 'none';
                 this.renderCrashPlayers(); 
 
-                // ИСПРАВЛЕНИЕ БАГА: Старт раунда после окончания таймера
                 if (now >= state.startTime) {
                     if (this.admins.includes(this.user?.name)) {
                         db.ref('crash/phase').set('FLYING');
@@ -2825,6 +2933,120 @@
             }
 
             requestAnimationFrame(() => this.crashLoop());
+        },
+
+        // ---------- ИГРА САПЁР (MINES) ---------- //
+        renderMinesweeperGrid() {
+            const grid = document.getElementById('mines-grid');
+            if(!grid) return;
+            let html = '';
+            for(let i = 0; i < 25; i++) {
+                let cellClass = 'mine-cell';
+                let content = '';
+                if(this.minesweeperState.revealedCells[i]) {
+                    cellClass += ' revealed ' + (this.minesweeperState.grid[i] ? 'mine' : 'safe');
+                    content = this.minesweeperState.grid[i] ? '💣' : '💎';
+                }
+                html += `<div class="${cellClass}" onclick="App.clickMineCell(${i})"><span>${content}</span></div>`;
+            }
+            grid.innerHTML = html;
+            const md = document.getElementById('mines-multi-display');
+            if(md) md.innerText = this.minesweeperState.currentMulti.toFixed(2) + 'x';
+            this.updateCrashBalanceUI();
+        },
+
+        startMinesweeper() {
+            if(!this.user) return;
+            if(this.minesweeperState.active) return this.showToast('⚠️ Игра уже идет!');
+            
+            const betAmount = parseInt(document.getElementById('mines-bet-input').value);
+            if(isNaN(betAmount) || betAmount < 1) return this.showToast('Минимальная ставка 1 🪙!');
+            if((this.user.coins || 0) < betAmount) return this.showToast('⚠️ Недостаточно средств!');
+
+            const minesCount = parseInt(document.getElementById('mines-count-select').value);
+
+            db.ref(`users/${this.user.id}/coins`).set(firebase.database.ServerValue.increment(-betAmount)).then(() => {
+                this.minesweeperState.active = true;
+                this.minesweeperState.bet = betAmount;
+                this.minesweeperState.minesCount = minesCount;
+                this.minesweeperState.revealed = 0;
+                this.minesweeperState.currentMulti = 1.0;
+                this.minesweeperState.revealedCells = {};
+                
+                // Генерация поля
+                this.minesweeperState.grid = Array(25).fill(false);
+                let placed = 0;
+                while(placed < minesCount) {
+                    let r = Math.floor(Math.random() * 25);
+                    if(!this.minesweeperState.grid[r]) {
+                        this.minesweeperState.grid[r] = true;
+                        placed++;
+                    }
+                }
+
+                document.getElementById('mines-start-btn').style.display = 'none';
+                document.getElementById('mines-cashout-btn').style.display = 'block';
+                document.getElementById('mines-bet-input').disabled = true;
+                document.getElementById('mines-count-select').disabled = true;
+                
+                this.renderMinesweeperGrid();
+                this.showToast('🎮 Игра началась! Ищи кристаллы 💎');
+            });
+        },
+
+        clickMineCell(index) {
+            if(!this.minesweeperState.active) return;
+            if(this.minesweeperState.revealedCells[index]) return;
+
+            this.minesweeperState.revealedCells[index] = true;
+
+            if(this.minesweeperState.grid[index]) {
+                // ВЗРЫВ
+                this.minesweeperState.active = false;
+                for(let i = 0; i < 25; i++) {
+                    if(this.minesweeperState.grid[i]) this.minesweeperState.revealedCells[i] = true;
+                }
+                this.renderMinesweeperGrid();
+                this.resetMinesweeperUI();
+                this.showToast('💥 БАБАХ! Ты попал на мину и потерял ставку.');
+            } else {
+                // БЕЗОПАСНО
+                this.minesweeperState.revealed++;
+                
+                // Увеличение множителя
+                const step = 0.05 + (this.minesweeperState.minesCount * 0.02);
+                this.minesweeperState.currentMulti += step;
+
+                this.renderMinesweeperGrid();
+
+                // Проверка на фулл победу
+                if(this.minesweeperState.revealed === (25 - this.minesweeperState.minesCount)) {
+                    this.cashoutMinesweeper();
+                }
+            }
+        },
+
+        cashoutMinesweeper() {
+            if(!this.minesweeperState.active || this.minesweeperState.revealed === 0) return;
+            
+            const winAmount = Math.floor(this.minesweeperState.bet * this.minesweeperState.currentMulti);
+            
+            db.ref(`users/${this.user.id}/coins`).set(firebase.database.ServerValue.increment(winAmount)).then(() => {
+                this.minesweeperState.active = false;
+                for(let i = 0; i < 25; i++) {
+                    this.minesweeperState.revealedCells[i] = true;
+                }
+                this.renderMinesweeperGrid();
+                this.resetMinesweeperUI();
+                this.showToast(`💸 ЗАБРАЛ! Выигрыш: ${winAmount} 🪙 (x${this.minesweeperState.currentMulti.toFixed(2)})`);
+            });
+        },
+
+        resetMinesweeperUI() {
+            document.getElementById('mines-start-btn').style.display = 'block';
+            document.getElementById('mines-cashout-btn').style.display = 'none';
+            document.getElementById('mines-bet-input').disabled = false;
+            document.getElementById('mines-count-select').disabled = false;
         },
 
         adminAction(type) {
@@ -2923,7 +3145,6 @@
         }
     };
 
-    // Закрытие попапа реакций при клике в пустоту
     document.addEventListener('click', () => {
         document.querySelectorAll('.reaction-picker').forEach(p => p.style.display = 'none');
     });
@@ -2932,3 +3153,4 @@
 </script>
 </body>
 </html>
+
