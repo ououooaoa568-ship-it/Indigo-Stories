@@ -619,7 +619,7 @@
                     <div style="font-weight: 800; font-size: 14px; color: white;">Элитный Значок "🦇 Бэтмен"</div>
                     <div style="font-size: 11px; color: #aaa; margin-top: 5px;">Навсегда</div>
                 </div>
-                <button class="btn-main" onclick="App.buyStoreItem('batman_badge', 5)" style="width: auto; padding: 10px 15px; font-size: 12px; margin-top:0;">5 🪙</button>
+                <button class="btn-main" onclick="App.buyStoreItem('batman_badge', 50)" style="width: auto; padding: 10px 15px; font-size: 12px; margin-top:0;">50 🪙</button>
             </div>
 
             <div style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.05); padding: 15px; border-radius: 15px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; text-align: left;">
@@ -627,7 +627,7 @@
                     <div style="font-weight: 800; font-size: 14px; color: white;">Элитный Значок "🔥 Легенда"</div>
                     <div style="font-size: 11px; color: #aaa; margin-top: 5px;">Навсегда</div>
                 </div>
-                <button class="btn-main" onclick="App.buyStoreItem('legend_badge', 10)" style="width: auto; padding: 10px 15px; font-size: 12px; margin-top:0;">10 🪙</button>
+                <button class="btn-main" onclick="App.buyStoreItem('legend_badge', 100)" style="width: auto; padding: 10px 15px; font-size: 12px; margin-top:0;">100 🪙</button>
             </div>
             
             <div style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.05); padding: 15px; border-radius: 15px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; text-align: left;">
@@ -635,7 +635,7 @@
                     <div style="font-weight: 800; font-size: 14px; color: white;">Элитный Значок "👾 Хакер"</div>
                     <div style="font-size: 11px; color: #aaa; margin-top: 5px;">Навсегда</div>
                 </div>
-                <button class="btn-main" onclick="App.buyStoreItem('hacker_badge', 15)" style="width: auto; padding: 10px 15px; font-size: 12px; margin-top:0;">15 🪙</button>
+                <button class="btn-main" onclick="App.buyStoreItem('hacker_badge', 150)" style="width: auto; padding: 10px 15px; font-size: 12px; margin-top:0;">150 🪙</button>
             </div>
         </div>
         
@@ -653,7 +653,7 @@
                 <div style="margin-bottom: 10px; font-size: 13px;">🔥 <b>Обложка профиля (Фон)</b> + Голос</div>
             </div>
 
-            <button class="btn-main btn-outline" onclick="App.buyVipPlusWithCoins()" style="margin-top: 10px; border-color: var(--vip-plus-2); color: white; background: rgba(255,0,85,0.1);">КУПИТЬ ЗА 45 🪙 INDICOINS</button>
+            <button class="btn-main btn-outline" onclick="App.buyVipPlusWithCoins()" style="margin-top: 10px; border-color: var(--vip-plus-2); color: white; background: rgba(255,0,85,0.1);">КУПИТЬ ЗА 450 🪙 INDICOINS</button>
         </div>
 
         <div class="glass-card" style="text-align:center;">
@@ -667,7 +667,7 @@
                 <div style="margin-bottom: 10px; font-size: 13px;">✅ <b>Уникальный значок</b> (💎)</div>
             </div>
 
-            <button class="btn-main btn-outline" onclick="App.buyVipWithCoins()" style="margin-top: 10px; border-color: var(--primary); color: white; background: rgba(0,242,255,0.1);">КУПИТЬ ЗА 20 🪙 INDICOINS</button>
+            <button class="btn-main btn-outline" onclick="App.buyVipWithCoins()" style="margin-top: 10px; border-color: var(--primary); color: white; background: rgba(0,242,255,0.1);">КУПИТЬ ЗА 200 🪙 INDICOINS</button>
         </div>
     </div>
 
@@ -1215,10 +1215,10 @@
         buyVipPlusWithCoins() {
             if (!this.user) return;
             if (this.user.isVipPlus) return this.showToast('У тебя уже есть VIP++!');
-            if ((this.user.coins || 0) < 45) return this.showToast('⚠️ Недостаточно INDICOIN! Нужно 45 🪙.');
+            if ((this.user.coins || 0) < 450) return this.showToast('⚠️ Недостаточно INDICOIN! Нужно 450 🪙.');
             
             db.ref('users/' + this.user.id).update({ 
-                coins: firebase.database.ServerValue.increment(-45), 
+                coins: firebase.database.ServerValue.increment(-450), 
                 isVip: true, 
                 isVipPlus: true 
             }).then(() => this.showToast('👑 ПОЗДРАВЛЯЕМ! Ты стал БОССОМ VIP++!'))
@@ -1228,10 +1228,10 @@
         buyVipWithCoins() {
             if (!this.user) return;
             if (this.user.isVip) return this.showToast('У тебя уже есть VIP или VIP++!');
-            if ((this.user.coins || 0) < 20) return this.showToast('⚠️ Недостаточно INDICOIN! Нужно 20 🪙.');
+            if ((this.user.coins || 0) < 200) return this.showToast('⚠️ Недостаточно INDICOIN! Нужно 200 🪙.');
             
             db.ref('users/' + this.user.id).update({ 
-                coins: firebase.database.ServerValue.increment(-20), 
+                coins: firebase.database.ServerValue.increment(-200), 
                 isVip: true 
             }).then(() => this.showToast('💎 ПОЗДРАВЛЯЕМ! VIP статус активирован!'))
               .catch(e => this.showToast(e.message));
